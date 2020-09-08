@@ -2,8 +2,6 @@ import React, {Component,Suspense} from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 import {connect} from 'react-redux'
 import {ConfigProvider} from "antd";
-import HeaderComp from "./Components/Header/HeaderComp";
-import AppLayout from "./Components/AppLayout";
 import Login from "./Components/Auth/Login";
 import Registration from "./Components/Auth/Registration";
 

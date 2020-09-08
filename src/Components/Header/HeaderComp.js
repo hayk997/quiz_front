@@ -1,10 +1,7 @@
 import  React,{Component} from "react";
-import { Layout, Menu, Breadcrumb  } from "antd";
-import { UserOutlined, LaptopOutlined, NotificationOutlined  } from "@ant-design/icons";
+import { Layout, Menu} from "antd";
 import {connect} from 'react-redux'
-
-const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+const { Header,  } = Layout;
 
 class HeaderComp extends Component {
     constructor(props) {

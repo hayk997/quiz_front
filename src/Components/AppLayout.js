@@ -1,12 +1,9 @@
 import  React,{Component} from "react";
-import { Layout, Menu, Breadcrumb  } from "antd";
-import { UserOutlined, LaptopOutlined, NotificationOutlined  } from "@ant-design/icons";
+import { Layout} from "antd";
 import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
 import SiderComp from "./Sider/SiderComp";
-
-const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+const { Content} = Layout;
 
 class AppLayout extends Component {
     constructor(props) {
@@ -43,7 +40,7 @@ export default connect(
     state => ({
         state
     }),
-    dispatch => ({
+    () => ({
 
     })
 )(AppLayout);

@@ -1,10 +1,10 @@
 import  React,{Component} from "react";
-import { Layout, Menu, Breadcrumb  } from "antd";
+import { Layout, Menu} from "antd";
 import { UserOutlined, LaptopOutlined, NotificationOutlined  } from "@ant-design/icons";
 import {connect} from 'react-redux'
 
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+const { Sider } = Layout;
 
 class SiderComp extends Component {
     constructor(props) {

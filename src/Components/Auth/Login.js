@@ -1,11 +1,9 @@
 import React,{Component} from "react";
-import {Col,Row,Button,Input,Form,Layout, Menu, Breadcrumb  } from "antd";
-import {UserOutlined, LaptopOutlined, NotificationOutlined, LockOutlined, MailOutlined} from "@ant-design/icons";
+import {Col,Row,Button,Input,Form} from "antd";
+import {UserOutlined, LockOutlined, MailOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import AppLayout from "../AppLayout";
 
-const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
 
 class Login extends Component {
     constructor(props) {

@@ -1,26 +1,10 @@
 import React,{Component} from "react";
-import {Col,Row,Button,Input,Form,Layout, Menu, Breadcrumb,
-    Tooltip,
-    Cascader,
-    Select,
-    Checkbox,
-    AutoComplete, } from "antd";
-import {
-    UserOutlined,
-    LaptopOutlined,
-    NotificationOutlined,
-    LockOutlined,
-    MailOutlined,
-    QuestionCircleOutlined
-} from "@ant-design/icons";
+import {Col,Row,Button,Input,Form,Tooltip} from "antd";
+import {QuestionCircleOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import AppLayout from "../AppLayout";
 import {formItemLayout} from "../../dist/layoutes";
 import FacebookLogin from 'react-facebook-login';
-const { Option } = Select;
-const AutoCompleteOption = AutoComplete.Option;
-const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
 
 class Registration extends Component {
     constructor(props) {
@@ -121,24 +105,6 @@ class Registration extends Component {
                                 ]}
                             >
                                 <Input.Password />
-                            </Form.Item>
-
-
-
-                            <Form.Item
-                                name="agreement"
-                                valuePropName="checked"
-                                rules={[
-                                    {
-                                        validator: (_, value) =>
-                                            value ? Promise.resolve() : Promise.reject('Should accept agreement'),
-                                    },
-                                ]}
-
-                            >
-                                <Checkbox>
-                                    I have read the <a href="">agreement</a>
-                                </Checkbox>
                             </Form.Item>
                             <Form.Item >
                                 <FacebookLogin
