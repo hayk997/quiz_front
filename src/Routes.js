@@ -2,7 +2,9 @@ import React, {Component,Suspense} from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 import {connect} from 'react-redux'
 import {ConfigProvider} from "antd";
-import Header from "./Components/Header/Header";
+import HeaderComp from "./Components/Header/HeaderComp";
+import AppLayout from "./Components/AppLayout";
+import Login from "./Components/Auth/Login";
 
 class Routes extends Component {
 
@@ -12,7 +14,7 @@ class Routes extends Component {
                     <BrowserRouter>
                         <Suspense fallback={<div>Loading...</div>}>
                         <Switch>
-                            <Route exact path="/" component={Header}/>
+                            <Route exact path="/" component={Login}/>
                         </Switch>
                         </Suspense>
                     </BrowserRouter>

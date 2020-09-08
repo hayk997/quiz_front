@@ -4,6 +4,7 @@ import {PersistGate} from 'redux-persist/integration/react'
 import {Provider} from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore'
+import 'antd/dist/antd.css';
 import './dist/custom.sass';
 import Routes from "./Routes";
 
