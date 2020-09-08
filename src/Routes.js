@@ -5,6 +5,7 @@ import {ConfigProvider} from "antd";
 import HeaderComp from "./Components/Header/HeaderComp";
 import AppLayout from "./Components/AppLayout";
 import Login from "./Components/Auth/Login";
+import Registration from "./Components/Auth/Registration";
 
 class Routes extends Component {
 
@@ -15,6 +16,7 @@ class Routes extends Component {
                         <Suspense fallback={<div>Loading...</div>}>
                         <Switch>
                             <Route exact path="/" component={Login}/>
+                            <Route exact path="/reg" component={Registration}/>
                         </Switch>
                         </Suspense>
                     </BrowserRouter>

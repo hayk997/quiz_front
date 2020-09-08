@@ -30,7 +30,6 @@ class AppLayout extends Component {
                                 minHeight: 280,
                             }}
                         >
-                            sdasdsa
                             {this.props.children}
                         </Content>
                     </Layout>

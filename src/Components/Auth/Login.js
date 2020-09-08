@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import {Button,Input,Form,Layout, Menu, Breadcrumb  } from "antd";
+import {Col,Row,Button,Input,Form,Layout, Menu, Breadcrumb  } from "antd";
 import {UserOutlined, LaptopOutlined, NotificationOutlined, LockOutlined, MailOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import AppLayout from "../AppLayout";
@@ -17,28 +17,33 @@ class Login extends Component {
     render() {
         return (
             <AppLayout>
-                <Form className="login-form">
-                    <Form.Item name={'Email'} rules={[{
-                        required: true,
-                        message: 'Please enter email address'
-                    }]}>
+                <Row>
+                    <Col style={{textAlign:'center'}} lg={{offset:8,span:8}}>
+                        <Form className="login-form">
+                            <Form.Item name={'Email'} rules={[{
+                                required: true,
+                                message: 'Please enter email address'
+                            }]}>
 
-                        <Input prefix={<MailOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
-                               disabled={this.state.loading}
-                               placeholder="Email"/>
-                    </Form.Item>
-                    <Form.Item name={'Password'} rules={[{
-                        required: true,
-                        message: 'Please enter your password'
-                    }]}>
-                        <Input prefix={<LockOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
-                               type="password"
-                               disabled={this.state.loading}
-                               placeholder={"Password"}/>
-                    </Form.Item>
-                    <Button type="primary" icon={<UserOutlined/>} htmlType="submit" className="block"
-                            loading={this.state.loading}>Login</Button>
-                </Form>
+                                <Input prefix={<MailOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                       disabled={this.state.loading}
+                                       placeholder="Email"/>
+                            </Form.Item>
+                            <Form.Item name={'Password'} rules={[{
+                                required: true,
+                                message: 'Please enter your password'
+                            }]}>
+                                <Input prefix={<LockOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                       type="password"
+                                       disabled={this.state.loading}
+                                       placeholder={"Password"}/>
+                            </Form.Item>
+                            <Button type="primary" icon={<UserOutlined/>} htmlType="submit" className="block"
+                                    loading={this.state.loading}>Login</Button>
+                        </Form>
+                    </Col>
+                </Row>
+
             </AppLayout>
 
         )
