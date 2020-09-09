@@ -21,7 +21,6 @@ class Registration extends Component {
 
     render() {
         return (
-            <AppLayout>
                 <Row>
                     <Col style={{textAlign:'center'}} lg={{offset:6,span:12}}>
                         <Form
@@ -122,8 +121,6 @@ class Registration extends Component {
                         </Form>
                     </Col>
                 </Row>
-
-            </AppLayout>
 
         )
     }

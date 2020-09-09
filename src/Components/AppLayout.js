@@ -1,8 +1,11 @@
-import  React,{Component} from "react";
-import { Layout} from "antd";
+import React, {Component, Suspense} from "react";
+import {ConfigProvider, Layout} from "antd";
 import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
 import SiderComp from "./Sider/SiderComp";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import Login from "./Auth/Login";
+import Registration from "./Auth/Registration";
 const { Content} = Layout;
 
 class AppLayout extends Component {
@@ -19,15 +22,16 @@ class AppLayout extends Component {
                 <Layout>
                     <SiderComp/>
                     <Layout style={{ padding: '0 24px 24px' }}>
-                        <Content
-                            className="site-layout-background"
+                        <Content className="site-layout-background"
                             style={{
                                 padding: 24,
                                 margin: 0,
                                 minHeight: 280,
-                            }}
-                        >
-                            {this.props.children}
+                            }}>
+                                        <Switch>
+                                            <Route exact path="/" component={Login}/>
+                                            <Route exact path="/reg" component={Registration}/>
+                                        </Switch>
                         </Content>
                     </Layout>
                 </Layout>
