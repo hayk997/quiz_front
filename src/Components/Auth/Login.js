@@ -14,7 +14,7 @@ class Login extends Component {
     }
     render() {
         return (
-                <Row>
+                <Row className={'content-aligned'}>
                     <Col style={{textAlign:'center'}} lg={{offset:8,span:8}}>
                         <Form className="login-form">
                             <Form.Item name={'Email'} rules={[{

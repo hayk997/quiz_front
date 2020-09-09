@@ -15,7 +15,7 @@ class Registration extends Component {
         }
     }
     handleRegFacebook = (response) => {
-        if( response.accessToken) {
+        if(response.accessToken) {
             console.log(response)
             axios.request( {
                 url:api.auth.facebook.url,
@@ -34,18 +34,25 @@ class Registration extends Component {
         }
     }
 
+    handleRegistration = (formData)=>{
+        axios.request( {
+            url:api.auth.registration.url,
+            headers:{
+
+            },
+            method: api.auth.registration.method,
+            data: formData
+        }).then(response=> {
+            console.log(response)
+        })
+        }
     render() {
         return (
-                <Row>
+                <Row className={'content-aligned'}>
                     <Col style={{textAlign:'center'}} lg={{offset:6,span:12}}>
                         <Form
                             {...formItemLayout}
-                            name="register"
-                            initialValues={{
-                                residence: ['zhejiang', 'hangzhou', 'xihu'],
-                                prefix: '86',
-                            }}
-                            scrollToFirstError
+                            onFinish={this.handleRegistration}
                         >
                             <Form.Item
                                 name="email"
@@ -64,7 +71,7 @@ class Registration extends Component {
                                 <Input />
                             </Form.Item>
                             <Form.Item
-                                name="nickname"
+                                name="username"
                                 label={
                                     <span>
                                 Nickname&nbsp;

@@ -10,8 +10,8 @@ const api = {
             method: "GET"
         },
         registration:{
-            url: `${endpoint}search/categories`,
-            method: "GET"
+            url: `${endpoint}auth/signup`,
+            method: "POST"
         },
     },
 }
