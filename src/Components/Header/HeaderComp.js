@@ -2,6 +2,7 @@ import  React,{Component} from "react";
 import { Layout, Menu} from "antd";
 import {connect} from 'react-redux'
 import {withRouter} from "react-router-dom";
+
 const { Header,  } = Layout;
 
 class HeaderComp extends Component {

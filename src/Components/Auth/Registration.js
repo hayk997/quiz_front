@@ -2,9 +2,10 @@ import React,{Component} from "react";
 import {Col,Row,Button,Input,Form,Tooltip} from "antd";
 import {QuestionCircleOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
-import AppLayout from "../AppLayout";
 import {formItemLayout} from "../../dist/layoutes";
 import FacebookLogin from 'react-facebook-login';
+import axios from "axios";
+import api from "../../api";
 
 class Registration extends Component {
     constructor(props) {
@@ -16,6 +17,20 @@ class Registration extends Component {
     handleRegFacebook = (response) => {
         if( response.accessToken) {
             console.log(response)
+            axios.request( {
+                url:api.auth.facebook.url,
+                headers:{
+
+                },
+                method: api.auth.facebook.method,
+                data: {
+                    access_token:response.accessToken
+                }
+            }).then(response=>{
+                console.log(response)
+            }).catch(err=>{
+                console.log(err)
+            })
         }
     }
 
