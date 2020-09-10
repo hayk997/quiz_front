@@ -6,6 +6,7 @@ import SiderComp from "./Sider/SiderComp";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Login from "./Auth/Login";
 import Registration from "./Auth/Registration";
+import Profile from "./Profile/Profile";
 const { Content} = Layout;
 
 class AppLayout extends Component {
@@ -31,6 +32,7 @@ class AppLayout extends Component {
                                         <Switch>
                                             <Route exact path="/" component={Login}/>
                                             <Route exact path="/reg" component={Registration}/>
+                                            <Route exact path="/profile" component={Profile}/>
                                         </Switch>
                         </Content>
                     </Layout>
