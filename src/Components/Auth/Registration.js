@@ -27,7 +27,7 @@ class Registration extends Component {
                     access_token:response.accessToken
                 }
             }).then(response=>{
-                console.log(response)
+                this.props.onLogin(response.data)
             }).catch(err=>{
                 console.log(err)
             })
@@ -43,7 +43,7 @@ class Registration extends Component {
             method: api.auth.registration.method,
             data: formData
         }).then(response=> {
-            console.log(response)
+            this.props.onLogin(response.data)
         })
         }
     render() {
@@ -153,6 +153,11 @@ export default connect(
         state
     }),
     dispatch => ({
-
+        onLogin: (loginData) => {
+            dispatch({
+                type: "AUTH",
+                payload: loginData
+            })
+        },
     })
 )(Registration);

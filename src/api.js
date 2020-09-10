@@ -6,8 +6,8 @@ const api = {
             method: "POST"
         },
         login:{
-            url: `${endpoint}search/categories`,
-            method: "GET"
+            url: `${endpoint}auth/signin`,
+            method: "POST"
         },
         registration:{
             url: `${endpoint}auth/signup`,
