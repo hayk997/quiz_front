@@ -12,9 +12,10 @@ class SiderComp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
         }
+
     }
+
     render() {
         return (
             <Sider width={200} className="site-layout-background">
