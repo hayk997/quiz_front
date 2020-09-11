@@ -14,7 +14,7 @@ class Psy extends Component {
 
     render() {
         return (
-            <Row className={'content-aligned-center'} style={{border: '1px solid gray'}}>
+            <Row className={'content-aligned-center'}>
                 <Row >
                     <Col>
                         <h2> Steps</h2>
@@ -26,7 +26,7 @@ class Psy extends Component {
                     </Col>
                 </Row>
                 <Row className={'cardsBlock'} justify={'center'} gutter={[24, 16]}>
-                    <Col className={'cardColumn'} offset={2} lg={10}>
+                    <Col className={'cardColumn'} offset={2} lg={8}>
                         <Card className={'card'}
                               hoverable
                               bodyStyle={{marginTop:-20,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
@@ -35,7 +35,7 @@ class Psy extends Component {
                         >
                             <Meta title="Europe Street beat"/>
                         </Card> </Col>
-                    <Col className={'cardColumn'} offset={2} lg={10}>
+                    <Col className={'cardColumn'} offset={2} lg={8}>
                         <Card className={'card'}
                               hoverable
                               bodyStyle={{marginTop:-20,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
@@ -47,7 +47,7 @@ class Psy extends Component {
                             <Meta title="Europe Street beat"/>
                         </Card> </Col>
 
-                    <Col className={'cardColumn'} offset={2} lg={10}>
+                    <Col className={'cardColumn'} offset={2} lg={8}>
                         <Card className={'card'}
                               hoverable
                               bodyStyle={{marginTop:-20,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
@@ -57,7 +57,7 @@ class Psy extends Component {
                     >
                         <Meta title="Europe Street beat"/>
                     </Card> </Col>
-                    <Col className={'cardColumn'} offset={2} lg={10}>
+                    <Col className={'cardColumn'} offset={2} lg={8}>
                         <Card className={'card'}
                               hoverable
                               bodyStyle={{marginTop:-20,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
