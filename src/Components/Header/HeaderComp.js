@@ -3,7 +3,9 @@ import {Col, Layout, Menu, Row, Drawer} from "antd"
 import {connect} from 'react-redux'
 import {NavLink, withRouter} from "react-router-dom"
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from "@ant-design/icons"
-import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined";
+import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined"
+import logo from '../../dist/images/mainLogo.png'
+import './styles.sass'
 
 const {Header} = Layout
 const { SubMenu } = Menu
@@ -36,7 +38,7 @@ class HeaderComp extends Component {
             <Header className="header">
                 <Row>
                     <Col xs={4} sm={4} md={4} lg={6} xl={4}>
-                        <div className="logo"/>
+                        <img alt='logo' src={logo} className='mainLogo'/>
                     </Col>
                     <Col xs={18} sm={18} md={16} lg={12} xl={14}>
                         <Menu theme="dark" mode="horizontal">
