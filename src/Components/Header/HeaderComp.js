@@ -52,10 +52,7 @@ class HeaderComp extends Component {
                         </Menu>
                     </Col>
                     <Col xs={2} sm={2} md={4} lg={6} xl={6}>
-                        <MenuOutlined style={{fontSize:'25px'}} onClick={this.showDrawer}/>
-                        {/*<Button type='primary' onClick={this.showDrawer}>*/}
-                        {/*    Show*/}
-                        {/*</Button>*/}
+                        <MenuOutlined style={{fontSize:'25px',color:'#b9b9b9'}} onClick={this.showDrawer}/>
                         <Drawer
                             title="Basic Drawer"
                             placement='left'
@@ -63,8 +60,9 @@ class HeaderComp extends Component {
                             onClose={this.onClose}
                             visible={this.state.visible}
                         >
-                            <Sider theme='dark' width={200} className="site-layout-background">
+                            <Sider width={250} className="site-layout-background">
                                 <Menu
+                                    theme='dark'
                                     mode="inline"
                                     defaultSelectedKeys={['1']}
                                     defaultOpenKeys={['sub1']}
