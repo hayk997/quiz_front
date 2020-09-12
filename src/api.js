@@ -13,6 +13,13 @@ const api = {
             url: `${endpoint}auth/signup`,
             method: "POST"
         },
+
     },
+    question:{
+        create:{
+            url: `${endpoint}questions`,
+            method: "POST"
+        }
+    }
 }
 export default api;

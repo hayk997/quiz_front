@@ -127,8 +127,8 @@ class UploadAnswerImage extends Component {
     }
     handleCreateQuestion = () =>{
         axios.request( {
-            url:api.auth.login.url,
-            method: api.auth.login.method,
+            url:api.question.create.url,
+            method: api.question.create.method,
             data: this.state.answersData
         }).then(response=> {
             if(response.data.message){
@@ -137,14 +137,10 @@ class UploadAnswerImage extends Component {
                     description: response.data.message,
                 });
             }else{
-                this.props.onLogin(response.data)
+              console.log(response)
             }
-
-
         }).catch(err=>{
             console.log(err.message)
-
-
         })
     }
     render() {
