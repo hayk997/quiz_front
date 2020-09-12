@@ -1,8 +1,10 @@
 import React, {Component} from "react"
-import {Upload, message, Form, Input, Button, Row, Col} from 'antd'
+import {Upload, message, Form, Input, Button, Row, Col, notification} from 'antd'
 import LoadingOutlined from "@ant-design/icons/lib/icons/LoadingOutlined";
 import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
 import './styles.sass'
+import axios from "axios";
+import api from "../../api";
 
 const getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -59,19 +61,29 @@ class UploadAnswerImage extends Component {
             return;
         }
         if (info.file.status === 'done') {
-            this.setState({
-                answersData: {
-                    ...this.state.answersData,
-                    [this.state.answerKey]: {
-                        ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                        title: 'dsdsd',
-                        [id]: {
-                            ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
-                            filePath: info.file.response.path,
+            if(id==='avatar'){
+                this.setState({
+                    answersData: {
+                        ...this.state.answersData,
+                        [id]:info.file.response.path,
+                    }
+                })
+            }else{
+                this.setState({
+                    answersData: {
+                        ...this.state.answersData,
+                        [this.state.answerKey]: {
+                            ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
+                            title: 'dsdsd',
+                            [id]: {
+                                ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
+                                filePath: info.file.response.path,
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+
             // Get this url from response in real world.
             getBase64(info.file.originFileObj, imageUrl =>
                 this.setState({
@@ -105,6 +117,36 @@ class UploadAnswerImage extends Component {
             }
         })
     }
+    onQuestionChange = (e) => {
+        this.setState({
+            answersData: {
+                ...this.state.answersData,
+             question:e.target.value
+            }
+        })
+    }
+    handleCreateQuestion = () =>{
+        axios.request( {
+            url:api.auth.login.url,
+            method: api.auth.login.method,
+            data: this.state.answersData
+        }).then(response=> {
+            if(response.data.message){
+                notification.warning({
+                    message: 'Warning',
+                    description: response.data.message,
+                });
+            }else{
+                this.props.onLogin(response.data)
+            }
+
+
+        }).catch(err=>{
+            console.log(err.message)
+
+
+        })
+    }
     render() {
         console.log(this.state)
         const uploadButton = (
@@ -118,7 +160,26 @@ class UploadAnswerImage extends Component {
                 <Form>
                     <Row justify={'center'} gutter={[24, 16]}>
                         <Col lg={24}>
+                            <Input onChange={this.onQuestionChange}/>
+                            <Upload
+                                name="image"
+                                listType="picture-card"
+                                className="avatar-uploader"
+                                showUploadList={false}
+                                action="http://localhost:4000/files"
+                                beforeUpload={beforeUpload}
+                                onChange={(info) => {
+                                    this.handleChange(info,'avatar')
+                                }}
+                            >
+                                {this.state.imageUrl.avatar ?
+                                    <img src={this.state.imageUrl.avatar} alt="answer" style={{width: '100%'}}/>
+                                    : uploadButton}
+                            </Upload>
+                        </Col>
+                        <Col lg={24}>
                             <Input onChange={this.onTitleChange}/>
+
                         </Col>
                         {[...Array(4).keys()].map(key => <Col key={key} lg={10}>
                             <Upload
@@ -146,7 +207,7 @@ class UploadAnswerImage extends Component {
                             <Button onClick={this.nextPage} size='large' type="primary">
                                 Add Answer
                             </Button>
-                            <Button size='large' type="primary">
+                            <Button onClick={this.handleCreateQuestion} size='large' type="primary">
                                 Submit
                             </Button>
                         </Col>
