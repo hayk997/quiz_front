@@ -28,22 +28,20 @@ class Psy extends Component {
                         <h2>Question </h2>
                     </Col>
                 </Row>
-                <Row className={'cardsBlock'} justify={'center'} gutter={[24, 16]}>
-                    <Col className={'cardColumn'} lg={10}>
+                <Row className={'cardsBlock'} justify={'center'} gutter={[24, 24]}>
+                    <Col className={'cardColumn'} xs={12} sm={12} md={12} lg={10} xl={10}>
                         <Card className={'card'}
                               hoverable
                               onClick={this.handleSelect}
                               bodyStyle={{marginTop:-20,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
-                              style={{width: 250, height: 250}}
                               cover={<img className={'cardCover'} alt="example" src={img}/>}
                         >
                             <Meta title="Europe Street beat" />
                         </Card> </Col>
-                    <Col className={'cardColumn'} lg={10}>
+                    <Col className={'cardColumn'} xs={12} sm={12} md={12} lg={10} xl={10}>
                         <Card className={'card'}
                               hoverable
                               bodyStyle={{marginTop:-20,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
-                              style={{width: 250, height: 250}}
                               cover={<img className={'cardCover'}
                                           alt="example"
                                           src={img}/>}
@@ -51,22 +49,20 @@ class Psy extends Component {
                             <Meta title="Europe Street beat"/>
                         </Card> </Col>
 
-                    <Col className={'cardColumn'} lg={10}>
+                    <Col className={'cardColumn'} xs={12} sm={12} md={12} lg={10} xl={10}>
                         <Card className={'card'}
                               hoverable
                               bodyStyle={{marginTop:-20,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
-                              style={{width: 250, height: 250}}
                               cover={<img className={'cardCover'} alt="example"
                                                                   src={img}/>}
                     >
                         <Meta title="Europe Street beat"/>
                     </Card> </Col>
-                    <Col className={'cardColumn'} lg={10}>
+                    <Col className={'cardColumn'} xs={12} sm={12} md={12} lg={10} xl={10}>
                         <Card className={'card'}
                               hoverable
                               bodyStyle={{marginTop:-20,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
-                              style={{width: 250, height: 250}}
-                              cover={<img className={'cardCover'} alt="example"
+                              cover={<img className='cardCover' alt="example"
                                                                   src={img}/>}
                     >
                         <Meta title="Europe Street beat"/>

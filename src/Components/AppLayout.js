@@ -20,10 +20,9 @@ class AppLayout extends Component {
     }
     render() {
         return (
-            <Layout style={{minHeight:'720px'}}>
+            <section className='ant-layout' style={{minHeight:'720px'}}>
                 <HeaderComp/>
                 <Layout>
-                    <SiderComp/>
                     <Layout style={{ padding: '0 24px 24px' }}>
                         <Content className="site-layout-background"
                             style={{
@@ -41,7 +40,7 @@ class AppLayout extends Component {
                         </Content>
                     </Layout>
                 </Layout>
-            </Layout>
+            </section>
         )
     }
 }

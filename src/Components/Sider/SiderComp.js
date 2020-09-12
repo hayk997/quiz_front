@@ -13,12 +13,10 @@ class SiderComp extends Component {
         super(props);
         this.state = {
         }
-
     }
-
     render() {
         return (
-            <Sider width={200} className="site-layout-background">
+            <Sider style={{display:'none'}} width={200} className="site-layout-background">
                 <Menu
                     mode="inline"
                     defaultSelectedKeys={['1']}
