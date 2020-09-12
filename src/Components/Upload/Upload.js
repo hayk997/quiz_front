@@ -27,52 +27,47 @@ class UploadAnswerImage extends Component {
         super(props);
         this.state = {
             loading: false,
-            imageUrl:{},
+            imageUrl: {},
             answersData: {},
-            answerKey:0,
-            input:{}
+            answerKey: 0,
+            input: {}
         }
     }
-    handleInputChange = (e,id)=>{
+
+    handleInputChange = (e, id) => {
         this.setState({
-            input:{
+            input: {
                 ...this.state.input,
-                [id]:e.target.value
+                [id]: e.target.value
             },
-            answersData:{
+            answersData: {
                 ...this.state.answersData,
-                [this.state.answerKey]:{
-                    ...(this.state.answersData[this.state.answerKey]?this.state.answersData[this.state.answerKey]:{}),
-                    quiz:{
-                        title:'dsdsd',
-                        ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey].quiz ?this.state.answersData[this.state.answerKey].quiz:{}),
-                            [id]:{
-                                ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey].quiz[id]?this.state.answersData[this.state.answerKey].quiz[id]:{}),
-                                title:e.target.value,
-                            }
-                    }
+                [this.state.answerKey]: {
+                    ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
+                        title: 'dsdsd',
+                        [id]: {
+                            ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
+                            title: e.target.value,
+                        }
                 }
             }
         })
     }
-    handleChange = (info,id) => {
+    handleChange = (info, id) => {
         if (info.file.status === 'uploading') {
             this.setState({loading: true});
             return;
         }
         if (info.file.status === 'done') {
             this.setState({
-                answersData:{
+                answersData: {
                     ...this.state.answersData,
-                    [this.state.answerKey]:{
-                        ...(this.state.answersData[this.state.answerKey]?this.state.answersData[this.state.answerKey]:{}),
-                        quiz:{
-                            title:'dsdsd',
-                            ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey].quiz?this.state.answersData[this.state.answerKey].quiz:{}),
-                            [id]:{
-                                ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey].quiz[id]?this.state.answersData[this.state.answerKey].quiz[id]:{}),
-                                filePath:info.file.response.path,
-                            }
+                    [this.state.answerKey]: {
+                        ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
+                        title: 'dsdsd',
+                        [id]: {
+                            ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
+                            filePath: info.file.response.path,
                         }
                     }
                 }
@@ -80,23 +75,34 @@ class UploadAnswerImage extends Component {
             // Get this url from response in real world.
             getBase64(info.file.originFileObj, imageUrl =>
                 this.setState({
-                    imageUrl:{
+                    imageUrl: {
                         ...this.state.imageUrl,
-                        [id]:imageUrl
+                        [id]: imageUrl
                     },
                     loading: false,
                 }),
             );
         }
     };
-    nextPage = ()=>{
+    nextPage = () => {
         this.setState({
-           answerKey:this.state.answerKey+1
-        },()=>{
+            answerKey: this.state.answerKey + 1
+        }, () => {
             this.setState({
-                imageUrl:{},
-                input:{}
+                imageUrl: {},
+                input: {}
             })
+        })
+    }
+    onTitleChange = (e) => {
+        this.setState({
+            answersData: {
+                ...this.state.answersData,
+                [this.state.answerKey]: {
+                    ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
+                    title: e.target.value,
+                }
+            }
         })
     }
     render() {
@@ -110,36 +116,41 @@ class UploadAnswerImage extends Component {
         return (
             <Row className='upload'>
                 <Form>
-                <Row justify={'center'} gutter={[24, 16]}>
-                    {[...Array(4).keys()].map(key=><Col key={key} lg={10}>
-                        <Upload
-                            name="image"
-                            listType="picture-card"
-                            className="avatar-uploader"
-                            showUploadList={false}
-                            action="http://localhost:4000/files"
-                            beforeUpload={beforeUpload}
-                            onChange={(info)=>{
-                                this.handleChange(info,key)
-                            }}
-                        >
-                            {this.state.imageUrl[key] ?
-                                <img src={this.state.imageUrl[key]}  alt="answer" style={{width: '100%'}}/>
-                                : uploadButton}
-                        </Upload>
-                        Вопрос: <Input name={[key,'title']} value={this.state.input[key]} onChange={(e)=>{this.handleInputChange(e,key)}} type='text' />
-                    </Col>)}
-                </Row>
-                <Row className='uploadImages'>
-                    <Col>
-                        <Button onClick={this.nextPage} size='large' type="primary">
-                            Add Answer
-                        </Button>
-                    <Button size='large' type="primary" >
-                        Submit
-                    </Button>
-                    </Col>
-                </Row>
+                    <Row justify={'center'} gutter={[24, 16]}>
+                        <Col lg={24}>
+                            <Input onChange={this.onTitleChange}/>
+                        </Col>
+                        {[...Array(4).keys()].map(key => <Col key={key} lg={10}>
+                            <Upload
+                                name="image"
+                                listType="picture-card"
+                                className="avatar-uploader"
+                                showUploadList={false}
+                                action="http://localhost:4000/files"
+                                beforeUpload={beforeUpload}
+                                onChange={(info) => {
+                                    this.handleChange(info, key)
+                                }}
+                            >
+                                {this.state.imageUrl[key] ?
+                                    <img src={this.state.imageUrl[key]} alt="answer" style={{width: '100%'}}/>
+                                    : uploadButton}
+                            </Upload>
+                            Вопрос: <Input name={[key, 'title']} value={this.state.input[key]} onChange={(e) => {
+                            this.handleInputChange(e, key)
+                        }} type='text'/>
+                        </Col>)}
+                    </Row>
+                    <Row className='uploadImages'>
+                        <Col>
+                            <Button onClick={this.nextPage} size='large' type="primary">
+                                Add Answer
+                            </Button>
+                            <Button size='large' type="primary">
+                                Submit
+                            </Button>
+                        </Col>
+                    </Row>
                 </Form>
             </Row>
         )
