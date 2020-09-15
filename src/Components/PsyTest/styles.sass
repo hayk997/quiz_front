@@ -1,6 +1,3 @@
-.card
-  border-radius: 10px
-
 @media screen and (min-width: 576px)
   .content-aligned-center
     margin-left: 0 !important
@@ -24,11 +21,14 @@
 
 @media screen and (min-width: 576px)
   .cardsBlock
-    margin: 0 auto
+    margin: 0 auto !important
 @media screen and (min-width: 768px)
   .cardsBlock
-    margin: 0 auto
+    margin: 0 auto !important
 
+
+.card
+  border-radius: 10px
 .ant-drawer-wrapper-body
   background-color: #000c17 !important
 .ant-drawer-header
@@ -39,10 +39,11 @@
   padding: 0 !important
 .cardColumn
   border: 1px solid gray
-  margin-bottom: 20px
+  padding: 35px !important
 .cardCover
   border-radius: 5% !important
 .content-aligned-center
+  box-shadow: 0 9px 62px 0 rgba(97,94,97,1)
   justify-content: center
   background: #f7f7f7
   border: 3px solid #02294e
@@ -55,3 +56,5 @@
   background-color: #25c123
 .cardColumn:hover
   cursor: pointer
+.ant-card-meta-title
+  font-size: 20px
