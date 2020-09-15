@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Col, Row, Card} from "antd"
+import  {Slider,Col, Row, Card} from "antd"
 import {connect} from 'react-redux'
 import './styles.sass'
 import img from '../../dist/images/a.jpg'
@@ -17,58 +17,63 @@ class Psy extends Component {
     }
     render() {
         return (
-            <Row className={'content-aligned-center'}>
+            <Row >
+                <Col lg={{span:14,offset:5}}>
                 <Row >
-                    <Col>
-                        <h2> Steps</h2>
+
+                    <Col lg={{span:12,offset:6}} md={{span:16,offset:4}} sm={24} xs={24}>
+                        <Slider
+                            min={1}
+                            max={10}
+                            marks={
+                                {
+                                1: '1',
+                                2: '2',
+                                3: '3',
+                                4: '4',
+                                5: '5',
+                                6: '6',
+                                7: '7',
+                                8: '8',
+                                9: '9',
+                                10: '10'
+                            }}
+                            value={3}
+                        />
                     </Col>
                 </Row>
                 <Row className={'questionBlock'}>
-                    <Col>
+                    <Col className={'centered'} lg={{span:12,offset:6}} md={{span:16,offset:4}} sm={24} xs={24}>
                         <h2>Question </h2>
                     </Col>
                 </Row>
-                <Row className={'cardsBlock'} gutter={[48,48]}>
+                <Row >
                     <Col className={'cardColumn'}  xs={12} sm={12} md={12} lg={12} xl={12}>
-                        <Card className={'card'}
-                              hoverable
-                              onClick={this.handleSelect}
-                              bodyStyle={{marginTop:-10,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
-                              cover={<img className={'cardCover'} alt="example" src={img}/>}
-                        >
-                            <Meta title="Europe Street beat" />
-                        </Card> </Col>
+                        <Row  className={'centered'} >
+                            <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
+                            <Col lg={24} style={{fontSize:'20px'}}>Europe Street beat</Col>
+                        </Row>
+                        </Col>
 
                     <Col className={'cardColumn'}  xs={12} sm={12} md={12} lg={12} xl={12}>
-                        <Card className={'card'}
-                              hoverable
-                              bodyStyle={{marginTop:-10,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
-                              cover={<img className={'cardCover'}
-                                          alt="example"
-                                          src={img}/>}
-                        >
-                            <Meta title="Europe Street beat"/>
-                        </Card> </Col>
+                        <Row  className={'centered'} >
+                            <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
+                            <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
+                        </Row></Col>
 
                     <Col className={'cardColumn'} xs={12} sm={12} md={12} lg={12} xl={12}>
-                        <Card className={'card'}
-                              hoverable
-                              bodyStyle={{marginTop:-10,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
-                              cover={<img className={'cardCover'} alt="example"
-                                                                  src={img}/>}
-                    >
-                        <Meta title="Europe Street beat"/>
-                    </Card> </Col>
+                        <Row  className={'centered'} >
+                            <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
+                            <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
+                        </Row> </Col>
                     <Col className={'cardColumn'} xs={12} sm={12} md={12} lg={12} xl={12}>
-                        <Card className={'card'}
-                              hoverable
-                              bodyStyle={{marginTop:-10,textAlign:'center',border:'1px solid lightgray',height:20,borderRadius: '5%'}}
-                              cover={<img className='cardCover' alt="example"
-                                                                  src={img}/>}
-                    >
-                        <Meta title="Europe Street beat"/>
-                    </Card> </Col>
+                        <Row  className={'centered'} >
+                            <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
+                            <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
+                        </Row>
+                    </Col>
                 </Row>
+                </Col>
             </Row>
         )
     }
