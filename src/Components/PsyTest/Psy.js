@@ -1,30 +1,40 @@
 import React, {Component} from "react"
-import  {Slider,Col, Row, Card} from "antd"
+import  {Slider,Col, Row} from "antd"
 import {connect} from 'react-redux'
 import './styles.sass'
 import img from '../../dist/images/a.jpg'
 
-const {Meta} = Card
-
 class Psy extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
-        this.handleSelect=this.handleSelect.bind(this)
+        this.state = {
+            currentPage:1,
+            lastPage:10
+        }
+        this.handleChange=this.handleChange.bind(this)
     }
     handleSelect(e){
-        console.log(e.target.textContent)
+        if(this.state.currentPage<this.state.lastPage){
+            this.setState({
+                currentPage: this.state.currentPage+1
+            })
+            console.log(e.target.textContent)
+        }
+        else {
+            console.log('Last')
+        }
+        //console.log(e.target.alt) img alt
     }
     render() {
         return (
             <Row >
                 <Col lg={{span:14,offset:5}}>
                 <Row >
-
                     <Col lg={{span:12,offset:6}} md={{span:16,offset:4}} sm={24} xs={24}>
                         <Slider
+                            disabled
                             min={1}
-                            max={10}
+                            max={this.state.lastPage}
                             marks={
                                 {
                                 1: '1',
@@ -38,7 +48,8 @@ class Psy extends Component {
                                 9: '9',
                                 10: '10'
                             }}
-                            value={3}
+                            defaultValue={1}
+                            value={this.state.currentPage}
                         />
                     </Col>
                 </Row>
@@ -48,25 +59,24 @@ class Psy extends Component {
                     </Col>
                 </Row>
                 <Row >
-                    <Col className={'cardColumn'}  xs={12} sm={12} md={12} lg={12} xl={12}>
-                        <Row  className={'centered'} >
+                    <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
+                        <Row className={'centered'} >
                             <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
                             <Col lg={24} style={{fontSize:'20px'}}>Europe Street beat</Col>
                         </Row>
                         </Col>
-
-                    <Col className={'cardColumn'}  xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
                         <Row  className={'centered'} >
                             <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
                             <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
                         </Row></Col>
 
-                    <Col className={'cardColumn'} xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
                         <Row  className={'centered'} >
                             <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
                             <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
                         </Row> </Col>
-                    <Col className={'cardColumn'} xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
                         <Row  className={'centered'} >
                             <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
                             <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
