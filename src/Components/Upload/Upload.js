@@ -46,7 +46,6 @@ class UploadAnswerImage extends Component {
                 ...this.state.answersData,
                 [this.state.answerKey]: {
                     ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                        title: 'dsdsd',
                         [id]: {
                             ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
                             title: e.target.value,
@@ -74,7 +73,6 @@ class UploadAnswerImage extends Component {
                         ...this.state.answersData,
                         [this.state.answerKey]: {
                             ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                            title: 'dsdsd',
                             [id]: {
                                 ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
                                 filePath: info.file.response.path,
