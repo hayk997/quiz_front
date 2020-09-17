@@ -3,7 +3,8 @@ import {Col, Row, Button, Input, Form, notification} from "antd";
 import {UserOutlined, LockOutlined, MailOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import axios from "axios";
-import api from "../../api";
+import api from "../../api"
+import './styles.sass'
 
 
 class Login extends Component {
@@ -40,8 +41,8 @@ class Login extends Component {
     }
     render() {
         return (
-                <Row className={'content-aligned'}>
-                    <Col style={{textAlign:'center'}} lg={{offset:8,span:8}}>
+                <Row className={'content-aligned login'}>
+                    <Col className='loginBlock' style={{textAlign:'center'}} lg={{offset:8,span:8}}>
                         <Form onFinish={this.handleLogin} className="login-form">
                             <Form.Item name={'email'} rules={[{
                                 required: true,
