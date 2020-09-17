@@ -11,7 +11,7 @@ class Psy extends Component {
             currentPage:1,
             lastPage:10
         }
-        this.handleChange=this.handleChange.bind(this)
+        this.handleSelect=this.handleSelect.bind(this)
     }
     handleSelect(e){
         if(this.state.currentPage<this.state.lastPage){
