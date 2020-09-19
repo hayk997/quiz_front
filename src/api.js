@@ -19,6 +19,10 @@ const api = {
         create:{
             url: `${endpoint}questions`,
             method: "POST"
+        },
+        list:{
+            url: `${endpoint}questions`,
+            method: "GET"
         }
     }
 }

@@ -9,6 +9,8 @@ import {
     EllipsisOutlined
 } from "@ant-design/icons";
 import {connect} from 'react-redux'
+import axios from "axios";
+import api from "../../api";
 
 const {Meta} = Card;
 
@@ -18,6 +20,14 @@ class Profile extends Component {
         this.state = {
 
         }
+    }
+    componentDidMount() {
+        axios.request({
+            url:api.question.list.url,//for pagination add ?page=2
+            method:api.question.list.method
+        }).then(response=>{
+            console.log(response)
+        })
     }
 
     render() {

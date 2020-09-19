@@ -60,7 +60,7 @@ class UploadAnswerImage extends Component {
         axios.request({
             url: api.question.create.url,
             method: api.question.create.method,
-            data: this.state.answersData
+            data: this.state.quiz
         }).then(response => {
             if (response.data.message) {
                 notification.warning({
@@ -75,6 +75,7 @@ class UploadAnswerImage extends Component {
         })
     }
     handleStartApp = (formData) => {
+        formData.image = formData.image.file.response.path
         this.setState({
             quiz: {
                 ...formData
@@ -83,13 +84,18 @@ class UploadAnswerImage extends Component {
     }
     handleAddStep = (formData) => {
         console.log(formData)
+        const data = this.form.current.getFieldsValue();
+        data.questions.map(question=>{
+            question.image = question.image.file.response.path
+            return question
+        })
         this.setState({
             answerKey: this.state.answerKey + 1,
             quiz:{
                 ...this.state.quiz,
                 data:{
                     ...this.state.quiz.data,
-                    [this.state.answerKey]:this.form.current.getFieldsValue()
+                    [this.state.answerKey]:data
                 }
             },
             imageUrl:{}
