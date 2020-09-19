@@ -33,7 +33,7 @@ class UploadAnswerImage extends Component {
             answerKey: 0,
             input: {},
             quiz: {
-                data:{}
+                content:{}
             }
         }
         this.form = React.createRef()
@@ -84,8 +84,8 @@ class UploadAnswerImage extends Component {
     }
     handleAddStep = (formData) => {
         console.log(formData)
-        const data = this.form.current.getFieldsValue();
-        data.questions.map(question=>{
+        const content = this.form.current.getFieldsValue();
+        content.questions.map(question=>{
             question.image = question.image.file.response.path
             return question
         })
@@ -93,9 +93,9 @@ class UploadAnswerImage extends Component {
             answerKey: this.state.answerKey + 1,
             quiz:{
                 ...this.state.quiz,
-                data:{
-                    ...this.state.quiz.data,
-                    [this.state.answerKey]:data
+                content:{
+                    ...this.state.quiz.content,
+                    [this.state.answerKey]:content
                 }
             },
             imageUrl:{}
