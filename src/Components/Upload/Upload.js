@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import Space, {Upload, message, Form, Input, Button, Row, Col, notification} from 'antd'
+import {Upload, message, Form, Input, Button, Row, Col, notification} from 'antd'
 import {MinusCircleOutlined, LoadingOutlined, PlusOutlined} from '@ant-design/icons'
 import './styles.sass'
 import axios from "axios";
@@ -32,7 +32,9 @@ class UploadAnswerImage extends Component {
             answersData: {},
             answerKey: 0,
             input: {},
-            quiz: {}
+            quiz: {
+                data:{}
+            }
         }
         this.form = React.createRef()
     }
@@ -54,12 +56,6 @@ class UploadAnswerImage extends Component {
             );
         }
     };
-    nextPage = () => {
-
-
-
-        console.log(this.state)
-    }
     handleCreateQuestion = () => {
         axios.request({
             url: api.question.create.url,
@@ -86,12 +82,17 @@ class UploadAnswerImage extends Component {
         })
     }
     handleAddStep = (formData) => {
+        console.log(formData)
         this.setState({
             answerKey: this.state.answerKey + 1,
             quiz:{
                 ...this.state.quiz,
-                [this.state.answerKey]:this.form.current.getFieldsValue()
-            }
+                data:{
+                    ...this.state.quiz.data,
+                    [this.state.answerKey]:this.form.current.getFieldsValue()
+                }
+            },
+            imageUrl:{}
         },()=>{
             this.form.current.resetFields()
         })
@@ -107,13 +108,13 @@ class UploadAnswerImage extends Component {
         );
         return (
             <Row className='upload'>
-                {this.state.quiz.title ? <Form ref={this.form} onFinish={this.handleStartApp}>
-                        <Form.Item name={'title'} rules={[
+                {!this.state.quiz.title ? <Form ref={this.form} onFinish={this.handleStartApp}>
+                        <Form.Item name={'title'} label={'title'} rules={[
                             {required: true}
                         ]}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item name={'image'} rules={[
+                        <Form.Item name={'image'} label={'image'} rules={[
                             {required: true}
                         ]}>
                             <Upload
