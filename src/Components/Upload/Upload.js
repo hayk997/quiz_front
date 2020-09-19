@@ -37,63 +37,17 @@ class UploadAnswerImage extends Component {
         this.form = React.createRef()
     }
 
-    handleInputChange = (e, id) => {
-        this.setState({
-            input: {
-                ...this.state.input,
-                [id]: e.target.value
-            },
-            answersData: {
-                ...this.state.answersData,
-                [this.state.answerKey]: {
-                    ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                    title: 'dsdsd',
-                    [id]: {
-                        ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
-                        title: e.target.value,
-                    }
-                }
-            }
-        })
-    }
     handleChange = (info, id) => {
         if (info.file.status === 'uploading') {
             this.setState({loading: true});
             return;
         }
         if (info.file.status === 'done') {
-            this.form.current.setFieldsValue({
-                [id]: info.file.response.path,
-            })
-            if (id === 'avatar') {
-                this.setState({
-                    answersData: {
-                        ...this.state.answersData,
-                        [id]: info.file.response.path,
-                    }
-                })
-            } else {
-                this.setState({
-                    answersData: {
-                        ...this.state.answersData,
-                        [this.state.answerKey]: {
-                            ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                            title: 'dsdsd',
-                            [id]: {
-                                ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
-                                filePath: info.file.response.path,
-                            }
-                        }
-                    }
-                })
-            }
-
-            // Get this url from response in real world.
             getBase64(info.file.originFileObj, imageUrl =>
                 this.setState({
                     imageUrl: {
                         ...this.state.imageUrl,
-                        [id]: imageUrl
+                        [id==='image'?id:this.state.answerKey.toString() +id.toString()]: imageUrl
                     },
                     loading: false,
                 }),
@@ -101,33 +55,18 @@ class UploadAnswerImage extends Component {
         }
     };
     nextPage = () => {
+
         this.setState({
-            answerKey: this.state.answerKey + 1
-        }, () => {
-            this.setState({
-                imageUrl: {},
-                input: {}
-            })
-        })
-    }
-    onTitleChange = (e) => {
-        this.setState({
-            answersData: {
-                ...this.state.answersData,
-                [this.state.answerKey]: {
-                    ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                    title: e.target.value,
-                }
+            answerKey: this.state.answerKey + 1,
+            quiz:{
+                ...this.state.quiz,
+                [this.state.answerKey]:this.form.current.getFieldsValue()
             }
+        },()=>{
+            this.form.current.resetFields()
         })
-    }
-    onQuestionChange = (e) => {
-        this.setState({
-            answersData: {
-                ...this.state.answersData,
-                question: e.target.value
-            }
-        })
+
+        console.log(this.state)
     }
     handleCreateQuestion = () => {
         axios.request({
@@ -215,7 +154,7 @@ class UploadAnswerImage extends Component {
                                                         label={'Вопрос '+field.key}
                                                         name={[field.name, 'image']}
                                                         fieldKey={[field.fieldKey, 'image']}
-                                                        valuePropName={'fileList'}
+                                                        valuePropName={['file']}
                                                         rules={[{required: true, message: 'Missing last name'}]}
                                                     >
                                                         <Upload
@@ -229,8 +168,8 @@ class UploadAnswerImage extends Component {
                                                                 this.handleChange(info, field.key)
                                                             }}
                                                         >
-                                                            {this.state.imageUrl[field.key] ?
-                                                                <img src={this.state.imageUrl[field.key]} alt="answer"
+                                                            {this.state.imageUrl[this.state.answerKey.toString() +field.key.toString()] ?
+                                                                <img src={this.state.imageUrl[this.state.answerKey.toString() +field.key.toString()]} alt="answer"
                                                                      style={{width: '100%'}}/>
                                                                 : uploadButton}
                                                         </Upload>
