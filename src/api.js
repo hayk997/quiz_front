@@ -28,6 +28,16 @@ const api = {
             url: `${endpoint}questions/`,
             method: "GET"
         }
+    },
+    answers:{
+        create:{
+            url: `${endpoint}answers`,
+            method: "POST"
+        },
+        list:{
+            url: `${endpoint}answers`,
+            method: "GET"
+        },
     }
 }
 export default api;

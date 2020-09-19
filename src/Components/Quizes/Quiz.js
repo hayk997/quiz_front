@@ -28,7 +28,6 @@ class Quiz extends Component {
             url: api.question.single.url + this.props.match.params.id,//for pagination add ?page=2
             method: api.question.single.method
         }).then(response => {
-            console.log(response.data)
             this.setState({
                 questions: response.data,
                 loading:false
@@ -42,23 +41,41 @@ class Quiz extends Component {
                 [this.state.currentPage]:e
             },
             currentPage:(parseInt(this.state.currentPage)+1).toString()
+        },()=>{
+            if(parseInt(this.state.currentPage)+1>=this.state.questions.count){
+                axios.request({
+                    url:api.answers.create.url,
+                    method:api.answers.create.method,
+                    headers:{
+                        'x-access-token':this.props.state.auth.token
+                    },
+                    data: {
+                        answers:this.state.answers,
+                        questionId:this.props.match.params.id
+                    }
+                }).then(response=>{
+                    console.log(response)
+                })
+            }
         })
+
+
     }
     render() {
         console.log(this.state)
         return (
             <Row>
                 <Col lg={{span: 14, offset: 5}}>
-                    {this.state.loading?<Preloader/>:<Row>
+                    {this.state.loading?<Preloader/>:parseInt(this.state.currentPage)+1>=this.state.questions.count?<h1>Test Succesfully created</h1>:<Row>
                         <Col className={'centered'} lg={24}> <Typography.Title
                             level={2}>{this.state.questions.title}</Typography.Title></Col>
                         <Col lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}} sm={24} xs={24}>
                             <Slider
                                 disabled
                                 min={1}
-                                max={this.state.lastPage}
+                                max={this.state.questions.count}
                                 defaultValue={1}
-                                value={this.state.currentPage}
+                                value={this.state.currentPage+1}
                             />
                         </Col>
                         <Row>
