@@ -148,12 +148,12 @@ class UploadAnswerImage extends Component {
                                     return (
                                         <Col lg={24}>
                                             {fields.map((field,key) => (
-                                                <Col key={key+'s'} lg={12}>
+                                                <Col key={field.fieldKey+500} lg={12}>
                                                     <Form.Item
                                                         {...field}
+                                                        key={field.fieldKey+'t'}
                                                         label={'Вопрос '+field.key}
                                                         name={[field.name, 'image']}
-                                                        fieldKey={[field.fieldKey, 'image']}
                                                         valuePropName={['file']}
                                                         rules={[{required: true, message: 'Missing last name'}]}
                                                     >
@@ -176,9 +176,9 @@ class UploadAnswerImage extends Component {
                                                     </Form.Item>
                                                     <Form.Item
                                                         {...field}
+                                                        key={field.fieldKey+'r'}
                                                         label={'Вопрос '+field.key}
                                                         name={[field.name, 'title']}
-                                                        fieldKey={[field.fieldKey, 'title']}
                                                         rules={[{required: true, message: 'Missing last name'}]}
                                                     >
                                                         <Input type='text'/>
