@@ -6,87 +6,84 @@ import axios from "axios";
 import './styles.sass'
 import api from "../../api";
 import img from "../../dist/images/a.jpg";
-
+import Preloader from "../Preloader";
 
 
 class Quiz extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible:false,
-            questions:{}
+            visible: false,
+            questions: {},
+            currentPage: '0',
+            lastPage: 10,
+            loading:true,
+            answers:{}
+
         }
     }
+
     componentDidMount() {
         axios.request({
-            url:api.question.single.url+this.props.match.params.id,//for pagination add ?page=2
-            method:api.question.single.method
-        }).then(response=>{
+            url: api.question.single.url + this.props.match.params.id,//for pagination add ?page=2
+            method: api.question.single.method
+        }).then(response => {
             console.log(response.data)
             this.setState({
-                questions:response.data
+                questions: response.data,
+                loading:false
             })
         })
     }
-
+    handleSelect = (e) =>{
+        this.setState({
+            answers:{
+                ...this.state.answers,
+                [this.state.currentPage]:e
+            },
+            currentPage:(parseInt(this.state.currentPage)+1).toString()
+        })
+    }
     render() {
+        console.log(this.state)
         return (
-            <Row >
-                <Col lg={{span:14,offset:5}}>
-                    <Row >
-                        <Col lg={{span:12,offset:6}} md={{span:16,offset:4}} sm={24} xs={24}>
+            <Row>
+                <Col lg={{span: 14, offset: 5}}>
+                    {this.state.loading?<Preloader/>:<Row>
+                        <Col className={'centered'} lg={24}> <Typography.Title
+                            level={2}>{this.state.questions.title}</Typography.Title></Col>
+                        <Col lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}} sm={24} xs={24}>
                             <Slider
                                 disabled
                                 min={1}
                                 max={this.state.lastPage}
-                                marks={
-                                    {
-                                        1: '1',
-                                        2: '2',
-                                        3: '3',
-                                        4: '4',
-                                        5: '5',
-                                        6: '6',
-                                        7: '7',
-                                        8: '8',
-                                        9: '9',
-                                        10: '10'
-                                    }}
                                 defaultValue={1}
                                 value={this.state.currentPage}
                             />
                         </Col>
-                    </Row>
-                    <Row className={'questionBlock'}>
-                        <Col className={'centered'} lg={{span:12,offset:6}} md={{span:16,offset:4}} sm={24} xs={24}>
-                            <h2>Question </h2>
-                        </Col>
-                    </Row>
-                    <Row >
-                        <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
-                            <Row className={'centered'} >
-                                <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
-                                <Col lg={24} style={{fontSize:'20px'}}>Europe Street beat</Col>
-                            </Row>
-                        </Col>
-                        <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
-                            <Row  className={'centered'} >
-                                <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
-                                <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
-                            </Row></Col>
+                        <Row>
+                                  <Col lg={24} className={'questionBlock'}>
+                                        <Col className={'centered'} lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}}
+                                             sm={24} xs={24}>
+                                            <h2>{this.state.questions.content[this.state.currentPage].question} </h2>
+                                        </Col>
+                                    </Col>
+                                    <Col lg={24}>
+                                        <Row>
+                                            {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} className={'cardColumn'} onClick={()=>this.handleSelect(key)} xs={24} sm={24} md={12}
+                                                                                                  lg={12} xl={12}>
+                                                <Row className={'centered'}>
+                                                    <Col lg={24} md={24} sm={24} xs={24}><img className={'cardCover'}
+                                                                                              alt="example" src={process.env.REACT_APP_API_ENDPOINT+switches.image}/></Col>
+                                                    <Col lg={24} md={24} sm={24} xs={24} style={{fontSize: '20px'}}>{switches.title}</Col>
+                                                </Row>
+                                            </Col>)}
 
-                        <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
-                            <Row  className={'centered'} >
-                                <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
-                                <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
-                            </Row> </Col>
-                        <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
-                            <Row  className={'centered'} >
-                                <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
-                                <Col lg={24} style={{fontSize:'20px'}} >Europe Street beat</Col>
-                            </Row>
-                        </Col>
-                    </Row>
+                                        </Row>
+                                    </Col>
+                                </Row>
+
+                    </Row>}
                 </Col>
             </Row>
 

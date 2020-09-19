@@ -1,19 +1,16 @@
 import React, {Component} from "react"
-import {Col, Layout, Menu, Row, Drawer, Typography, Card} from "antd"
+import {Col, Row, Typography, Card,Pagination} from "antd"
 import {connect} from 'react-redux'
 import {NavLink, withRouter} from "react-router-dom"
 import {
     EditOutlined,
     EllipsisOutlined,
-    LaptopOutlined,
-    NotificationOutlined,
     SettingOutlined,
-    UserOutlined
+
 } from "@ant-design/icons"
-import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined"
-import logo from '../../dist/images/mainLogo.png'
 import axios from "axios";
 import api from "../../api";
+import Preloader from "../Preloader";
 
 
 
@@ -22,7 +19,8 @@ class Quizes extends Component {
         super(props);
         this.state = {
             visible:false,
-            questions:{}
+            questions:{},
+            loading:true
         }
     }
     componentDidMount() {
@@ -32,26 +30,37 @@ class Quizes extends Component {
         }).then(response=>{
             console.log(response.data)
             this.setState({
-                questions:response.data
+                questions:response.data,
+                loading:false
             })
         })
     }
-
+    handlePageChange = (e) =>{
+        this.setState({
+            loading:true
+        })
+        axios.request({
+            url:api.question.list.url+'?page='+e,//for pagination add ?page=2
+            method:api.question.list.method
+        }).then(response=>{
+            console.log(response.data)
+            this.setState({
+                questions:response.data,
+                loading:false
+            })
+        })
+    }
     render() {
         return (
           <Row>
+              {this.state.loading?<Preloader/>:
+
               <Col lg={24}>
                   <Typography.Title level={4}>Tests</Typography.Title><Row>
                       {this.state.questions.data && this.state.questions.data.length?
                           this.state.questions.data.map((question,key)=><Col  key={key} lg={4}> <Card
-                              style={{width: 300}}
-
-                              cover={
-                                  <img
-                                      alt="example"
-                                      src={process.env.REACT_APP_API_ENDPOINT+question.imageURL}
-                                  />
-                              }
+                              className={'quiz_cards'}
+                              cover={<img alt="example" src={process.env.REACT_APP_API_ENDPOINT+question.imageURL}/>}
                               actions={[
                                   <SettingOutlined key="setting" />,
                                   <EditOutlined key="edit" />,
@@ -59,13 +68,14 @@ class Quizes extends Component {
                               ]}
                           >
                               <Card.Meta
-                                  title={question.title}
+                                  title={<NavLink to={'/quizes/'+question.id} >{question.title}</NavLink>}
                               />
                           </Card>
                           </Col>):null
                       }
                   </Row>
-              </Col>
+                  <Pagination onChange={this.handlePageChange} current={parseInt(this.state.questions.pagination.currentPage)} pageSize={this.state.questions.pagination.perPage} total={this.state.questions.pagination.totalItems} />
+              </Col>  }
 
           </Row>
 
