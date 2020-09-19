@@ -9,6 +9,8 @@ import Registration from "./Auth/Registration";
 import Profile from "./Profile/Profile";
 import Psy from "./PsyTest/Psy";
 import UploadAnswerImage from "./Upload/Upload";
+import Quizes from "./Quizes/Quizes";
+import Quiz from "./Quizes/Quiz";
 const { Content} = Layout;
 
 class AppLayout extends Component {
@@ -36,6 +38,8 @@ class AppLayout extends Component {
                                             <Route exact path="/profile" component={Profile}/>
                                             <Route exact path='/psytest' component={Psy}/>
                                             <Route exact path='/upload' component={UploadAnswerImage}/>
+                                            <Route exact path='/quizes' component={Quizes}/>
+                                            <Route exact path='/quizes/:id' component={Quiz}/>
                                         </Switch>
                         </Content>
                     </Layout>

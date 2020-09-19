@@ -83,7 +83,6 @@ class UploadAnswerImage extends Component {
         })
     }
     handleAddStep = (formData) => {
-        console.log(formData)
         const content = this.form.current.getFieldsValue();
         content.questions.map(question=>{
             question.image = question.image.file.response.path

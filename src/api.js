@@ -23,6 +23,10 @@ const api = {
         list:{
             url: `${endpoint}questions`,
             method: "GET"
+        },
+        single:{
+            url: `${endpoint}questions/`,
+            method: "GET"
         }
     }
 }

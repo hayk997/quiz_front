@@ -49,7 +49,7 @@ class HeaderComp extends Component {
                                 <Menu.Item onClick={this.navigate} key="/profile">My profile</Menu.Item> :
                                 <Menu.Item onClick={this.navigate} key="/reg">Registration</Menu.Item>}
                             <Menu.Item onClick={this.navigate} key="/single">Test layout</Menu.Item>
-                            <Menu.Item >My apps</Menu.Item>
+                            <Menu.Item ><NavLink to="/quizes">Quizes</NavLink></Menu.Item>
                             <Menu.Item ><NavLink to="/psytest">Psychology test</NavLink></Menu.Item>
                         </Menu>
                     </Col>

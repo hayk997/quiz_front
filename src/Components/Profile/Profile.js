@@ -59,7 +59,7 @@ class Profile extends Component {
                             <EllipsisOutlined key="ellipsis" />,
                         ]}
                     >
-                        <Meta
+                        <Card.Meta
                             title={question.title}
                         />
                     </Card>):null
