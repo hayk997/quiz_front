@@ -56,15 +56,7 @@ class UploadAnswerImage extends Component {
     };
     nextPage = () => {
 
-        this.setState({
-            answerKey: this.state.answerKey + 1,
-            quiz:{
-                ...this.state.quiz,
-                [this.state.answerKey]:this.form.current.getFieldsValue()
-            }
-        },()=>{
-            this.form.current.resetFields()
-        })
+
 
         console.log(this.state)
     }
@@ -94,7 +86,15 @@ class UploadAnswerImage extends Component {
         })
     }
     handleAddStep = (formData) => {
-
+        this.setState({
+            answerKey: this.state.answerKey + 1,
+            quiz:{
+                ...this.state.quiz,
+                [this.state.answerKey]:this.form.current.getFieldsValue()
+            }
+        },()=>{
+            this.form.current.resetFields()
+        })
     }
 
     render() {
@@ -136,19 +136,19 @@ class UploadAnswerImage extends Component {
                             <Button htmlType={'submit'}>Create</Button>
                         </Form.Item>
                     </Form> :
-                    <Form ref={this.form} onFinish={this.handleAddStep}>
-                        <Row justify={'center'} gutter={[24, 16]}>
+                    <Form style={{width:'100%'}} ref={this.form} onFinish={this.handleAddStep}>
+                        <Row gutter={[24, 16]}>
                             <Col lg={24}>
-                                <Form.Item name={'question'}>
+                                <Form.Item name={'question'}  rules={[{required: true, message: 'Missing last name'}]}>
                                     <Input/>
                                 </Form.Item>
                             </Col>
-                            <Form.List name="questions">
+                            <Form.List  name="questions">
                                 {(fields, {add, remove}) => {
                                     return (
                                         <Col lg={24}>
                                             {fields.map((field,key) => (
-                                                <Col key={field.fieldKey+500} lg={12}>
+                                                <Col key={field.fieldKey+'u'} lg={10}>
                                                     <Form.Item
                                                         {...field}
                                                         key={field.fieldKey+'t'}
@@ -210,7 +210,7 @@ class UploadAnswerImage extends Component {
                         <Row className='uploadImages'>
                             <Col>
                                 <Button onClick={()=>console.log(this.form.current.getFieldsValue())}>smth</Button>
-                                <Button onClick={this.nextPage} size='large' type="primary">
+                                <Button htmlType={'submit'} size='large' type="primary">
                                     Add Answer
                                 </Button>
                                 <Button onClick={this.handleCreateQuestion} size='large' type="primary">
