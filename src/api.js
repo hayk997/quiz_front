@@ -31,11 +31,11 @@ const api = {
     },
     answers:{
         create:{
-            url: `${endpoint}answers`,
+            url: `${endpoint}answers/`,
             method: "POST"
         },
         list:{
-            url: `${endpoint}answers`,
+            url: `${endpoint}answers/`,
             method: "GET"
         },
     }

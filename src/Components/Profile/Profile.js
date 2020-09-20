@@ -23,8 +23,11 @@ class Profile extends Component {
     }
     componentDidMount() {
         axios.request({
-            url:api.question.list.url,//for pagination add ?page=2
-            method:api.question.list.method
+            url:api.answers.list.url+this.props.state.auth.user.id,//for pagination add ?page=2
+            method:api.answers.list.method,
+            headers:{
+                'x-access-token':this.props.state.auth.token
+            }
         }).then(response=>{
            this.setState({
                questions:response.data
