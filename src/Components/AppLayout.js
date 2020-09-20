@@ -3,7 +3,7 @@ import {ConfigProvider, Layout} from "antd";
 import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
 import SiderComp from "./Sider/SiderComp";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import Login from "./Auth/Login";
 import Registration from "./Auth/Registration";
 import Profile from "./Profile/Profile";
@@ -45,9 +45,8 @@ class AppLayout extends Component {
      * check user logged in and user permissions
      */
 
-    isLoggedIn(permission) {
-        return this.props.store.getState().auth && this.props.store.getState().auth.token && this.props.store.getState().auth.user //check auth
-            && (!permission || this.props.store.getState().auth.user.is_admin || this.props.store.getState().auth.user.permissions.indexOf(permission) !== -1)
+    isLoggedIn() {
+        return !!this.props.state.auth.user
     }
 
     render() {
@@ -63,14 +62,14 @@ class AppLayout extends Component {
                                 minHeight: 280,
                             }}>
                                         <Switch>
-                                            <PrivateRoute isLoggedIn={this.isLoggedIn(false)} exact path="/account/tasks" component={Tasks}/>
-                                            <Route exact path="/" component={Login}/>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/profile" component={Profile}/>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/psytest" component={Psy}/>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/upload" component={UploadAnswerImage}/>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes" component={Quizes}/>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes/:id" component={Quiz}/>
+
+                                             <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
                                             <Route exact path="/reg" component={Registration}/>
-                                            <Route exact path="/profile" component={Profile}/>
-                                            <Route exact path='/psytest' component={Psy}/>
-                                            <Route exact path='/upload' component={UploadAnswerImage}/>
-                                            <Route exact path='/quizes' component={Quizes}/>
-                                            <Route exact path='/quizes/:id' component={Quiz}/>
                                         </Switch>
                         </Content>
                     </Layout>

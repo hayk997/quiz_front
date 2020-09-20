@@ -57,7 +57,6 @@ class UploadAnswerImage extends Component {
         }
     };
     handleCreateQuestion = () => {
-
         axios.request({
             url: api.question.create.url,
             method: api.question.create.method,

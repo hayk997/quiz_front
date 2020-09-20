@@ -49,8 +49,8 @@ class HeaderComp extends Component {
                                 <Menu.Item onClick={this.navigate} key="/profile">My profile</Menu.Item> :
                                 <Menu.Item onClick={this.navigate} key="/reg">Registration</Menu.Item>}
                             <Menu.Item onClick={this.navigate} key="/single">Test layout</Menu.Item>
-                            <Menu.Item ><NavLink to="/quizes">Quizes</NavLink></Menu.Item>
-                            <Menu.Item ><NavLink to="/psytest">Psychology test</NavLink></Menu.Item>
+                            {this.props.state.auth.token && <Menu.Item ><NavLink to="/quizes">Quizes</NavLink></Menu.Item>}
+                            {this.props.state.auth.token && <Menu.Item ><NavLink to="/psytest">Psychology test</NavLink></Menu.Item>}
                         </Menu>
                     </Col>
                     <Col xs={2} sm={2} md={4} lg={6} xl={6}>
