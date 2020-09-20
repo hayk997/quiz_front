@@ -12,7 +12,27 @@ import UploadAnswerImage from "./Upload/Upload";
 import Quizes from "./Quizes/Quizes";
 import Quiz from "./Quizes/Quiz";
 const { Content} = Layout;
-
+/**
+ *
+ * @param Component
+ * @param rest
+ * @param isLoggedIn
+ * @returns {*}
+ * @constructor
+ * private routes only for logged users
+ */
+const PrivateRoute = ({ component: Component, ...rest }, isLoggedIn) => (
+    <Route
+        {...rest}
+        render={props =>
+            rest.isLoggedIn ? (
+                <Component {...props} />
+            ) : (
+                <Redirect to={{ pathname: "/" }} />
+            )
+        }
+    />
+);
 class AppLayout extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +40,16 @@ class AppLayout extends Component {
 
         }
     }
+    /**
+     * @returns {string | auth | {token} | {basic} | {} | * | boolean}
+     * check user logged in and user permissions
+     */
+
+    isLoggedIn(permission) {
+        return this.props.store.getState().auth && this.props.store.getState().auth.token && this.props.store.getState().auth.user //check auth
+            && (!permission || this.props.store.getState().auth.user.is_admin || this.props.store.getState().auth.user.permissions.indexOf(permission) !== -1)
+    }
+
     render() {
         return (
             <section className='ant-layout' style={{minHeight:'720px'}}>
@@ -33,6 +63,7 @@ class AppLayout extends Component {
                                 minHeight: 280,
                             }}>
                                         <Switch>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn(false)} exact path="/account/tasks" component={Tasks}/>
                                             <Route exact path="/" component={Login}/>
                                             <Route exact path="/reg" component={Registration}/>
                                             <Route exact path="/profile" component={Profile}/>
