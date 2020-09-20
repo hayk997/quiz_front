@@ -18,7 +18,7 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            questions:{}
+            answers:[]
         }
     }
     componentDidMount() {
@@ -30,13 +30,12 @@ class Profile extends Component {
             }
         }).then(response=>{
            this.setState({
-               questions:response.data
+               answers:response.data.answers
            })
         })
     }
 
     render() {
-        console.log(this.state)
         return (
             <Row className={'content-aligned'}>
             <Col className={'centered'} lg={24}>
@@ -46,14 +45,14 @@ class Profile extends Component {
                 <Col lg={24}>
                     <Typography.Title level={4}>My apps</Typography.Title>
                 </Col>
-                {this.state.questions.data && this.state.questions.data.length?
-                    this.state.questions.data.map((question,key)=> <Card
+                {this.state.answers.length?
+                    this.state.answers.map((question,key)=> <Card
                         style={{width: 300}}
                         key={key}
                         cover={
                             <img
                                 alt="example"
-                                src={process.env.REACT_APP_API_ENDPOINT+question.imageURL}
+                                src={process.env.REACT_APP_API_ENDPOINT+question.question.imageURL}
                             />
                         }
                         actions={[
@@ -63,7 +62,7 @@ class Profile extends Component {
                         ]}
                     >
                         <Card.Meta
-                            title={question.title}
+                            title={question.question.title}
                         />
                     </Card>):null
                 }
