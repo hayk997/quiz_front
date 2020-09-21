@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {Col, Layout, Menu, Row, Drawer} from "antd"
 import {connect} from 'react-redux'
-import {NavLink, withRouter} from "react-router-dom"
+import {Link, NavLink, withRouter} from "react-router-dom"
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from "@ant-design/icons"
 import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined"
 import logo from '../../dist/images/mainLogo.png'
@@ -38,7 +38,9 @@ class HeaderComp extends Component {
             <Header className="header">
                 <Row>
                     <Col xs={4} sm={4} md={4} lg={6} xl={4}>
-                        <img alt='logo' src={logo} className='mainLogo'/>
+                        <Link to='/'>
+                            <img alt='logo' src={logo} className='mainLogo'/>
+                        </Link>
                     </Col>
                     <Col xs={18} sm={18} md={16} lg={12} xl={14}>
                         <Menu theme="dark" mode="horizontal">
@@ -53,7 +55,7 @@ class HeaderComp extends Component {
                             {this.props.state.auth.token && <Menu.Item ><NavLink to="/psytest">Psychology test</NavLink></Menu.Item>}
                         </Menu>
                     </Col>
-                    <Col xs={2} sm={2} md={4} lg={6} xl={6}>
+                    {this.props.state.auth.token &&<Col xs={2} sm={2} md={4} lg={6} xl={6}>
                         <MenuOutlined style={{fontSize:'25px',color:'#b9b9b9'}} onClick={this.showDrawer}/>
                         <Drawer
                             title="Basic Drawer"
@@ -87,6 +89,7 @@ class HeaderComp extends Component {
                             </Sider>
                         </Drawer>
                     </Col>
+                    }
                 </Row>
             </Header>
         )

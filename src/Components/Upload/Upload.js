@@ -127,7 +127,7 @@ class UploadAnswerImage extends Component {
                                 listType="picture-card"
                                 className="avatar-uploader"
                                 showUploadList={false}
-                                action="http://localhost:4000/files"
+                                action={process.env.REACT_APP_API_ENDPOINT+"/image"}
                                 beforeUpload={beforeUpload}
                                 onChange={(info) => {
                                     this.handleChange(info, 'image')
