@@ -11,6 +11,7 @@ import {
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api";
+import {NavLink} from "react-router-dom";
 
 const {Meta} = Card;
 
@@ -62,7 +63,7 @@ class Profile extends Component {
                         ]}
                     >
                         <Card.Meta
-                            title={question.question.title}
+                            title={<NavLink to={'/answers/'+question.id} >{question.question.title}</NavLink>}
                         />
                     </Card>):null
                 }
