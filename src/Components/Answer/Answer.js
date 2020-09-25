@@ -41,8 +41,6 @@ class Answer extends Component {
         })
     }
     handleSelect = (e) =>{
-        console.log(e===this.state.answer.answers[this.state.currentPage])
-        console.log(e,this.state.answer.answers[this.state.currentPage])
         this.setState({
             answers:{
                 ...this.state.answers,
@@ -97,7 +95,7 @@ class Answer extends Component {
                             </Col>
                             <Col lg={24}>
                                 <Row>
-                                    {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} className={'cardColumn'} onClick={()=>this.handleSelect(key)} xs={24} sm={24} md={12}
+                                    {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} className={this.state.answer.answers[this.state.currentPage]===key?'cardColumn':'cardColumnIncorrect'} onClick={()=>this.handleSelect(key)} xs={24} sm={24} md={12}
                                                                                                                               lg={12} xl={12}>
                                         <Row className={'centered'}>
                                             <Col lg={24} md={24} sm={24} xs={24}><img className={'cardCover'}
@@ -113,7 +111,6 @@ class Answer extends Component {
                     </Row>}
                 </Col>
             </Row>
-
         )
     }
 }

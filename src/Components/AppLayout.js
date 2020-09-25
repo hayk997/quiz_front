@@ -2,7 +2,6 @@ import React, {Component, Suspense} from "react";
 import {ConfigProvider, Layout} from "antd";
 import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
-import SiderComp from "./Sider/SiderComp";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import Login from "./Auth/Login";
 import Registration from "./Auth/Registration";
@@ -69,6 +68,7 @@ class AppLayout extends Component {
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes" component={Quizes}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes/:id" component={Quiz}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/answers/:id" component={Answer}/>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizstats/:id" component={Answer}/>
 
                                              <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
                                             <Route exact path="/reg" component={Registration}/>
