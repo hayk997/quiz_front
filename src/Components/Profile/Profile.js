@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import  {Col, Row,Card, Avatar, Typography} from "antd";
+import {Col, Row, Card, Avatar, Typography, Button} from "antd";
 import {
     UserOutlined,
     LockOutlined,
@@ -38,17 +38,22 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            questions:{}
+            loading:false,
+            answers:[],
+            showUpload:false
         }
     }
 
     componentDidMount() {
         axios.request({
-            url:api.question.list.url,//for pagination add ?page=2
-            method:api.question.list.method
+            url:api.answers.list.url+this.props.state.auth.user.id,//for pagination add ?page=2
+            method:api.answers.list.method,
+            headers:{
+                'x-access-token':this.props.state.auth.token
+            }
         }).then(response=>{
            this.setState({
-               questions:response.data
+               answers:response.data.answers
            })
         })
     }
@@ -58,30 +63,30 @@ class Profile extends Component {
             return;
         }
         if (info.file.status === 'done') {
+            this.props.onUpdate(info.file.response.user)
             // Get this url from response in real world.
-            getBase64(info.file.originFileObj, imageUrl =>
-                this.setState({
-                    imageUrl,
-                    loading: false,
-                }),
-            );
+            this.setState({
+                loading:false,
+                showUpload:false,
+            })
         }
     };
 
     render() {
-        const { loading, imageUrl } = this.state;
         const uploadButton = (
             <div>
-                {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                {this.state.loading ? <LoadingOutlined /> : <PlusOutlined />}
                 <div style={{ marginTop: 8 }}>Upload</div>
             </div>
         );
         return (
             <Row className={'content-aligned'}>
             <Col className={'centered'} lg={24}>
-                {this.props.state.auth.user.imageURL?
-                    <Avatar size={100} src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>
-                    :
+                {this.props.state.auth.user.imageURL && !this.state.showUpload ?
+                    <>
+                    <Avatar style={{borderRadius:'100%'}} size={100} src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>
+                    <Button onClick={()=>this.setState({showUpload:true})}>Change Photo</Button>
+                    </>:
                     <Upload
                         headers={{
                             "x-access-token": this.props.state.auth.token
@@ -90,25 +95,28 @@ class Profile extends Component {
                         listType="picture-card"
                         className="avatar-uploader"
                         showUploadList={false}
-                        action={process.env.REACT_APP_API_ENDPOINT+"/userImage"}
+                        action={process.env.REACT_APP_API_ENDPOINT+"updateimage"}
                         beforeUpload={beforeUpload}
                         onChange={this.handleChange}
                     >
-                        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-                    </Upload>}
+                        {this.props.state.auth.user.imageURL ?
+                            <img src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}
+                                 alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                    </Upload>
+                }
                 <Typography.Title level={2}>{this.props.state.auth.user.username}</Typography.Title>
             </Col>
                 <Col lg={24}>
                     <Typography.Title level={4}>My apps</Typography.Title>
                 </Col>
-                {this.state.questions.data && this.state.questions.data.length?
-                    this.state.questions.data.map((question,key)=> <Card
+                {this.state.answers.length?
+                    this.state.answers.map((question,key)=> <Card
                         style={{width: 300}}
                         key={key}
                         cover={
                             <img
                                 alt="example"
-                                src={process.env.REACT_APP_API_ENDPOINT+question.imageURL}
+                                src={process.env.REACT_APP_API_ENDPOINT+question.question.imageURL}
                             />
                         }
                         actions={[
@@ -118,7 +126,7 @@ class Profile extends Component {
                         ]}
                     >
                         <Card.Meta
-                            title={question.title}
+                            title={question.question.title}
                         />
                     </Card>):null
                 }
@@ -137,6 +145,11 @@ export default connect(
         state
     }),
     dispatch => ({
-
+        onUpdate: (data) => {
+            dispatch({
+                type: "UPDATE",
+                payload: data
+            })
+        },
     })
 )(Profile);
