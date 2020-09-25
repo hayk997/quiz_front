@@ -11,6 +11,7 @@ import {
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api";
+import {NavLink} from "react-router-dom";
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
@@ -126,7 +127,7 @@ class Profile extends Component {
                         ]}
                     >
                         <Card.Meta
-                            title={question.question.title}
+                            title={<NavLink to={'/answers/'+question.id} >{question.question.title}</NavLink>}
                         />
                     </Card>):null
                 }

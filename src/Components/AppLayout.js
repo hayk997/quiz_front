@@ -11,6 +11,7 @@ import Psy from "./PsyTest/Psy";
 import UploadAnswerImage from "./Upload/Upload";
 import Quizes from "./Quizes/Quizes";
 import Quiz from "./Quizes/Quiz";
+import Answer from "./Answer/Answer";
 const { Content} = Layout;
 /**
  *
@@ -67,6 +68,7 @@ class AppLayout extends Component {
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/upload" component={UploadAnswerImage}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes" component={Quizes}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes/:id" component={Quiz}/>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/answers/:id" component={Answer}/>
 
                                              <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
                                             <Route exact path="/reg" component={Registration}/>

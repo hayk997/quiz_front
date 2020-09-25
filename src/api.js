@@ -38,6 +38,24 @@ const api = {
             url: `${endpoint}answers/`,
             method: "GET"
         },
+        single:{
+            url: `${endpoint}answers/single/`,
+            method: "GET"
+        }
+    },
+    setup:{
+        create:{
+            url: `${endpoint}setups/`,
+            method: "POST"
+        },
+        list:{
+            url: `${endpoint}answers/`,
+            method: "GET"
+        },
+        single:{
+            url: `${endpoint}answers/single/`,
+            method: "GET"
+        }
     }
 }
 export default api;
