@@ -30,7 +30,8 @@ class Answer extends Component {
             url: api.answers.single.url + this.props.match.params.id,//for pagination add ?page=2
             method: api.answers.single.method,
             headers:{
-                'x-access-token':this.props.state.auth.token
+                'x-access-token':this.props.state.auth.token,
+                'cache-control':'no-cache'
             }
         }).then(response => {
             this.setState({
