@@ -8,6 +8,7 @@ class Psy extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isCorrect: false,
             currentPage:1,
             lastPage:10
         }
@@ -15,9 +16,11 @@ class Psy extends Component {
     }
     handleSelect(e){
         if(this.state.currentPage<this.state.lastPage){
-            this.setState({
-                currentPage: this.state.currentPage+1
-            })
+            if(!this.state.isCorrect){
+                this.setState({
+                    currentPage: this.state.currentPage+1
+                })
+            }
             console.log(e.target.textContent)
         }
         else {
@@ -59,7 +62,7 @@ class Psy extends Component {
                     </Col>
                 </Row>
                 <Row >
-                    <Col className={'cardColumn'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Col className={this.state.isCorrect?'cardColumn':'cardColumnIncorrect'} onClick={this.handleSelect} xs={12} sm={12} md={12} lg={12} xl={12}>
                         <Row className={'centered'} >
                             <Col lg={24}><img className={'cardCover'} alt="example" src={img}/></Col>
                             <Col lg={24} style={{fontSize:'20px'}}>Europe Street beat</Col>

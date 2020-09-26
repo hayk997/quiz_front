@@ -6,6 +6,7 @@ import Login from "./Components/Auth/Login";
 import Registration from "./Components/Auth/Registration";
 import AppLayout from "./Components/AppLayout";
 
+
 class Routes extends Component {
 
     render() {
@@ -15,6 +16,7 @@ class Routes extends Component {
                 <Switch>
                     <Route exact path="/single" ><h1>Another Route without Layout</h1></Route>
                     <Route path={'*'}> <AppLayout/></Route>
+
                 </Switch>
             </BrowserRouter>
             </ConfigProvider>

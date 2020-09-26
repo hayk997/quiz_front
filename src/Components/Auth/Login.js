@@ -5,20 +5,23 @@ import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api"
 import './styles.sass'
+import {Redirect} from "react-router-dom";
 
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            loading:false
         }
     }
     handleLogin = (formData)=>{
+        this.setState({
+            loading:true
+        })
         axios.request( {
             url:api.auth.login.url,
             headers:{
-
             },
             method: api.auth.login.method,
             data: formData
@@ -30,15 +33,20 @@ class Login extends Component {
                 });
             }else{
                 this.props.onLogin(response.data)
+                this.props.history.push('/profile')
             }
-
-
         }).catch(err=>{
             console.log(err.message)
-
-
+        }).finally(()=>{
+            this.setState({
+                loading:false
+            })
         })
     }
+    componentWillUnmount() {
+
+    }
+
     render() {
         return (
                 <Row className={'content-aligned login'}>

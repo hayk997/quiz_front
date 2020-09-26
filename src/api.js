@@ -19,6 +19,42 @@ const api = {
         create:{
             url: `${endpoint}questions`,
             method: "POST"
+        },
+        list:{
+            url: `${endpoint}questions`,
+            method: "GET"
+        },
+        single:{
+            url: `${endpoint}questions/`,
+            method: "GET"
+        }
+    },
+    answers:{
+        create:{
+            url: `${endpoint}answers/`,
+            method: "POST"
+        },
+        list:{
+            url: `${endpoint}answers/`,
+            method: "GET"
+        },
+        single:{
+            url: `${endpoint}answers/single/`,
+            method: "GET"
+        }
+    },
+    setup:{
+        create:{
+            url: `${endpoint}setups/`,
+            method: "POST"
+        },
+        list:{
+            url: `${endpoint}answers/`,
+            method: "GET"
+        },
+        single:{
+            url: `${endpoint}answers/single/`,
+            method: "GET"
         }
     }
 }

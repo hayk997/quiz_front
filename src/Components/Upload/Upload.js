@@ -1,7 +1,6 @@
 import React, {Component} from "react"
 import {Upload, message, Form, Input, Button, Row, Col, notification} from 'antd'
-import LoadingOutlined from "@ant-design/icons/lib/icons/LoadingOutlined";
-import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
+import {MinusCircleOutlined, LoadingOutlined, PlusOutlined} from '@ant-design/icons'
 import './styles.sass'
 import axios from "axios";
 import api from "../../api";
@@ -32,115 +31,78 @@ class UploadAnswerImage extends Component {
             imageUrl: {},
             answersData: {},
             answerKey: 0,
-            input: {}
+            input: {},
+            quiz: {
+                content:{}
+            }
         }
+        this.form = React.createRef()
     }
 
-    handleInputChange = (e, id) => {
-        this.setState({
-            input: {
-                ...this.state.input,
-                [id]: e.target.value
-            },
-            answersData: {
-                ...this.state.answersData,
-                [this.state.answerKey]: {
-                    ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                        [id]: {
-                            ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
-                            title: e.target.value,
-                        }
-                }
-            }
-        })
-    }
     handleChange = (info, id) => {
         if (info.file.status === 'uploading') {
             this.setState({loading: true});
             return;
         }
         if (info.file.status === 'done') {
-            if(id==='avatar'){
-                this.setState({
-                    answersData: {
-                        ...this.state.answersData,
-                        [id]:info.file.response.path,
-                    }
-                })
-            }else{
-                this.setState({
-                    answersData: {
-                        ...this.state.answersData,
-                        [this.state.answerKey]: {
-                            ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                            [id]: {
-                                ...(this.state.answersData[this.state.answerKey] && this.state.answersData[this.state.answerKey][id] ? this.state.answersData[this.state.answerKey][id] : {}),
-                                filePath: info.file.response.path,
-                            }
-                        }
-                    }
-                })
-            }
-
-            // Get this url from response in real world.
             getBase64(info.file.originFileObj, imageUrl =>
                 this.setState({
                     imageUrl: {
                         ...this.state.imageUrl,
-                        [id]: imageUrl
+                        [id==='image'?id:this.state.answerKey.toString() +id.toString()]: imageUrl
                     },
                     loading: false,
                 }),
             );
         }
     };
-    nextPage = () => {
-        this.setState({
-            answerKey: this.state.answerKey + 1
-        }, () => {
-            this.setState({
-                imageUrl: {},
-                input: {}
-            })
-        })
-    }
-    onTitleChange = (e) => {
-        this.setState({
-            answersData: {
-                ...this.state.answersData,
-                [this.state.answerKey]: {
-                    ...(this.state.answersData[this.state.answerKey] ? this.state.answersData[this.state.answerKey] : {}),
-                    title: e.target.value,
-                }
-            }
-        })
-    }
-    onQuestionChange = (e) => {
-        this.setState({
-            answersData: {
-                ...this.state.answersData,
-             question:e.target.value
-            }
-        })
-    }
-    handleCreateQuestion = () =>{
-        axios.request( {
-            url:api.question.create.url,
+    handleCreateQuestion = () => {
+        axios.request({
+            url: api.question.create.url,
             method: api.question.create.method,
-            data: this.state.answersData
-        }).then(response=> {
-            if(response.data.message){
+            data: {...this.state.quiz,count:this.state.answerKey+1}
+        }).then(response => {
+            if (response.data.message) {
                 notification.warning({
                     message: 'Warning',
                     description: response.data.message,
                 });
-            }else{
-              console.log(response)
+            } else {
+                console.log(response)
             }
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err.message)
         })
     }
+    handleStartApp = (formData) => {
+        formData.image = formData.image.file.response.path
+        this.setState({
+            quiz: {
+                ...formData
+            }
+        })
+    }
+    handleAddStep = (formData) => {
+        const content = this.form.current.getFieldsValue();
+        content.questions.map(question=>{
+            question.image = question.image.file.response.path
+            return question
+        })
+        this.setState({
+            answerKey: this.state.answerKey + 1,
+            quiz:{
+                ...this.state.quiz,
+                content:{
+                    ...this.state.quiz.content,
+                    [this.state.answerKey]:content
+                }
+            },
+            imageUrl:{}
+        },()=>{
+            this.form.current.resetFields()
+        })
+    }
+
     render() {
         console.log(this.state)
         const uploadButton = (
@@ -151,62 +113,118 @@ class UploadAnswerImage extends Component {
         );
         return (
             <Row className='upload'>
-                <Form>
-                    <Row justify={'center'} gutter={[24, 16]}>
-                        <Col lg={24}>
-                            <Input onChange={this.onQuestionChange}/>
+                {!this.state.quiz.title ? <Form ref={this.form} onFinish={this.handleStartApp}>
+                        <Form.Item name={'title'} label={'title'} rules={[
+                            {required: true}
+                        ]}>
+                            <Input/>
+                        </Form.Item>
+                        <Form.Item name={'image'} label={'image'} rules={[
+                            {required: true}
+                        ]}>
                             <Upload
                                 name="image"
                                 listType="picture-card"
                                 className="avatar-uploader"
                                 showUploadList={false}
-                                action="http://localhost:4000/files"
+                                action={process.env.REACT_APP_API_ENDPOINT+"files"}
                                 beforeUpload={beforeUpload}
                                 onChange={(info) => {
-                                    this.handleChange(info,'avatar')
+                                    this.handleChange(info, 'image')
                                 }}
                             >
-                                {this.state.imageUrl.avatar ?
-                                    <img src={this.state.imageUrl.avatar} alt="answer" style={{width: '100%'}}/>
+                                {this.state.imageUrl.image ?
+                                    <img src={this.state.imageUrl.image} alt="answer" style={{width: '100%'}}/>
                                     : uploadButton}
                             </Upload>
-                        </Col>
-                        <Col lg={24}>
-                            <Input onChange={this.onTitleChange}/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button htmlType={'submit'}>Create</Button>
+                        </Form.Item>
+                    </Form> :
+                    <Form style={{width:'100%'}} ref={this.form} onFinish={this.handleAddStep}>
+                        <Row gutter={[24, 16]}>
+                            <Col lg={24}>
+                                <Form.Item name={'question'}  rules={[{required: true, message: 'Missing last name'}]}>
+                                    <Input/>
+                                </Form.Item>
+                            </Col>
+                            <Form.List  name="questions">
+                                {(fields, {add, remove}) => {
+                                    return (
+                                        <Col lg={24}>
+                                            {fields.map((field,key) => (
+                                                <Col key={field.fieldKey+'u'} lg={10}>
+                                                    <Form.Item
+                                                        {...field}
+                                                        key={field.fieldKey+'t'}
+                                                        label={'Вопрос '+field.key}
+                                                        name={[field.name, 'image']}
+                                                        valuePropName={['file']}
+                                                        rules={[{required: true, message: 'Missing last name'}]}
+                                                    >
+                                                        <Upload
+                                                            name="image"
+                                                            listType="picture-card"
+                                                            className="avatar-uploader"
+                                                            showUploadList={false}
+                                                            action={process.env.REACT_APP_API_ENDPOINT+"files"}
+                                                            beforeUpload={beforeUpload}
+                                                            onChange={(info) => {
+                                                                this.handleChange(info, field.key)
+                                                            }}
+                                                        >
+                                                            {this.state.imageUrl[this.state.answerKey.toString() +field.key.toString()] ?
+                                                                <img src={this.state.imageUrl[this.state.answerKey.toString() +field.key.toString()]} alt="answer"
+                                                                     style={{width: '100%'}}/>
+                                                                : uploadButton}
+                                                        </Upload>
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        {...field}
+                                                        key={field.fieldKey+'r'}
+                                                        label={'Вопрос '+field.key}
+                                                        name={[field.name, 'title']}
+                                                        rules={[{required: true, message: 'Missing last name'}]}
+                                                    >
+                                                        <Input type='text'/>
+                                                    </Form.Item>
+                                                    <MinusCircleOutlined
+                                                        onClick={() => {
+                                                            remove(field.name);
+                                                        }}
+                                                    />
+                                                </Col>
+                                            ))}
 
-                        </Col>
-                        {[...Array(4).keys()].map(key => <Col key={key} lg={10}>
-                            <Upload
-                                name="image"
-                                listType="picture-card"
-                                className="avatar-uploader"
-                                showUploadList={false}
-                                action="http://localhost:4000/files"
-                                beforeUpload={beforeUpload}
-                                onChange={(info) => {
-                                    this.handleChange(info, key)
+                                            <Form.Item>
+                                                <Button
+                                                    type="dashed"
+                                                    onClick={() => {
+                                                        add();
+                                                    }}
+                                                    block
+                                                >
+                                                    <PlusOutlined/> Add field
+                                                </Button>
+                                            </Form.Item>
+                                        </Col>
+                                    );
                                 }}
-                            >
-                                {this.state.imageUrl[key] ?
-                                    <img src={this.state.imageUrl[key]} alt="answer" style={{width: '100%'}}/>
-                                    : uploadButton}
-                            </Upload>
-                            Вопрос: <Input name={[key, 'title']} value={this.state.input[key]} onChange={(e) => {
-                            this.handleInputChange(e, key)
-                        }} type='text'/>
-                        </Col>)}
-                    </Row>
-                    <Row className='uploadImages'>
-                        <Col>
-                            <Button onClick={this.nextPage} size='large' type="primary">
-                                Add Answer
-                            </Button>
-                            <Button onClick={this.handleCreateQuestion} size='large' type="primary">
-                                Submit
-                            </Button>
-                        </Col>
-                    </Row>
-                </Form>
+                            </Form.List>
+                        </Row>
+                        <Row className='uploadImages'>
+                            <Col>
+                                <Button onClick={()=>console.log(this.form.current.getFieldsValue())}>smth</Button>
+                                <Button htmlType={'submit'} size='large' type="primary">
+                                    Add Answer
+                                </Button>
+                                <Button onClick={this.handleCreateQuestion} size='large' type="primary">
+                                    Submit
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form>}
             </Row>
         )
     }

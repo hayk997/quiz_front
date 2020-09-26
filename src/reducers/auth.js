@@ -5,9 +5,15 @@ export default function auth(state = {}, action){
             user: action.payload.user,
         }
     }
+    if(action.type==='UPDATE'){
+        console.log(action.payload)
+        return {
+            ...state,
+            user: {...state.user,...action.payload}
+        }
+    }
     if(action.type === 'LOGOUT'){
         return {}
     }
-
     return state;
 }
