@@ -127,7 +127,7 @@ class Profile extends Component {
                         ]}
                     >
                         <Card.Meta
-                            title={<NavLink to={'/answers/'+question.id} >{question.question.title}</NavLink>}
+                            title={<NavLink to={'/stats/'+question.id} >{question.question.title}</NavLink>}
                         />
                     </Card>):null
                 }

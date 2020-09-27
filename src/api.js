@@ -41,6 +41,10 @@ const api = {
         single:{
             url: `${endpoint}answers/single/`,
             method: "GET"
+        },
+        data:{
+            url: `${endpoint}answers/data/`,
+            method: "GET"
         }
     },
     setup:{
