@@ -6,7 +6,6 @@ import axios from 'axios'
 import api from "../../api";
 import {connect} from "react-redux"
 import Preloader from "../Preloader"
-
 import './styles.sass'
 import avatar from '../../dist/images/avatar.png'
 import {Typography} from 'antd';
@@ -97,6 +96,9 @@ class AnswerStats extends Component {
                                 const MAnswered = this.state.data.question.content[key].questions[parseInt(sortedStats[0])]
                                 return <Row key={key} className={'most-answered-list'}>
                                     <Col lg={8}>
+                                        {//todo stex baci amenshat patasxanvacic karelia dnel nayeev mnacac tarberakner@ amenq@ qani angamen patasxane kamee
+                                            //todo henc et ander shat patasxanvaci tivne ka sor sortedStats[1]-i meja mi pryatni dzev cuc tu
+                                             }
                                         <Title level={3}>{question}</Title>
                                     </Col>
                                     <Col lg={16}>
