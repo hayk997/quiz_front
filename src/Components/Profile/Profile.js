@@ -1,9 +1,6 @@
 import React,{Component} from "react";
 import {Col, Row, Card, Avatar, Typography, Button} from "antd";
 import {
-    UserOutlined,
-    LockOutlined,
-    MailOutlined,
     SettingOutlined,
     EditOutlined,
     EllipsisOutlined
@@ -47,12 +44,14 @@ class Profile extends Component {
 
     componentDidMount() {
         axios.request({
-            url:api.answers.list.url+this.props.state.auth.user.id,//for pagination add ?page=2
-            method:api.answers.list.method,
+            url:api.user.list.url+(this.props.match.params.id?this.props.match.params.id:this.props.state.auth.user.id),//for pagination add ?page=2
+            method:api.user.list.method,
             headers:{
-                'x-access-token':this.props.state.auth.token
+                'x-access-token':this.props.state.auth.token,
+                'cache-control':'no-cache'
             }
         }).then(response=>{
+            console.log(response.data)
            this.setState({
                answers:response.data.answers
            })

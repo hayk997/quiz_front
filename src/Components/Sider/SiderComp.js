@@ -3,7 +3,6 @@ import { Layout, Menu} from "antd"
 import { UserOutlined, LaptopOutlined, NotificationOutlined  } from "@ant-design/icons"
 import {connect} from 'react-redux'
 import {NavLink} from "react-router-dom"
-import PsyTest from "../PsyTest/Psy";
 
 const { SubMenu } = Menu
 const { Sider } = Layout

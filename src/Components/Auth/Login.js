@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api"
 import './styles.sass'
-import {Redirect} from "react-router-dom";
 
 
 class Login extends Component {

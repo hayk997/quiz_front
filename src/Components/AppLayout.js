@@ -1,8 +1,8 @@
-import React, {Component, Suspense} from "react";
-import {ConfigProvider, Layout} from "antd";
+import React, {Component} from "react";
+import {Layout} from "antd";
 import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import Login from "./Auth/Login";
 import Registration from "./Auth/Registration";
 import Profile from "./Profile/Profile";
@@ -63,7 +63,7 @@ class AppLayout extends Component {
                                 minHeight: 280,
                             }}>
                                         <Switch>
-                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/profile" component={Profile}/>
+                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/profile/:id?" component={Profile}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/psytest" component={Psy}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/upload" component={UploadAnswerImage}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes" component={Quizes}/>

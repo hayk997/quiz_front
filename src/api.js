@@ -60,6 +60,12 @@ const api = {
             url: `${endpoint}answers/single/`,
             method: "GET"
         }
+    },
+    user:{
+        list: {
+            url: `${endpoint}users/`,
+            method: "GET"
+        }
     }
 }
 export default api;

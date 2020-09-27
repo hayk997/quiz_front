@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import {Col, Layout, Menu, Row, Drawer} from "antd"
 import {connect} from 'react-redux'
 import {Link, NavLink, withRouter} from "react-router-dom"
-import {LaptopOutlined, NotificationOutlined, UserOutlined} from "@ant-design/icons"
+import {LaptopOutlined, UserOutlined} from "@ant-design/icons"
 import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined"
 import logo from '../../dist/images/mainLogo.png'
 import './styles.sass'

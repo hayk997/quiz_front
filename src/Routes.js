@@ -1,9 +1,7 @@
-import React, {Component,Suspense} from "react";
+import React, {Component} from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 import {connect} from 'react-redux'
 import {ConfigProvider} from "antd";
-import Login from "./Components/Auth/Login";
-import Registration from "./Components/Auth/Registration";
 import AppLayout from "./Components/AppLayout";
 
 
