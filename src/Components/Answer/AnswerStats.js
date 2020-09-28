@@ -92,14 +92,12 @@ class AnswerStats extends Component {
                                 sortedStats.sort(function (a, b) {
                                     return b[1] - a[1];
                                 });
-                                console.log('SortedStats:',sortedStats)
                                 const question = this.state.data.question.content[key].question;
-                                const MAnswered = this.state.data.question.content[key].questions[parseInt(sortedStats[0])]
-                                console.log('Manswered',MAnswered)
+                                const MAnswered = this.state.data.question.content[key].questions[parseInt(sortedStats[0][0])]
                                 return <Row key={key} className={'most-answered-list'}>
                                     <Col lg={8}>
                                         <Title level={3}>{question}</Title>
-                                        <Title level={4}>This answer has been selected {sortedStats[index]} times</Title>
+                                        <Title level={4}>This answer has been selected {sortedStats[0][1]} times</Title>
                                     </Col>
                                     <Col lg={16}>
                                         <Row className={'centered'}>

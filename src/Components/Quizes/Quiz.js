@@ -83,12 +83,12 @@ class Quiz extends Component {
                             />
                         </Col>
                         <Row>
-                                  <Col lg={24} className={'questionBlock'}>
-                                        <Col className={'centered'} lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}}
-                                             sm={24} xs={24}>
-                                            <h2>{this.state.questions.content[this.state.currentPage].question} </h2>
-                                        </Col>
-                                    </Col>
+                            <Col lg={24} className={'questionBlock'}>
+                            <Col className={'centered'} lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}}
+                                     sm={24} xs={24}>
+                                    <h2>{this.state.questions.content[this.state.currentPage].question} </h2>
+                                </Col>
+                            </Col>
                                     <Col lg={24}>
                                         <Row>
                                             {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} className={'cardColumn'} onClick={()=>this.handleSelect(key)} xs={24} sm={24} md={12}
