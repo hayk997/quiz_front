@@ -11,14 +11,10 @@ import api from "../../api";
 import {NavLink} from "react-router-dom";
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import QuizCard from "../Fragments/QuizCard";
+import Preloader from "../Preloader";
+import AvatarImg from "../../dist/images/avatar-placeholder.png"
 
-const {Meta} = Card;
-
-function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-}
 
 function beforeUpload(file) {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -36,9 +32,10 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading:false,
+            loading:true,
             answers:[],
-            showUpload:false
+            showUpload:false,
+            user:{}
         }
     }
 
@@ -51,9 +48,9 @@ class Profile extends Component {
                 'cache-control':'no-cache'
             }
         }).then(response=>{
-            console.log(response.data)
            this.setState({
-               answers:response.data.answers
+               user:response.data,
+               loading:false
            })
         })
     }
@@ -80,15 +77,13 @@ class Profile extends Component {
             </div>
         );
         return (
-            <Row className={'content-aligned'}>
+           this.state.loading?<Preloader/>: <Row className={'content-aligned'}>
             <Col className={'centered'} lg={24}>
                 {this.props.state.auth.user.imageURL && !this.state.showUpload ?
                     <>
-                        {  //todo stex arden requestic galisa useri nkar@ tes ete galisa stex dir konkret et user nkar@
-                        }
                     <Avatar style={{borderRadius:'100%'}} size={100} src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>
                     <Button onClick={()=>this.setState({showUpload:true})}>Change Photo</Button>
-                    </>:
+                    </>:this.props.state.auth.user.id===this.state.user.id ?
                     <Upload
                         headers={{
                             "x-access-token": this.props.state.auth.token
@@ -101,36 +96,18 @@ class Profile extends Component {
                         beforeUpload={beforeUpload}
                         onChange={this.handleChange}
                     >
-                        {this.props.state.auth.user.imageURL ?
-                            <img src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}
+                        {this.state.user.imageURL ?
+                            <img src={process.env.REACT_APP_API_ENDPOINT+this.state.user.imageURL}
                                  alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-                    </Upload>
+                    </Upload>:<Avatar style={{borderRadius:'100%'}} size={100} src={AvatarImg}/>
                 }
-                <Typography.Title level={2}>{this.props.state.auth.user.username}</Typography.Title>
+                <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
             </Col>
                 <Col lg={24}>
                     <Typography.Title level={4}>My apps</Typography.Title>
                 </Col>
-                {this.state.answers.length?
-                    this.state.answers.map((question,key)=> <Card
-                        style={{width: 300}}
-                        key={key}
-                        cover={
-                            <img
-                                alt="example"
-                                src={process.env.REACT_APP_API_ENDPOINT+question.question.imageURL}
-                            />
-                        }
-                        actions={[
-                            <SettingOutlined key="setting" />,
-                            <EditOutlined key="edit" />,
-                            <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                    >
-                        <Card.Meta
-                            title={<NavLink to={'/stats/'+question.id} >{question.question.title}</NavLink>}
-                        />
-                    </Card>):null
+                {this.state.user.answers.length?
+                    this.state.user.answers.map((answer,key)=> <QuizCard link={'/stats/'}  question={answer.question} />):null
                 }
 
 

@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import api from "../../api";
 import Preloader from "../Preloader";
+import QuizCard from "../Fragments/QuizCard";
 
 
 
@@ -58,19 +59,8 @@ class Quizes extends Component {
               <Col lg={24}>
                   <Typography.Title level={4}>Tests</Typography.Title><Row>
                       {this.state.questions.data && this.state.questions.data.length?
-                          this.state.questions.data.map((question,key)=><Col  key={key} lg={4}> <Card
-                              className={'quiz_cards'}
-                              cover={<img alt="example" src={process.env.REACT_APP_API_ENDPOINT+question.imageURL}/>}
-                              actions={[
-                                  <SettingOutlined key="setting" />,
-                                  <EditOutlined key="edit" />,
-                                  <EllipsisOutlined key="ellipsis" />,
-                              ]}
-                          >
-                              <Card.Meta
-                                  title={<NavLink to={'/quizes/'+question.id} >{question.title}</NavLink>}
-                              />
-                          </Card>
+                          this.state.questions.data.map((question,key)=><Col  key={key} lg={4}>
+                              <QuizCard link={'/quizes/'} question={question}/>
                           </Col>):null
                       }
                   </Row>

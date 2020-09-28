@@ -60,6 +60,9 @@ class UploadAnswerImage extends Component {
         axios.request({
             url: api.question.create.url,
             method: api.question.create.method,
+            headers:{
+                'x-access-token': this.props.state.auth.token,
+            },
             data: {...this.state.quiz,count:this.state.answerKey}
         }).then(response => {
             if (response.data.message) {
@@ -127,6 +130,9 @@ class UploadAnswerImage extends Component {
                                 listType="picture-card"
                                 className="avatar-uploader"
                                 showUploadList={false}
+                                headers={{
+                                    'x-access-token': this.props.state.auth.token,
+                                }}
                                 action={process.env.REACT_APP_API_ENDPOINT+"files"}
                                 beforeUpload={beforeUpload}
                                 onChange={(info) => {
