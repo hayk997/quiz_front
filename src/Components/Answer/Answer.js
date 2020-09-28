@@ -71,6 +71,13 @@ class Answer extends Component {
 
     }
     render() {
+        const newArr=this.state.questions.content?(Object.keys(this.state.questions.content).map(key=>+key+1)):{}
+        console.log(newArr)
+        let marks={}
+        for(let key in newArr){
+            marks[+newArr[key]]=Number(key)+1
+        }
+        console.log(marks)
         return (
             <Row>
                 <Col lg={{span: 14, offset: 5}}>
@@ -79,9 +86,10 @@ class Answer extends Component {
                             level={2}>{this.state.questions.title}</Typography.Title></Col>
                         <Col lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}} sm={24} xs={24}>
                             <Slider
+                                marks={marks}
                                 disabled
                                 min={1}
-                                max={this.state.questions.count}
+                                max={marks[Object.keys(marks).length]}
                                 defaultValue={1}
                                 value={this.state.currentPage+1}
                             />

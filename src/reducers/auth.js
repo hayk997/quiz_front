@@ -9,7 +9,7 @@ export default function auth(state = {}, action){
         console.log(action.payload)
         return {
             ...state,
-            user: {...state.user,...action.payload}
+            user: {...state.user,...action.payload}//payload-user
         }
     }
     if(action.type === 'LOGOUT'){

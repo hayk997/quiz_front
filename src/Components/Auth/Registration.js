@@ -6,6 +6,7 @@ import {formItemLayout} from "../../dist/layoutes";
 import FacebookLogin from 'react-facebook-login';
 import axios from "axios";
 import api from "../../api";
+import {Redirect} from "react-router-dom";
 
 class Registration extends Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class Registration extends Component {
                 }
             }).then(response=>{
                 this.props.onLogin(response.data)
+                return <Redirect to='/profile'/>
             }).catch(err=>{
                 console.log(err)
             })

@@ -58,7 +58,7 @@ class AnswerStats extends Component {
             this.state.loading ? <Preloader/> :
                 <Content>
                     <Row className='stats'>
-                        <Col style={{textAlign: 'center'}} lg={{span: 8, offset: 8}}>
+                        <Col style={{textAlign: 'center'}} lg={{span: 4, offset: 10}}>
                             <Card
                                 hoverable
                                 cover={<img alt="questionImage"
@@ -82,7 +82,7 @@ class AnswerStats extends Component {
                                 What People think About you
                             </Title>
 
-                            {Object.keys(this.state.data.question.content).map(key => {
+                            {Object.keys(this.state.data.userId).length && Object.keys(this.state.data.question.content).map((key,index) => {
                                 let statistics = this.state.data.userId[key];
                                 let sortedStats = [];
                                 for (let stat in statistics) {
@@ -92,14 +92,14 @@ class AnswerStats extends Component {
                                 sortedStats.sort(function (a, b) {
                                     return b[1] - a[1];
                                 });
+                                console.log('SortedStats:',sortedStats)
                                 const question = this.state.data.question.content[key].question;
                                 const MAnswered = this.state.data.question.content[key].questions[parseInt(sortedStats[0])]
+                                console.log('Manswered',MAnswered)
                                 return <Row key={key} className={'most-answered-list'}>
                                     <Col lg={8}>
-                                        {//todo stex baci amenshat patasxanvacic karelia dnel nayeev mnacac tarberakner@ amenq@ qani angamen patasxane kamee
-                                            //todo henc et ander shat patasxanvaci tivne ka sor sortedStats[1]-i meja mi pryatni dzev cuc tu
-                                             }
                                         <Title level={3}>{question}</Title>
+                                        <Title level={4}>This answer has been selected {sortedStats[index]} times</Title>
                                     </Col>
                                     <Col lg={16}>
                                         <Row className={'centered'}>
