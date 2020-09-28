@@ -60,7 +60,7 @@ class UploadAnswerImage extends Component {
         axios.request({
             url: api.question.create.url,
             method: api.question.create.method,
-            data: {...this.state.quiz,count:this.state.answerKey+1}
+            data: {...this.state.quiz,count:this.state.answerKey}
         }).then(response => {
             if (response.data.message) {
                 notification.warning({

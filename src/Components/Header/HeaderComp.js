@@ -76,15 +76,10 @@ class HeaderComp extends Component {
                                     <SubMenu key="sub1" icon={<UserOutlined />} title="My apps">
 
                                         <Menu.Item key="2"><NavLink to='/psytest'> Psychology Test </NavLink></Menu.Item>
-                                        <Menu.Item key="3"><NavLink to='/upload'> Upload </NavLink></Menu.Item>
+                                        {this.props.state.auth.user.isAdmin&&<Menu.Item key="3"><NavLink to='/upload'> Upload </NavLink></Menu.Item>}
                                         <Menu.Item key="4">option4</Menu.Item>
                                     </SubMenu>
-                                    <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                                        <Menu.Item key="5">option5</Menu.Item>
-                                        <Menu.Item key="6">option6</Menu.Item>
-                                        <Menu.Item key="7">option7</Menu.Item>
-                                        <Menu.Item key="8">option8</Menu.Item>
-                                    </SubMenu>
+
                                 </Menu>
                             </Sider>
                         </Drawer>
