@@ -14,6 +14,7 @@ class SiderComp extends Component {
         }
     }
     render() {
+        console.log('sider:',this.props.state.auth.user.isAdmin)
         return (
             <Sider style={{display:'none'}} width={200} className="site-layout-background">
                 <Menu
@@ -24,9 +25,11 @@ class SiderComp extends Component {
                 >
                     <Menu.Item key="1">My apps</Menu.Item>
                     <SubMenu key="sub1" icon={<UserOutlined />} title="My apps">
-
                         <Menu.Item key="2"><NavLink to='/psytest'> Psychology Test </NavLink></Menu.Item>
-                        <Menu.Item key="3"><NavLink to='/upload'> Upload </NavLink></Menu.Item>
+                        {this.props.state.auth.user.isAdmin?
+                            <Menu.Item key="3"><NavLink to='/upload'> Upload </NavLink></Menu.Item>
+                            :null
+                        }
                         <Menu.Item key="4">option4</Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
