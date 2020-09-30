@@ -1,10 +1,13 @@
 import React,{Component} from "react";
-import {Col, Row, Button, Input, Form, notification} from "antd";
+import {Col, Row, Button, Input, Form, notification, Divider} from "antd";
 import {UserOutlined, LockOutlined, MailOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api"
 import './styles.sass'
+import logo from '../../dist/images/mainLogo.png'
+import {Link} from "react-router-dom";
+import LoginOutlined from "@ant-design/icons/lib/icons/LoginOutlined";
 
 
 class Login extends Component {
@@ -50,6 +53,10 @@ class Login extends Component {
         return (
                 <Row className={'content-aligned login'}>
                     <Col className='loginBlock' style={{textAlign:'center'}} lg={{offset:8,span:8}}>
+                        <div className='loginDiv'>
+                            <div style={{marginBottom:'10%'}}>
+                                <img style={{height:'60px'}} alt='logo' src={logo} className='logoLogin'/>
+                            </div>
                         <Form onFinish={this.handleLogin} className="login-form">
                             <Form.Item name={'email'} rules={[{
                                 required: true,
@@ -71,7 +78,14 @@ class Login extends Component {
                             </Form.Item>
                             <Button type="primary" icon={<UserOutlined/>} htmlType="submit" className="block"
                                     loading={this.state.loading}>Login</Button>
+                            <Divider orientation='center'/>
+                            <div className='regBlock'><h3>Нет аккаунта? Зарегистрируйтесь</h3>
+                                <Button className='regButton' style={{backgroundColor:'#42b72a'}} icon={<UserOutlined />}>
+                                <Link to='/reg'>Регистация</Link>
+                                </Button>
+                            </div>
                         </Form>
+                        </div>
                     </Col>
                 </Row>
 
