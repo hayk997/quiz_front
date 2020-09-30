@@ -7,7 +7,6 @@ import api from "../../api"
 import './styles.sass'
 import logo from '../../dist/images/mainLogo.png'
 import {Link} from "react-router-dom";
-import LoginOutlined from "@ant-design/icons/lib/icons/LoginOutlined";
 
 
 class Login extends Component {

@@ -51,8 +51,9 @@ class Registration extends Component {
     render() {
         return (
                 <Row className={'content-aligned'}>
-                    <Col style={{textAlign:'center'}} lg={{offset:6,span:12}}>
+                    <Col className='regPage' lg={{offset:6,span:12}}>
                         <Form
+                            style={{width:'85%'}}
                             {...formItemLayout}
                             onFinish={this.handleRegistration}
                         >
@@ -129,19 +130,20 @@ class Registration extends Component {
                             >
                                 <Input.Password />
                             </Form.Item>
-                            <Form.Item >
-                                <FacebookLogin
-                                    appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-                                    fields="name,email,picture"
-                                    cssClass="hidden"
-                                    callback={this.handleRegFacebook}/>
-                                <Button style={{margin:'0px 15px'}} onClick={() => document.getElementsByClassName('hidden')[0].click()} type="primary" >
-                                    Register with Facebook
-                                </Button>
-                                <Button type="primary" htmlType="submit">
-                                    Register
-                                </Button>
-                            </Form.Item>
+                                <Form.Item >
+                                    <FacebookLogin
+                                        appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                                        fields="name,email,picture"
+                                        cssClass="hidden"
+                                        callback={this.handleRegFacebook}/>
+                                    <Button style={{margin:'0px 15px'}} onClick={() => document.getElementsByClassName('hidden')[0].click()} type="primary" >
+                                        Register with Facebook
+                                    </Button>
+                                    <Button type="primary" htmlType="submit">
+                                        Register
+                                    </Button>
+                                </Form.Item>
+
                         </Form>
                     </Col>
                 </Row>
