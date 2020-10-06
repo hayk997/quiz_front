@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import {Col, Row, Card, Avatar, Typography, Button} from "antd";
+import {Col, Row, Card, Avatar, Typography,Form, Button,Input} from "antd";
 import {
     SettingOutlined,
     EditOutlined,
@@ -15,6 +15,7 @@ import QuizCard from "../Fragments/QuizCard";
 import Preloader from "../Preloader";
 import AvatarImg from "../../dist/images/avatar-placeholder.png"
 
+const {TextArea }=Input
 
 function beforeUpload(file) {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -35,7 +36,9 @@ class Profile extends Component {
             loading:true,
             answers:[],
             showUpload:false,
-            user:{}
+            user:{},
+            value:{},
+            status:''
         }
     }
 
@@ -68,7 +71,12 @@ class Profile extends Component {
             })
         }
     };
-
+    onFinish= values => {
+        console.log('Success:', values);
+    };
+    onChange = ({ target: { value } }) => {
+        this.setState({ value });
+    };
     render() {
         const uploadButton = (
             <div>
@@ -103,18 +111,37 @@ class Profile extends Component {
                 }
                 <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
             </Col>
+               <Col className='centered' lg={{span:12,offset:6}}>
+                   <div className='statusBlock'>
+                       <Form
+                           layout='horizontal'
+                           name='postForm'
+                           onFinish={this.onFinish}
+                           initialValues={{ remember: true }}>
+                           <Form.Item>
+                               <TextArea
+                                   onChange={this.onChange}
+                                   value={this.state.status}
+                                   name='postText'
+                                   autoSize={{ minRows: 2, maxRows: 4 }}
+                                   placeholder="О чем вы думаете?"
+                               />
+                           </Form.Item>
+                           <Form.Item>
+                               <Button type="primary" htmlType="submit">
+                                   Create post
+                               </Button>
+                           </Form.Item>
+                       </Form>
+                   </div>
+               </Col>
                 <Col lg={24}>
                     <Typography.Title level={4}>My apps</Typography.Title>
                 </Col>
                 {this.state.user.answers.length?
                     this.state.user.answers.map((answer,key)=> <QuizCard link={'/stats/'}  question={answer.question} />):null
                 }
-
-
             </Row>
-
-
-
         )
     }
 }
