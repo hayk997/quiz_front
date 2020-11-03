@@ -6,7 +6,6 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import Login from "./Auth/Login";
 import Registration from "./Auth/Registration";
 import Profile from "./Profile/Profile";
-import Psy from "./PsyTest/Psy";
 import UploadAnswerImage from "./Upload/Upload";
 import Quizes from "./Quizes/Quizes";
 import Quiz from "./Quizes/Quiz";
@@ -64,7 +63,6 @@ class AppLayout extends Component {
                             }}>
                                         <Switch>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/profile/:id?" component={Profile}/>
-                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/psytest" component={Psy}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/upload" component={UploadAnswerImage}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes" component={Quizes}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes/:id" component={Quiz}/>

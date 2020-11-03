@@ -92,10 +92,10 @@ class Profile extends Component {
         return (
            this.state.loading?<Preloader/>: <Row className={'content-aligned'}>
             <Col className={'centered'} lg={24}>
-                {this.props.state.auth.user.imageURL && !this.state.showUpload ?
+                {this.state.user.imageURL && !this.state.showUpload ?
                     <>
                     <Avatar style={{borderRadius:'100%'}} size={100} src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>
-                    <Button onClick={()=>this.setState({showUpload:true})}>Change Photo</Button>
+                    <div><Button onClick={()=>this.setState({showUpload:true})}>Change Photo</Button></div>
                     </>:this.state.user && this.props.state.auth.user.id===this.state.user.id ?
                     <Upload
                         headers={{
