@@ -65,6 +65,10 @@ const api = {
         list: {
             url: `${endpoint}users/`,
             method: "GET"
+        },
+        find: {
+            url: `${endpoint}users?username=`,
+            method: "GET"
         }
     }
 }

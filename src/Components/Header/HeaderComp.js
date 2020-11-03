@@ -1,22 +1,28 @@
 import React, {Component} from "react"
-import {Col, Layout, Menu, Row, Drawer} from "antd"
+import  {Col, Empty, Spin, Select, Layout, Menu, Row, Drawer, Input, Avatar} from "antd"
 import {connect} from 'react-redux'
 import {Link, NavLink, withRouter} from "react-router-dom"
 import {LaptopOutlined, UserOutlined} from "@ant-design/icons"
 import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined"
 import logo from '../../dist/images/mainLogo.png'
 import './styles.sass'
+import axios from "axios";
+import api from "../../api";
+import AvatarImg from "../../dist/images/avatar-placeholder.png";
 
 const {Header} = Layout
 const { SubMenu } = Menu
 const { Sider } = Layout
 
-
 class HeaderComp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible:false
+            visible:false,
+            searchInterval:false,
+            users:[],
+            searchName:null
+
         }
     }
 
@@ -33,6 +39,34 @@ class HeaderComp extends Component {
             visible: true,
         });
     };
+    handleUserSearch =e=>{
+        if(this.state.searchInterval){
+            clearInterval(this.state.searchInterval)
+        }
+        this.setState({
+            searchName:e,
+
+        },()=>this.setState({
+            searchInterval:setTimeout(()=>{
+                axios.request({
+                    url:api.user.find.url+this.state.searchName,//for pagination add ?page=2
+                    method:api.user.find.method,
+                    headers:{
+                        'x-access-token':this.props.state.auth.token,
+                        'cache-control':'no-cache'
+                    }
+                }).then(response=> {
+                    this.setState({
+                        users: response.data.data
+                    })
+                })
+
+            },800)
+        }))
+
+
+
+    }
     render() {
         return (
             <Header className="header">
@@ -44,6 +78,22 @@ class HeaderComp extends Component {
                     </Col>
                     <Col xs={18} sm={18} md={16} lg={12} xl={14}>
                         <Menu theme="dark" mode="horizontal">
+                            <Select
+                                style={{ width: 200 }}
+                                showSearch={true}
+                                notFoundContent={this.state.fetching ?
+                                    <Spin size="small"/> : null}
+                                onSearch={this.handleUserSearch}
+                                filterOption={true}
+                                allowClear={true}
+                                optionFilterProp={"name"}
+                            >
+                                {this.state.users.length?this.state.users.map(user =>
+                                    <Select.Option key={user.id}
+                                                   name={user.username}
+                                                   value={user.id}><Avatar style={{borderRadius:'100%',margin:'0 10px'}} size={25} src={user.imageURL?user.imageURL:AvatarImg}/>{user.username}</Select.Option>
+                                ):<Empty/>}
+                            </Select>
                             {this.props.state.auth.token ?
                                 <Menu.Item onClick={this.props.onLogout} key="/logout">LOGOUT</Menu.Item> :
                                 <Menu.Item onClick={this.navigate} key="/">Login</Menu.Item>}

@@ -91,7 +91,7 @@ class Profile extends Component {
                     <>
                     <Avatar style={{borderRadius:'100%'}} size={100} src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>
                     <Button onClick={()=>this.setState({showUpload:true})}>Change Photo</Button>
-                    </>:this.props.state.auth.user.id===this.state.user.id ?
+                    </>:this.state.user && this.props.state.auth.user.id===this.state.user.id ?
                     <Upload
                         headers={{
                             "x-access-token": this.props.state.auth.token
