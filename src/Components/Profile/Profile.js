@@ -41,6 +41,11 @@ class Profile extends Component {
             status:''
         }
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if( this.props.match.params.id!==prevProps.match.params.id){
+            this.componentDidMount()
+        }
+    }
 
     componentDidMount() {
         axios.request({

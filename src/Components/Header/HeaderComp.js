@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import  {Col, Empty, Spin, Select, Layout, Menu, Row, Drawer, Input, Avatar} from "antd"
 import {connect} from 'react-redux'
 import {Link, NavLink, withRouter} from "react-router-dom"
-import {LaptopOutlined, UserOutlined} from "@ant-design/icons"
+import {UserOutlined} from "@ant-design/icons"
 import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined"
 import logo from '../../dist/images/mainLogo.png'
 import './styles.sass'
@@ -78,7 +78,7 @@ class HeaderComp extends Component {
                     </Col>
                     <Col xs={18} sm={18} md={16} lg={12} xl={14}>
                         <Menu theme="dark" mode="horizontal">
-                            <Select
+                            {this.props.state.auth.token && <Select
                                 style={{ width: 200 }}
                                 showSearch={true}
                                 notFoundContent={this.state.fetching ?
@@ -87,13 +87,14 @@ class HeaderComp extends Component {
                                 filterOption={true}
                                 allowClear={true}
                                 optionFilterProp={"name"}
+                                onChange={e=>this.props.history.push('/profile/'+e)}
                             >
                                 {this.state.users.length?this.state.users.map(user =>
-                                    <Select.Option key={user.id}
+                                    <Select.Option  key={user.id}
                                                    name={user.username}
                                                    value={user.id}><Avatar style={{borderRadius:'100%',margin:'0 10px'}} size={25} src={user.imageURL?user.imageURL:AvatarImg}/>{user.username}</Select.Option>
                                 ):<Empty/>}
-                            </Select>
+                            </Select>}
                             {this.props.state.auth.token ?
                                 <Menu.Item onClick={this.props.onLogout} key="/logout">LOGOUT</Menu.Item> :
                                 <Menu.Item onClick={this.navigate} key="/">Login</Menu.Item>}

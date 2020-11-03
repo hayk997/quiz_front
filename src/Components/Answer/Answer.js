@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Col, Row, Typography, Slider} from "antd"
+import {Col, Row, Typography, Slider, Progress} from "antd"
 import {connect} from 'react-redux'
 import {withRouter} from "react-router-dom"
 import axios from "axios";
@@ -15,7 +15,7 @@ class Answer extends Component {
         this.state = {
             visible: false,
             questions: {},
-            currentPage: '0',
+            currentPage: 0,
             lastPage: 10,
             loading:true,
             answers:{},
@@ -48,9 +48,9 @@ class Answer extends Component {
                 [this.state.currentPage]:e,
             },
             points:e===this.state.answer.answers[this.state.currentPage]?this.state.points+1:this.state.points,
-            currentPage:(parseInt(this.state.currentPage)+1).toString()
+            currentPage:this.state.currentPage+1
         },()=>{
-            if(parseInt(this.state.currentPage)+1>=this.state.questions.count){
+            if(this.state.currentPage>=this.state.questions.count){
                 axios.request({
                     url:api.setup.create.url,
                     method:api.setup.create.method,
@@ -71,28 +71,15 @@ class Answer extends Component {
 
     }
     render() {
-        const newArr=this.state.questions.content?(Object.keys(this.state.questions.content).map(key=>+key+1)):{}
-        console.log(newArr)
-        let marks={}
-        for(let key in newArr){
-            marks[+newArr[key]]=Number(key)+1
-        }
-        console.log(marks)
+
         return (
             <Row>
                 <Col lg={{span: 14, offset: 5}}>
-                    {this.state.loading?<Preloader/>:parseInt(this.state.currentPage)+1>=this.state.questions.count?<h1>Test Succesfully created</h1>:<Row>
+                    {this.state.loading?<Preloader/>:this.state.currentPage>=this.state.questions.count?<h1>Test Succesfully created</h1>:<Row>
                         <Col className={'centered'} lg={24}> <Typography.Title
                             level={2}>{this.state.questions.title}</Typography.Title></Col>
                         <Col lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}} sm={24} xs={24}>
-                            <Slider
-                                marks={marks}
-                                disabled
-                                min={1}
-                                max={marks[Object.keys(marks).length]}
-                                defaultValue={1}
-                                value={this.state.currentPage+1}
-                            />
+                            <Progress percent={parseInt((this.state.currentPage/this.state.questions.count)*100)} />
                         </Col>
                         <Row>
                             <Col lg={24} className={'questionBlock'}>
