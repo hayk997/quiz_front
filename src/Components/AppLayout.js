@@ -70,6 +70,7 @@ class AppLayout extends Component {
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/stats/:id" component={AnswerStats}/>
 
                                              <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
+                                            <Route exact path="/login" > {this.props.state.auth.token ?<Redirect to="/profile" />:<Login/>}</Route>
                                             <Route exact path="/reg" component={Registration}/>
                                         </Switch>
                         </Content>

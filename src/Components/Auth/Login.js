@@ -6,7 +6,7 @@ import axios from "axios";
 import api from "../../api"
 import './styles.sass'
 import logo from '../../dist/images/mainLogo.png'
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 
 class Login extends Component {
@@ -45,7 +45,6 @@ class Login extends Component {
         })
     }
     componentWillUnmount() {
-
     }
 
     render() {
@@ -56,39 +55,37 @@ class Login extends Component {
                             <div style={{marginBottom:'10%'}}>
                                 <img style={{height:'60px'}} alt='logo' src={logo} className='logoLogin'/>
                             </div>
-                        <Form onFinish={this.handleLogin} className="login-form">
-                            <Form.Item name={'email'} rules={[{
-                                required: true,
-                                message: 'Please enter email address'
-                            }]}>
+                            <Form onFinish={this.handleLogin} className="login-form">
+                                <Form.Item name={'email'} rules={[{
+                                    required: true,
+                                    message: 'Please enter email address'
+                                }]}>
 
-                                <Input prefix={<MailOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                       disabled={this.state.loading}
-                                       placeholder="email"/>
-                            </Form.Item>
-                            <Form.Item name={'password'} rules={[{
-                                required: true,
-                                message: 'Please enter your password'
-                            }]}>
-                                <Input prefix={<LockOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                       type="password"
-                                       disabled={this.state.loading}
-                                       placeholder={"Password"}/>
-                            </Form.Item>
-                            <Button type="primary" icon={<UserOutlined/>} htmlType="submit" className="block"
-                                    loading={this.state.loading}>Login</Button>
-                            <Divider orientation='center'/>
-                            <div className='regBlock'><h3>Нет аккаунта? Зарегистрируйтесь</h3>
-                                <Button className='regButton' style={{backgroundColor:'#42b72a'}} icon={<UserOutlined />}>
-                                <Link to='/reg'>Регистация</Link>
-                                </Button>
-                            </div>
-                        </Form>
+                                    <Input prefix={<MailOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                           disabled={this.state.loading}
+                                           placeholder="email"/>
+                                </Form.Item>
+                                <Form.Item name={'password'} rules={[{
+                                    required: true,
+                                    message: 'Please enter your password'
+                                }]}>
+                                    <Input prefix={<LockOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                           type="password"
+                                           disabled={this.state.loading}
+                                           placeholder={"Password"}/>
+                                </Form.Item>
+                                <Button type="primary" icon={<UserOutlined/>} htmlType="submit" className="block"
+                                        loading={this.state.loading}>Login</Button>
+                                <Divider orientation='center'/>
+                                <div className='regBlock'><h3>Нет аккаунта? Зарегистрируйтесь</h3>
+                                    <Button className='regButton' style={{backgroundColor:'#42b72a'}} icon={<UserOutlined />}>
+                                        <Link to='/reg'>Регистация</Link>
+                                    </Button>
+                                </div>
+                            </Form>
                         </div>
                     </Col>
                 </Row>
-
-
 
         )
     }

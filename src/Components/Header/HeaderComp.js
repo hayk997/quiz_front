@@ -76,9 +76,10 @@ class HeaderComp extends Component {
                             <img alt='logo' src={logo} className='mainLogo'/>
                         </Link>
                     </Col>
-                    <Col xs={18} sm={18} md={16} lg={12} xl={14}>
+                    <Col  xs={18} sm={18} md={16} lg={12} xl={14}>
                         <Menu theme="dark" mode="horizontal">
                             {this.props.state.auth.token && <Select
+                                className="headerSearch"
                                 style={{ width: 200 }}
                                 showSearch={true}
                                 notFoundContent={this.state.fetching ?
@@ -92,7 +93,7 @@ class HeaderComp extends Component {
                                 {this.state.users.length?this.state.users.map(user =>
                                     <Select.Option  key={user.id}
                                                    name={user.username}
-                                                   value={user.id}><Avatar style={{borderRadius:'100%',margin:'0 10px'}} size={25} src={user.imageURL?user.imageURL:AvatarImg}/>{user.username}</Select.Option>
+                                                    value={user.id}><Avatar style={{borderRadius:'100%',margin:'0 10px'}} size={25} src={user.imageURL?user.imageURL:AvatarImg}/><span className='searchNameSpan'>{user.username}</span></Select.Option>
                                 ):<Empty/>}
                             </Select>}
                             {this.props.state.auth.token ?
