@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {withRouter} from "react-router-dom"
 import axios from "axios";
 import '../Quizes/styles.sass'
+import '../Quizes/styles.sass'
 import api from "../../api";
 import img from "../../dist/images/a.jpg";
 import Preloader from "../Preloader";
@@ -41,13 +42,22 @@ class Answer extends Component {
             })
         })
     }
-    handleSelect = (e) =>{
-        this.setState({
+    handleSelect = (e,key) =>{
+        console.log(key)
+        console.log(this.state.answer.answers[this.state.currentPage])
+        //debugger
+        if(key===this.state.answer.answers[this.state.currentPage]){
+            e.currentTarget.classList.add("trueAnswer")
+        }
+        else{
+            e.currentTarget.classList.add("wrongAnswer")
+        }
+        setTimeout(()=>this.setState({
             answers:{
                 ...this.state.answers,
-                [this.state.currentPage]:e,
+                [this.state.currentPage]:key,
             },
-            points:e===this.state.answer.answers[this.state.currentPage]?this.state.points+1:this.state.points,
+            points:key===this.state.answer.answers[this.state.currentPage]?this.state.points+1:this.state.points,
             currentPage:this.state.currentPage+1
         },()=>{
             if(this.state.currentPage>=this.state.questions.count){
@@ -66,9 +76,7 @@ class Answer extends Component {
                     console.log(response)
                 })
             }
-        })
-
-
+        }),5000)
     }
     render() {
 
@@ -91,7 +99,7 @@ class Answer extends Component {
                             </Col>
                             <Col lg={24}>
                                 <Row>
-                                    {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} className={this.state.answer.answers[this.state.currentPage]===key?'cardColumn':'cardColumnIncorrect'} onClick={()=>this.handleSelect(key)} xs={24} sm={24} md={12}
+                                    {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} onClick={(e)=>this.handleSelect(e,key)} xs={24} sm={24} md={12}
                                                                                                                               lg={12} xl={12}>
                                         <Row className={'centered'}>
                                             <Col lg={24} md={24} sm={24} xs={24}><img className={'cardCover'}

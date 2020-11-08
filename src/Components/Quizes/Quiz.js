@@ -33,7 +33,7 @@ class Quiz extends Component {
             })
         })
     }
-    handleSelect = (e) =>{
+    handleSelect = (key,e) =>{
         this.setState({
             answers:{
                 ...this.state.answers,
@@ -77,7 +77,7 @@ class Quiz extends Component {
                             </Col>
                                     <Col lg={24}>
                                         <Row>
-                                            {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} className={'cardColumn'} onClick={()=>this.handleSelect(key)} xs={24} sm={24} md={12}
+                                            {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} className={'cardColumn'} onClick={(e)=>this.handleSelect(key,e)} xs={24} sm={24} md={12}
                                                                                                   lg={12} xl={12}>
                                                 <Row className={'centered'}>
                                                     <Col lg={24} md={24} sm={24} xs={24}><img className={'cardCover'}

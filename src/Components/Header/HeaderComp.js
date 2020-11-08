@@ -76,7 +76,7 @@ class HeaderComp extends Component {
                             <img alt='logo' src={logo} className='mainLogo'/>
                         </Link>
                     </Col>
-                    <Col  xs={18} sm={18} md={16} lg={12} xl={14}>
+                    <Col xs={18} sm={18} md={16} lg={12} xl={14}>
                         <Menu theme="dark" mode="horizontal">
                             {this.props.state.auth.token && <Select
                                 className="headerSearch"
@@ -93,48 +93,48 @@ class HeaderComp extends Component {
                                 {this.state.users.length?this.state.users.map(user =>
                                     <Select.Option  key={user.id}
                                                    name={user.username}
-                                                    value={user.id}><Avatar style={{borderRadius:'100%',margin:'0 10px'}} size={25} src={user.imageURL?user.imageURL:AvatarImg}/><span className='searchNameSpan'>{user.username}</span></Select.Option>
+                                                    value={user.id}><Avatar style={{borderRadius:'100%',margin:'0 10px'}} size={25} src={user.imageURL?process.env.REACT_APP_API_ENDPOINT+user.imageURL:AvatarImg}/><span className='searchNameSpan'>{user.username}</span></Select.Option>
                                 ):<Empty/>}
                             </Select>}
                             {this.props.state.auth.token ?
-                                <Menu.Item onClick={this.props.onLogout} key="/logout">LOGOUT</Menu.Item> :
-                                <Menu.Item onClick={this.navigate} key="/">Login</Menu.Item>}
-                            {this.props.state.auth.token ?
-                                <Menu.Item onClick={this.navigate} key="/profile">My profile</Menu.Item> :
+                                <Menu.Item style={{marginLeft:'2%'}} onClick={this.navigate} key="/profile">My profile</Menu.Item> :
                                 <Menu.Item onClick={this.navigate} key="/reg">Registration</Menu.Item>}
                             {this.props.state.auth.token && <Menu.Item ><NavLink to="/quizes">Quizes</NavLink></Menu.Item>}
+                            {this.props.state.auth.token ?
+                                <Menu.Item onClick={this.props.onLogout} key="/logout">LOGOUT</Menu.Item> :
+                                <Menu.Item onClick={this.navigate} key="/">Login</Menu.Item>}
                         </Menu>
                     </Col>
-                    {this.props.state.auth.token &&<Col xs={2} sm={2} md={4} lg={6} xl={6}>
-                        <MenuOutlined style={{fontSize:'25px',color:'#b9b9b9'}} onClick={this.showDrawer}/>
-                        <Drawer
-                            title="Basic Drawer"
-                            placement='left'
-                            closable={true}
-                            onClose={this.onClose}
-                            visible={this.state.visible}
-                        >
-                            <Sider width={250} className="site-layout-background">
-                                <Menu
-                                    theme='dark'
-                                    mode="inline"
-                                    defaultSelectedKeys={['1']}
-                                    defaultOpenKeys={['sub1']}
-                                    style={{ height: '100%', borderRight: 0 }}
-                                >
-                                    <Menu.Item key="1">My apps</Menu.Item>
-                                    <SubMenu key="sub1" icon={<UserOutlined />} title="My apps">
+                    {/*{this.props.state.auth.token &&<Col xs={2} sm={2} md={4} lg={6} xl={6}>*/}
+                    {/*    <MenuOutlined style={{fontSize:'25px',color:'#b9b9b9'}} onClick={this.showDrawer}/>*/}
+                    {/*    <Drawer*/}
+                    {/*        title="Basic Drawer"*/}
+                    {/*        placement='left'*/}
+                    {/*        closable={true}*/}
+                    {/*        onClose={this.onClose}*/}
+                    {/*        visible={this.state.visible}*/}
+                    {/*    >*/}
+                    {/*        <Sider width={250} className="site-layout-background">*/}
+                    {/*            <Menu*/}
+                    {/*                theme='dark'*/}
+                    {/*                mode="inline"*/}
+                    {/*                defaultSelectedKeys={['1']}*/}
+                    {/*                defaultOpenKeys={['sub1']}*/}
+                    {/*                style={{ height: '100%', borderRight: 0 }}*/}
+                    {/*            >*/}
+                    {/*                <Menu.Item key="1">My apps</Menu.Item>*/}
+                    {/*                <SubMenu key="sub1" icon={<UserOutlined />} title="My apps">*/}
 
-                                        <Menu.Item key="2"><NavLink to='/psytest'> Psychology Test </NavLink></Menu.Item>
-                                        {this.props.state.auth.user.isAdmin&&<Menu.Item key="3"><NavLink to='/upload'> Upload </NavLink></Menu.Item>}
-                                        <Menu.Item key="4">option4</Menu.Item>
-                                    </SubMenu>
+                    {/*                    <Menu.Item key="2"><NavLink to='/psytest'> Psychology Test </NavLink></Menu.Item>*/}
+                    {/*                    {this.props.state.auth.user.isAdmin&&<Menu.Item key="3"><NavLink to='/upload'> Upload </NavLink></Menu.Item>}*/}
+                    {/*                    <Menu.Item key="4">option4</Menu.Item>*/}
+                    {/*                </SubMenu>*/}
 
-                                </Menu>
-                            </Sider>
-                        </Drawer>
-                    </Col>
-                    }
+                    {/*            </Menu>*/}
+                    {/*        </Sider>*/}
+                    {/*    </Drawer>*/}
+                    {/*</Col>*/}
+                    {/*}*/}
                 </Row>
             </Header>
         )

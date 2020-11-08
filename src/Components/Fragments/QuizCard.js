@@ -20,7 +20,7 @@ class Profile extends Component {
     render() {
         return (
             <NavLink
-                to={this.props.link + this.props.question.id}> <Card
+                to={this.props.link + this.props.aId}> <Card
                 cover={
                     <img
                         alt="example"

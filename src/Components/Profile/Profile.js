@@ -76,12 +76,6 @@ class Profile extends Component {
             })
         }
     };
-    onFinish= values => {
-        console.log('Success:', values);
-    };
-    onChange = ({ target: { value } }) => {
-        this.setState({ value });
-    };
     render() {
         const uploadButton = (
             <div>
@@ -116,35 +110,11 @@ class Profile extends Component {
                 }
                 <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
             </Col>
-               <Col className='centered' lg={{span:12,offset:6}}>
-                   <div className='statusBlock'>
-                       <Form
-                           layout='horizontal'
-                           name='postForm'
-                           onFinish={this.onFinish}
-                           initialValues={{ remember: true }}>
-                           <Form.Item>
-                               <TextArea
-                                   onChange={this.onChange}
-                                   value={this.state.status}
-                                   name='postText'
-                                   autoSize={{ minRows: 2, maxRows: 4 }}
-                                   placeholder="О чем вы думаете?"
-                               />
-                           </Form.Item>
-                           <Form.Item>
-                               <Button type="primary" htmlType="submit">
-                                   Create post
-                               </Button>
-                           </Form.Item>
-                       </Form>
-                   </div>
-               </Col>
                 <Col lg={24}>
                     <Typography.Title level={4}>My apps</Typography.Title>
                 </Col>
                 {this.state.user.answers.length?
-                    this.state.user.answers.map((answer,key)=> <QuizCard link={'/stats/'}  question={answer.question} />):null
+                    this.state.user.answers.map((answer,key)=> <QuizCard link={`/stats/`} aId={answer.id} question={answer.question} />):null
                 }
             </Row>
         )
