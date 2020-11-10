@@ -15,26 +15,7 @@ class Registration extends Component {
 
         }
     }
-    handleRegFacebook = (response) => {
-        if(response.accessToken) {
-            console.log(response)
-            axios.request( {
-                url:api.auth.facebook.url,
-                headers:{
 
-                },
-                method: api.auth.facebook.method,
-                data: {
-                    access_token:response.accessToken
-                }
-            }).then(response=>{
-                this.props.onLogin(response.data)
-                return <Redirect to='/profile'/>
-            }).catch(err=>{
-                console.log(err)
-            })
-        }
-    }
 
     handleRegistration = (formData)=>{
         axios.request( {
@@ -47,7 +28,7 @@ class Registration extends Component {
         }).then(response=> {
             this.props.onLogin(response.data)
         })
-        }
+    }
     render() {
         return (
                 <Row className={'content-aligned'}>
@@ -131,14 +112,7 @@ class Registration extends Component {
                                 <Input.Password />
                             </Form.Item>
                                 <Form.Item >
-                                    <FacebookLogin
-                                        appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-                                        fields="name,email,picture"
-                                        cssClass="hidden"
-                                        callback={this.handleRegFacebook}/>
-                                    <Button style={{margin:'0px 15px'}} onClick={() => document.getElementsByClassName('hidden')[0].click()} type="primary" >
-                                        Register with Facebook
-                                    </Button>
+
                                     <Button type="primary" htmlType="submit">
                                         Register
                                     </Button>

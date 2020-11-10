@@ -1,12 +1,13 @@
 import React,{Component} from "react";
 import {Col, Row, Button, Input, Form, notification, Divider} from "antd";
-import {UserOutlined, LockOutlined, MailOutlined} from "@ant-design/icons";
+import {UserOutlined, LockOutlined, MailOutlined,FacebookOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api"
 import './styles.sass'
 import logo from '../../dist/images/mainLogo.png'
 import {Link, Redirect} from "react-router-dom";
+import FacebookLogin from "react-facebook-login";
 
 
 class Login extends Component {
@@ -44,9 +45,26 @@ class Login extends Component {
             })
         })
     }
-    componentWillUnmount() {
-    }
+    handleRegFacebook = (response) => {
+        if(response.accessToken) {
+            console.log(response)
+            axios.request( {
+                url:api.auth.facebook.url,
+                headers:{
 
+                },
+                method: api.auth.facebook.method,
+                data: {
+                    access_token:response.accessToken
+                }
+            }).then(response=>{
+                this.props.onLogin(response.data)
+                return <Redirect to='/profile'/>
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+    }
     render() {
         return (
                 <Row className={'content-aligned login'}>
@@ -55,34 +73,20 @@ class Login extends Component {
                             <div style={{marginBottom:'10%'}}>
                                 <img style={{height:'60px'}} alt='logo' src={logo} className='logoLogin'/>
                             </div>
-                            <Form onFinish={this.handleLogin} className="login-form">
-                                <Form.Item name={'email'} rules={[{
-                                    required: true,
-                                    message: 'Please enter email address'
-                                }]}>
-
-                                    <Input prefix={<MailOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                           disabled={this.state.loading}
-                                           placeholder="email"/>
-                                </Form.Item>
-                                <Form.Item name={'password'} rules={[{
-                                    required: true,
-                                    message: 'Please enter your password'
-                                }]}>
-                                    <Input prefix={<LockOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                           type="password"
-                                           disabled={this.state.loading}
-                                           placeholder={"Password"}/>
-                                </Form.Item>
-                                <Button type="primary" icon={<UserOutlined/>} htmlType="submit" className="block"
-                                        loading={this.state.loading}>Login</Button>
+                                <FacebookLogin
+                                    appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                                    fields="name,email,picture"
+                                    cssClass="hidden"
+                                    callback={this.handleRegFacebook}/>
+                                <Button className={'login-button'} icon={<FacebookOutlined/>} style={{margin:'0px 15px'}} onClick={() => document.getElementsByClassName('hidden')[0].click()} type="primary" >
+                                    Login with Facebook
+                                </Button>
                                 <Divider orientation='center'/>
                                 <div className='regBlock'><h3>Нет аккаунта? Зарегистрируйтесь</h3>
                                     <Button className='regButton' style={{backgroundColor:'#42b72a'}} icon={<UserOutlined />}>
                                         <Link to='/reg'>Регистация</Link>
                                     </Button>
                                 </div>
-                            </Form>
                         </div>
                     </Col>
                 </Row>

@@ -60,11 +60,11 @@ class Quizes extends Component {
                   <Typography.Title level={4}>Tests</Typography.Title><Row>
                       {this.state.questions.data && this.state.questions.data.length?
                           this.state.questions.data.map((question,key)=><Col  key={key} lg={4}>
-                              <QuizCard link={'/quizes/'} question={question}/>
+                              <QuizCard link={'/quizes/'} aId={question.id} question={question}/>
                           </Col>):null
                       }
                   </Row>
-                  <Pagination onChange={this.handlePageChange} current={parseInt(this.state.questions.pagination.currentPage)} pageSize={this.state.questions.pagination.perPage} total={this.state.questions.pagination.totalItems} />
+                  <Pagination style={{marginTop:'20px',textAlign:'center'}} onChange={this.handlePageChange} current={parseInt(this.state.questions.pagination.currentPage)} pageSize={this.state.questions.pagination.perPage} total={this.state.questions.pagination.totalItems} />
               </Col>  }
 
           </Row>
