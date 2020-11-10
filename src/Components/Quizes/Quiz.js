@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import  {Col,Progress, Row, Typography, Slider} from "antd"
+import {Alert, Col, Progress, Row, Typography, Slider, Button} from "antd"
 import {connect} from 'react-redux'
 import {withRouter} from "react-router-dom"
 import axios from "axios";
@@ -18,7 +18,8 @@ class Quiz extends Component {
             currentPage: 0,
             lastPage: 10,
             loading:true,
-            answers:{}
+            answers:{},
+            quizId:null
         }
     }
 
@@ -53,7 +54,9 @@ class Quiz extends Component {
                         questionId:this.props.match.params.id
                     }
                 }).then(response=>{
-                    console.log(response)
+                    this.setState({
+                        quizId:response.data.id
+                    })
                 })
             }
         })
@@ -62,7 +65,13 @@ class Quiz extends Component {
         return (
             <Row>
                 <Col lg={{span: 14, offset: 5}}>
-                    {this.state.loading?<Preloader/>:this.state.currentPage>=this.state.questions.count?<h1>Test Succesfully created</h1>:<Row>
+                    {this.state.loading?<Preloader/>:this.state.currentPage>=this.state.questions.count?<Alert
+                        style={{marginTop:'50px'}}
+                        message="Test Successfully created"
+                        description={<>You can view your test <Button onClick={()=>this.props.history.push('/stats/'+this.state.quizId)} type={'link'}>HERE</Button> </>}
+                        type="success"
+                        showIcon
+                    />:<Row>
                         <Col className={'centered'} lg={24}> <Typography.Title
                             level={2}>{this.state.questions.title}</Typography.Title></Col>
                         <Col lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}} sm={24} xs={24}>

@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Avatar, Button, Col, Row, Layout, Image,Card} from "antd"
+import {Avatar, Button, Col, Row, Layout, Image, Card, Divider} from "antd"
 import {Table} from 'antd'
 import {Link, withRouter} from "react-router-dom"
 import axios from 'axios'
@@ -10,6 +10,7 @@ import './styles.sass'
 import avatar from '../../dist/images/avatar.png'
 import {Typography} from 'antd';
 import img from "../../dist/images/a.jpg";
+import {CaretRightOutlined} from '@ant-design/icons';
 
 const {Title} = Typography;
 const {Meta} = Card;
@@ -56,33 +57,32 @@ class AnswerStats extends Component {
 
         return (
             this.state.loading ? <Preloader/> :
-                <Content>
+                <Content className={'answer-stats'}>
                     <Row className='stats'>
-                        <Col style={{textAlign: 'center'}} lg={{span: 4, offset: 10}}>
-                            <Card
-                                hoverable
-                                cover={<img alt="questionImage"
-                                            src={process.env.REACT_APP_API_ENDPOINT + this.state.data.question.imageURL}/>}
-                            >
-                                <Meta title={this.state.data.question.title}/>
-                            </Card>
+                        <Col style={{textAlign: 'center',marginBottom:'25px'}} lg={{span: 4, offset: 10}}>
+                            <Title level={1}>{this.state.data.question.title}</Title>
+                           <img alt="questionImage"
+                                            src={process.env.REACT_APP_API_ENDPOINT + this.state.data.question.imageURL}/>
+
                         </Col>
                         <Col style={{textAlign: 'center'}} lg={24}>
                             <Title level={2}>Насколько хорошо знаете
                                 пользователя {this.state.data.user.username}?</Title>
+                            <Divider/>
                             <Link to={`/answers/${this.props.match.params.id}`}>
-                                <Button>
+                                <Button type={'primary'} icon={<CaretRightOutlined />} className={'start-button'}>
                                     Перейти в вопросам
                                 </Button>
                             </Link>
+                            <Divider/>
                             <Table columns={columns} rowKey={'id'} dataSource={this.state.data.setups}/>
                         </Col>
-                        <Col lg={24}>
+                        {Object.keys(this.state.data.userId).length ?<Col lg={24}>
                             <Title level={3}>
                                 What People think About you
                             </Title>
 
-                            {Object.keys(this.state.data.userId).length && Object.keys(this.state.data.question.content).map((key,index) => {
+                            {Object.keys(this.state.data.question.content).map((key,index) => {
                                 let statistics = this.state.data.userId[key];
                                 let sortedStats = [];
                                 for (let stat in statistics) {
@@ -107,7 +107,7 @@ class AnswerStats extends Component {
                                     </Col>
                                 </Row>
                             })}
-                        </Col>
+                        </Col>:null}
                     </Row>
                 </Content>
         )

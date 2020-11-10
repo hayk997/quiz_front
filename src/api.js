@@ -69,6 +69,11 @@ const api = {
         find: {
             url: `${endpoint}users?username=`,
             method: "GET"
+        },
+        check:{
+            url: `${endpoint}usernamecheck`,
+            method: "POST"
+
         }
     }
 }

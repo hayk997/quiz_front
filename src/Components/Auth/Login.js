@@ -14,7 +14,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading:false
+            loading:false,
+            userData:{}
         }
     }
     handleLogin = (formData)=>{
@@ -58,12 +59,31 @@ class Login extends Component {
                     access_token:response.accessToken
                 }
             }).then(response=>{
-                this.props.onLogin(response.data)
-                return <Redirect to='/profile'/>
+                if(response.data.userData){
+                    this.setState({
+                        userData:response.data.userData
+                    })
+                }else{
+                    this.props.onLogin(response.data)
+                    return <Redirect to='/profile'/>
+                }
+
             }).catch(err=>{
                 console.log(err)
             })
         }
+    }
+    handleCheckAvailability = (e)=>{
+
+      axios.request({
+          url:api.user.check.url,
+          method:api.user.check.method,
+          data: {username:e.target.value},
+      }).then(resp=>{
+          this.setState({
+              availability:resp.data.availability
+          })
+      })
     }
     render() {
         return (
@@ -78,9 +98,23 @@ class Login extends Component {
                                     fields="name,email,picture"
                                     cssClass="hidden"
                                     callback={this.handleRegFacebook}/>
-                                <Button className={'login-button'} icon={<FacebookOutlined/>} style={{margin:'0px 15px'}} onClick={() => document.getElementsByClassName('hidden')[0].click()} type="primary" >
+                            {this.state.userData.id?<Form>
+                                <Form.Item name={'username'} label={'Choose Username'} validateStatus={this.state.availability?'success':'error'} rules={[
+                                    {
+                                        required:true,
+                                    },
+                                    {
+                                        message:'min length 4',
+                                        min:4,
+                                    }
+                                ]}>
+                                    <Input onChange={this.handleCheckAvailability}/>
+                                </Form.Item>
+                                <Button htmlType={'submit'}>Register</Button>
+
+                            </Form>:   <Button className={'login-button'} icon={<FacebookOutlined/>} style={{margin:'0px 15px'}} onClick={() => document.getElementsByClassName('hidden')[0].click()} type="primary" >
                                     Login with Facebook
-                                </Button>
+                                </Button>}
                                 <Divider orientation='center'/>
                                 <div className='regBlock'><h3>Нет аккаунта? Зарегистрируйтесь</h3>
                                     <Button className='regButton' style={{backgroundColor:'#42b72a'}} icon={<UserOutlined />}>
