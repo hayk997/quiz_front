@@ -21,7 +21,8 @@ class Answer extends Component {
             loading:true,
             answers:{},
             answer:{},
-            points:0
+            points:0,
+            disabled:false
 
         }
     }
@@ -35,6 +36,7 @@ class Answer extends Component {
                 'cache-control':'no-cache'
             }
         }).then(response => {
+            console.log(response.data,'data')
             this.setState({
                 questions: response.data.question,
                 answer:response.data,
@@ -43,40 +45,46 @@ class Answer extends Component {
         })
     }
     handleSelect = (e,key) =>{
-        console.log(key)
-        console.log(this.state.answer.answers[this.state.currentPage])
-        //debugger
-        if(key===this.state.answer.answers[this.state.currentPage]){
-            e.currentTarget.classList.add("trueAnswer")
-        }
-        else{
-            e.currentTarget.classList.add("wrongAnswer")
-        }
-        setTimeout(()=>this.setState({
-            answers:{
-                ...this.state.answers,
-                [this.state.currentPage]:key,
-            },
-            points:key===this.state.answer.answers[this.state.currentPage]?this.state.points+1:this.state.points,
-            currentPage:this.state.currentPage+1
-        },()=>{
-            if(this.state.currentPage>=this.state.questions.count){
-                axios.request({
-                    url:api.setup.create.url,
-                    method:api.setup.create.method,
-                    headers:{
-                        'x-access-token':this.props.state.auth.token
-                    },
-                    data: {
-                        answers:this.state.answers,
-                        answerId:this.props.match.params.id,
-                        points:this.state.points
-                    }
-                }).then(response=>{
-                    console.log(response)
-                })
+        if(!this.state.disabled){
+            this.setState({
+                disabled:true
+            })
+
+            console.log(key,this.state.answer.answers)
+            if(key===this.state.answer.answers[this.state.currentPage]){
+                e.currentTarget.classList.add("trueAnswer")
+            }else{
+                e.currentTarget.classList.add("wrongAnswer")
             }
-        }),5000)
+
+            setTimeout(()=>this.setState({
+                answers:{
+                    ...this.state.answers,
+                    [this.state.currentPage]:key,
+                },
+                points:key===this.state.answer.answers[this.state.currentPage]?this.state.points+1:this.state.points,
+                currentPage:this.state.currentPage+1,
+                disabled:false
+            },()=>{
+                if(this.state.currentPage>=this.state.questions.count){
+                    axios.request({
+                        url:api.setup.create.url,
+                        method:api.setup.create.method,
+                        headers:{
+                            'x-access-token':this.props.state.auth.token
+                        },
+                        data: {
+                            answers:this.state.answers,
+                            answerId:this.props.match.params.id,
+                            points:this.state.points
+                        }
+                    }).then(response=>{
+                        console.log(response)
+                    })
+                }
+            }),800)
+        }
+
     }
     render() {
 
@@ -99,7 +107,7 @@ class Answer extends Component {
                             </Col>
                             <Col lg={24}>
                                 <Row>
-                                    {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key} onClick={(e)=>this.handleSelect(e,key)} xs={24} sm={24} md={12}
+                                    {this.state.questions.content[this.state.currentPage].questions.map((switches,key)=> <Col key={key+switches.title} className={'cardColumn'} onClick={(e)=>this.handleSelect(e,key)} xs={24} sm={24} md={12}
                                                                                                                               lg={12} xl={12}>
                                         <Row className={'centered'}>
                                             <Col lg={24} md={24} sm={24} xs={24}><img className={'cardCover'}
@@ -107,7 +115,6 @@ class Answer extends Component {
                                             <Col lg={24} md={24} sm={24} xs={24} style={{fontSize: '20px'}}>{switches.title}</Col>
                                         </Row>
                                     </Col>)}
-
                                 </Row>
                             </Col>
                         </Row>

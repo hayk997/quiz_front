@@ -1,9 +1,7 @@
 import React, {Component} from "react";
 import {Card} from "antd";
 import {
-
-    EditOutlined,
-    EllipsisOutlined,
+    CheckCircleOutlined,
     EyeOutlined
 } from "@ant-design/icons";
 import {connect} from 'react-redux'
@@ -20,7 +18,15 @@ class Profile extends Component {
     render() {
         return (
             <NavLink
-                to={this.props.link + this.props.aId}> <Card
+                to={this.props.link + this.props.aId}>
+                <Card
+                    actions={[<>
+                        <EyeOutlined />50
+                        </>,
+                        <>
+                            <CheckCircleOutlined />40
+                        </>
+                    ]}
                 cover={
                     <img
                         alt="example"

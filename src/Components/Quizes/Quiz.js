@@ -34,11 +34,11 @@ class Quiz extends Component {
             })
         })
     }
-    handleSelect = (key,e) =>{
+    handleSelect = (key) =>{
         this.setState({
             answers:{
                 ...this.state.answers,
-                [this.state.currentPage]:e
+                [this.state.currentPage]:key
             },
             currentPage:this.state.currentPage+1
         },()=>{
