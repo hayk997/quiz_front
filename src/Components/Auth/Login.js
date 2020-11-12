@@ -48,13 +48,9 @@ class Login extends Component {
     }
     handleRegFacebook = (response) => {
         if(response.accessToken) {
-            console.log(response)
             axios.request( {
-                url:api.auth.facebook.url,
-                headers:{
-
-                },
-                method: api.auth.facebook.method,
+                url:api.auth.facebook.login.url,
+                method: api.auth.facebook.login.method,
                 data: {
                     access_token:response.accessToken
                 }
@@ -85,6 +81,30 @@ class Login extends Component {
           })
       })
     }
+    handleRegUser = formData=>{
+        if(this.state.userData.accessToken) {
+            axios.request( {
+                url:api.auth.facebook.reg.url,
+                method: api.auth.facebook.reg.method,
+                data: {
+                    access_token:this.state.userData.accessToken,
+                    userName:formData.username
+                }
+            }).then(response=>{
+                if(response.data.userData){
+                    this.setState({
+                        userData:response.data.userData
+                    })
+                }else{
+                    this.props.onLogin(response.data)
+                    return <Redirect to='/profile'/>
+                }
+
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+    }
     render() {
         return (
                 <Row className={'content-aligned login'}>
@@ -98,20 +118,33 @@ class Login extends Component {
                                     fields="name,email,picture"
                                     cssClass="hidden"
                                     callback={this.handleRegFacebook}/>
-                            {this.state.userData.id?<Form>
-                                <Form.Item name={'username'} label={'Choose Username'} validateStatus={this.state.availability?'success':'error'} rules={[
+                            {this.state.userData.id?<Form onFinish={this.handleRegUser}>
+                                <Form.Item name={'username'} label={'Choose Username'} rules={[
                                     {
-                                        required:true,
-                                    },
-                                    {
-                                        message:'min length 4',
-                                        min:4,
+                                        validator:(rule, value, callback)=>{
+                                            if(!value){
+                                                callback('Username is Required')
+                                            }
+                                            if(!this.state.availability){
+                                                callback('Registered Username')
+                                            }
+                                            if(value.length<4){
+                                                callback('Min length')
+                                            }
+                                            if(!value.match(/^\S*$/)){
+                                                callback('No spaces Allowed')
+                                            }
+                                            callback()
+
+                                        }
                                     }
+
                                 ]}>
                                     <Input onChange={this.handleCheckAvailability}/>
                                 </Form.Item>
-                                <Button htmlType={'submit'}>Register</Button>
-
+                                <Form.Item>
+                                    <Button htmlType={'Submit'}>Register</Button>
+                                </Form.Item>
                             </Form>:   <Button className={'login-button'} icon={<FacebookOutlined/>} style={{margin:'0px 15px'}} onClick={() => document.getElementsByClassName('hidden')[0].click()} type="primary" >
                                     Login with Facebook
                                 </Button>}
