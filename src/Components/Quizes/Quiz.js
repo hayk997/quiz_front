@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Alert, Col, Progress, Row, Typography, Slider, Button} from "antd"
+import {Alert, Col, Progress, Row, Typography, Button} from "antd"
 import {connect} from 'react-redux'
 import {withRouter} from "react-router-dom"
 import axios from "axios";
@@ -25,9 +25,13 @@ class Quiz extends Component {
 
     componentDidMount() {
         axios.request({
-            url: api.question.single.url + this.props.match.params.id,//for pagination add ?page=2
+            url: api.question.single.url + this.props.match.params.id+(this.props.state.views['quiz']?.includes(this.props.match.params.id)?'?c=1':''),//for pagination add ?page=2
             method: api.question.single.method
         }).then(response => {
+            this.props.view({
+                page:'quiz',
+                id:this.props.match.params.id
+            })
             this.setState({
                 questions: response.data,
                 loading:false
@@ -115,6 +119,12 @@ export default connect(
         onLogout: () => {
             dispatch({
                 type: "LOGOUT",
+            })
+        },
+        view: (payload) => {
+            dispatch({
+                type: "VIEW_PAGE",
+                payload
             })
         },
     })

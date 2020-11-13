@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
 import {Redirect, Route, Switch} from "react-router-dom";
 import Login from "./Auth/Login";
-import Registration from "./Auth/Registration";
 import Profile from "./Profile/Profile";
 import UploadAnswerImage from "./Upload/Upload";
 import Quizes from "./Quizes/Quizes";
@@ -15,13 +14,12 @@ const { Content} = Layout;
 /**
  *
  * @param Component
- * @param rest
  * @param isLoggedIn
  * @returns {*}
  * @constructor
  * private routes only for logged users
  */
-const PrivateRoute = ({ component: Component, ...rest }, isLoggedIn) => (
+const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
         {...rest}
         render={props =>
@@ -68,10 +66,8 @@ class AppLayout extends Component {
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes/:id" component={Quiz}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/answers/:id" component={Answer}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/stats/:id" component={AnswerStats}/>
-
-                                             <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
+                                            <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
                                             <Route exact path="/login" > {this.props.state.auth.token ?<Redirect to="/profile" />:<Login/>}</Route>
-                                            <Route exact path="/reg" component={Registration}/>
                                         </Switch>
                         </Content>
                     </Layout>

@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Avatar, Button, Col, Row, Layout, Image, Card, Divider} from "antd"
+import {Avatar, Button, Col, Row, Layout, Image, Divider} from "antd"
 import {Table} from 'antd'
 import {Link, withRouter} from "react-router-dom"
 import axios from 'axios'
@@ -13,7 +13,7 @@ import img from "../../dist/images/a.jpg";
 import {CaretRightOutlined} from '@ant-design/icons';
 
 const {Title} = Typography;
-const {Meta} = Card;
+
 const {Content} = Layout
 
 class AnswerStats extends Component {
@@ -27,7 +27,7 @@ class AnswerStats extends Component {
 
     componentDidMount() {
         axios.request({
-            url: api.answers.data.url + this.props.match.params.id,//for pagination add ?page=2
+            url: api.answers.data.url + this.props.match.params.id+(this.props.state.views['answer']?.includes(this.props.match.params.id)?'?c=1':''),
             method: api.answers.data.method,
             headers: {
                 'x-access-token': this.props.state.auth.token,
@@ -35,6 +35,10 @@ class AnswerStats extends Component {
             }
         }).then(res => res.data)
             .then(data => this.setState({loading: false, data: data}))
+        this.props.view({
+            page:'answer',
+            id:this.props.match.params.id
+        })
     }
 
     render() {
@@ -118,5 +122,12 @@ export default connect(
     state => ({
         state
     }),
-    dispatch => ({})
+    dispatch  => ({
+        view: (payload) => {
+            dispatch({
+                type: "VIEW_PAGE",
+                payload
+            })
+        },
+    })
 )(withRouter(AnswerStats))

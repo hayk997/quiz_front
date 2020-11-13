@@ -1,9 +1,7 @@
 import React, {Component} from "react"
-import  {Col, Empty, Spin, Select, Layout, Menu, Row, Drawer, Input, Avatar} from "antd"
+import  {Col, Empty, Spin, Select, Layout, Menu, Row, Avatar} from "antd"
 import {connect} from 'react-redux'
 import {Link, NavLink, withRouter} from "react-router-dom"
-import {UserOutlined} from "@ant-design/icons"
-import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined"
 import logo from '../../dist/images/mainLogo.png'
 import './styles.sass'
 import axios from "axios";
@@ -11,8 +9,8 @@ import api from "../../api";
 import AvatarImg from "../../dist/images/avatar-placeholder.png";
 
 const {Header} = Layout
-const { SubMenu } = Menu
-const { Sider } = Layout
+
+
 
 class HeaderComp extends Component {
     constructor(props) {
@@ -86,9 +84,14 @@ class HeaderComp extends Component {
                                     <Spin size="small"/> : null}
                                 onSearch={this.handleUserSearch}
                                 filterOption={true}
-                                allowClear={true}
                                 optionFilterProp={"name"}
-                                onChange={e=>this.props.history.push('/profile/'+e)}
+                                value={null}
+                                onChange={e=>{
+                                    this.setState({
+                                        users:[]
+                                    })
+                                    this.props.history.push('/profile/'+e)
+                                }}
                             >
                                 {this.state.users.length?this.state.users.map(user =>
                                     <Select.Option  key={user.id}
@@ -96,45 +99,13 @@ class HeaderComp extends Component {
                                                     value={user.id}><Avatar style={{borderRadius:'100%',margin:'0 10px'}} size={25} src={user.imageURL?process.env.REACT_APP_API_ENDPOINT+user.imageURL:AvatarImg}/><span className='searchNameSpan'>{user.username}</span></Select.Option>
                                 ):<Empty/>}
                             </Select>}
-                            {this.props.state.auth.token ?
-                                <Menu.Item style={{marginLeft:'2%'}} onClick={this.navigate} key="/profile">My profile</Menu.Item> :
-                                <Menu.Item onClick={this.navigate} key="/reg">Registration</Menu.Item>}
-                            {this.props.state.auth.token && <Menu.Item ><NavLink to="/quizes">Quizes</NavLink></Menu.Item>}
+                            {this.props.state.auth.token &&<Menu.Item style={{marginLeft:'2%'}} onClick={this.navigate} key="/profile">My profile</Menu.Item> }
+                            {this.props.state.auth.token &&<Menu.Item ><NavLink to="/quizes">Quizes</NavLink></Menu.Item>}
                             {this.props.state.auth.token ?
                                 <Menu.Item onClick={this.props.onLogout} key="/logout">LOGOUT</Menu.Item> :
                                 <Menu.Item onClick={this.navigate} key="/">Login</Menu.Item>}
                         </Menu>
                     </Col>
-                    {/*{this.props.state.auth.token &&<Col xs={2} sm={2} md={4} lg={6} xl={6}>*/}
-                    {/*    <MenuOutlined style={{fontSize:'25px',color:'#b9b9b9'}} onClick={this.showDrawer}/>*/}
-                    {/*    <Drawer*/}
-                    {/*        title="Basic Drawer"*/}
-                    {/*        placement='left'*/}
-                    {/*        closable={true}*/}
-                    {/*        onClose={this.onClose}*/}
-                    {/*        visible={this.state.visible}*/}
-                    {/*    >*/}
-                    {/*        <Sider width={250} className="site-layout-background">*/}
-                    {/*            <Menu*/}
-                    {/*                theme='dark'*/}
-                    {/*                mode="inline"*/}
-                    {/*                defaultSelectedKeys={['1']}*/}
-                    {/*                defaultOpenKeys={['sub1']}*/}
-                    {/*                style={{ height: '100%', borderRight: 0 }}*/}
-                    {/*            >*/}
-                    {/*                <Menu.Item key="1">My apps</Menu.Item>*/}
-                    {/*                <SubMenu key="sub1" icon={<UserOutlined />} title="My apps">*/}
-
-                    {/*                    <Menu.Item key="2"><NavLink to='/psytest'> Psychology Test </NavLink></Menu.Item>*/}
-                    {/*                    {this.props.state.auth.user.isAdmin&&<Menu.Item key="3"><NavLink to='/upload'> Upload </NavLink></Menu.Item>}*/}
-                    {/*                    <Menu.Item key="4">option4</Menu.Item>*/}
-                    {/*                </SubMenu>*/}
-
-                    {/*            </Menu>*/}
-                    {/*        </Sider>*/}
-                    {/*    </Drawer>*/}
-                    {/*</Col>*/}
-                    {/*}*/}
                 </Row>
             </Header>
         )

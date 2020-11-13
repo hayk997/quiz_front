@@ -1,13 +1,7 @@
 import React, {Component} from "react"
-import {Col, Row, Typography, Card,Pagination} from "antd"
+import {Col, Row, Typography, Pagination} from "antd"
 import {connect} from 'react-redux'
-import {NavLink, withRouter} from "react-router-dom"
-import {
-    EditOutlined,
-    EllipsisOutlined,
-    SettingOutlined,
-
-} from "@ant-design/icons"
+import {withRouter} from "react-router-dom"
 import axios from "axios";
 import api from "../../api";
 import Preloader from "../Preloader";
@@ -60,7 +54,7 @@ class Quizes extends Component {
                   <Typography.Title level={4}>Tests</Typography.Title><Row>
                       {this.state.questions.data && this.state.questions.data.length?
                           this.state.questions.data.map((question,key)=><Col  key={key} lg={4}>
-                              <QuizCard link={'/quizes/'} aId={question.id} question={question}/>
+                              <QuizCard views={question.views} passed={question.passed} link={'/quizes/'} aId={question.id} question={question}/>
                           </Col>):null
                       }
                   </Row>

@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Col, Row, Typography, Slider, Progress} from "antd"
+import {Col, Row, Typography, Progress,Divider} from "antd"
 import {connect} from 'react-redux'
 import {withRouter} from "react-router-dom"
 import axios from "axios";
@@ -36,7 +36,10 @@ class Answer extends Component {
                 'cache-control':'no-cache'
             }
         }).then(response => {
-            console.log(response.data,'data')
+            this.props.view({
+                page:'answer',
+                id:this.props.match.params.id
+            })
             this.setState({
                 questions: response.data.question,
                 answer:response.data,
@@ -112,6 +115,7 @@ class Answer extends Component {
                                         <Row className={'centered'}>
                                             <Col lg={24} md={24} sm={24} xs={24}><img className={'cardCover'}
                                                                                       alt="example" src={process.env.REACT_APP_API_ENDPOINT+switches.image}/></Col>
+                                            <Divider/>
                                             <Col lg={24} md={24} sm={24} xs={24} style={{fontSize: '20px'}}>{switches.title}</Col>
                                         </Row>
                                     </Col>)}
@@ -134,6 +138,12 @@ export default connect(
         onLogout: () => {
             dispatch({
                 type: "LOGOUT",
+            })
+        },
+        view: (payload) => {
+            dispatch({
+                type: "VIEW_PAGE",
+                payload
             })
         },
     })

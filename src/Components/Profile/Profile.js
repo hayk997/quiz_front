@@ -1,21 +1,15 @@
 import React,{Component} from "react";
-import {Col, Row, Card, Avatar, Typography,Form, Button,Input} from "antd";
-import {
-    SettingOutlined,
-    EditOutlined,
-    EllipsisOutlined
-} from "@ant-design/icons";
+import  {Badge,Col, Row, Avatar, Typography} from "antd";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api";
-import {NavLink} from "react-router-dom";
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import QuizCard from "../Fragments/QuizCard";
 import Preloader from "../Preloader";
 import AvatarImg from "../../dist/images/avatar-placeholder.png"
 
-const {TextArea }=Input
+
 
 function beforeUpload(file) {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -41,7 +35,7 @@ class Profile extends Component {
             status:''
         }
     }
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         if( this.props.match.params.id!==prevProps.match.params.id){
             this.componentDidMount()
         }
@@ -56,6 +50,12 @@ class Profile extends Component {
                 'cache-control':'no-cache'
             }
         }).then(response=>{
+            if(this.props.match.params.id){
+                this.props.view({
+                    page:'user',
+                    id:this.props.match.params.id
+                })
+            }
            this.setState({
                user:response.data,
                loading:false
@@ -88,8 +88,7 @@ class Profile extends Component {
             <Col className={'centered'} lg={24}>
                 {this.state.user.imageURL && !this.state.showUpload ?
                     <>
-                    <Avatar style={{borderRadius:'100%'}} size={100} src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>
-                    <div><Button onClick={()=>this.setState({showUpload:true})}>Change Photo</Button></div>
+                    <Avatar onClick={()=>this.setState({showUpload:true})} style={{borderRadius:'100%',cursor:'pointer'}} size={100} src={process.env.REACT_APP_API_ENDPOINT+this.state.user.imageURL}/>
                     </>:this.state.user && this.props.state.auth.user.id===this.state.user.id ?
                     <Upload
                         headers={{
@@ -114,7 +113,7 @@ class Profile extends Component {
                     <Typography.Title level={4}>My apps</Typography.Title>
                 </Col>
                 {this.state.user.answers.length?
-                    this.state.user.answers.map((answer,key)=> <QuizCard link={`/stats/`} aId={answer.id} question={answer.question} />):null
+                    this.state.user.answers.map((answer)=> <Badge count={answer.newPassed}><QuizCard views={answer.views} link={`/stats/`} passed={answer.Passed} aId={answer.id} question={answer.question} /></Badge>):null
                 }
             </Row>
         )
@@ -130,6 +129,12 @@ export default connect(
             dispatch({
                 type: "UPDATE",
                 payload: data
+            })
+        },
+        view: (payload) => {
+            dispatch({
+                type: "VIEW_PAGE",
+                payload
             })
         },
     })

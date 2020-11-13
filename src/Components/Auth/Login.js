@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import {Col, Row, Button, Input, Form, notification, Divider} from "antd";
-import {UserOutlined, LockOutlined, MailOutlined,FacebookOutlined} from "@ant-design/icons";
+import {UserOutlined, FacebookOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api"

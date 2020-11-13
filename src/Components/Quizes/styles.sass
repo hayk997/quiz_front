@@ -20,8 +20,8 @@
   cursor: pointer
 .cardCover
   border-radius: 5% !important
-  width: 90%
-  max-height: 300px
+  width: 50%
+  height: auto
 .content-aligned-center
   box-shadow: 0 9px 62px 0 rgba(97,94,97,1)
   justify-content: center
@@ -39,3 +39,17 @@
   background-color: #2eae3b
 .wrongAnswer
   background-color: red
+.wrongAnswer,.trueAnswer
+  transition: all .5s
+  .ant-col
+    animation-name: bounce
+    animation-duration: .5s
+@keyframes bounce
+  0%
+    transform: scale(1)
+  50%
+    transform: scale(1.1)
+  100%
+    transform: scale(1)
+
+

@@ -20,11 +20,11 @@ class Profile extends Component {
             <NavLink
                 to={this.props.link + this.props.aId}>
                 <Card
-                    actions={[<>
-                        <EyeOutlined />50
+                    actions={[this.props.views&&<>
+                        <EyeOutlined />{this.props.views}
                         </>,
-                        <>
-                            <CheckCircleOutlined />40
+                        this.props.passed&&<>
+                            <CheckCircleOutlined />{this.props.passed}
                         </>
                     ]}
                 cover={
