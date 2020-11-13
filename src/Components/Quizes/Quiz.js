@@ -25,7 +25,7 @@ class Quiz extends Component {
 
     componentDidMount() {
         axios.request({
-            url: api.question.single.url + this.props.match.params.id+(this.props.state.views['quiz']?.includes(this.props.match.params.id)?'?c=1':''),//for pagination add ?page=2
+            url: api.question.single.url + this.props.match.params.id+(this.props.state.views['quiz']?.includes(this.props.match.params.id)?'?c=1':''),
             method: api.question.single.method
         }).then(response => {
             this.props.view({

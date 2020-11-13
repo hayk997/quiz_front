@@ -1,14 +1,14 @@
 import React,{Component} from "react";
-import  {Badge,Col, Row, Avatar, Typography} from "antd";
+import {Badge, Col, Row, Avatar, Typography, Card} from "antd";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api";
 import { Upload, message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import {EyeOutlined, LoadingOutlined, PlusOutlined} from '@ant-design/icons';
 import QuizCard from "../Fragments/QuizCard";
 import Preloader from "../Preloader";
 import AvatarImg from "../../dist/images/avatar-placeholder.png"
-
+import './Profile.sass'
 
 
 function beforeUpload(file) {
@@ -43,7 +43,7 @@ class Profile extends Component {
 
     componentDidMount() {
         axios.request({
-            url:api.user.list.url+(this.props.match.params.id?this.props.match.params.id:this.props.state.auth.user.id),//for pagination add ?page=2
+            url:api.user.list.url+(this.props.match.params.id?this.props.match.params.id:this.props.state.auth.user.id)+(this.props.state.views['user']?.includes(this.props.match.params.id)?'?c=1':''),//for pagination add ?page=2,//for pagination add ?page=2
             method:api.user.list.method,
             headers:{
                 'x-access-token':this.props.state.auth.token,
@@ -109,6 +109,21 @@ class Profile extends Component {
                 }
                 <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
             </Col>
+               <Col lg={24}>
+                   <Card className={'stats-card'}>
+                       <Row>
+                           <Col  className={'stats-icon'} lg={12}>
+
+                               <EyeOutlined />
+                           </Col>
+                           <Col  className={'stats-text'} lg={12}>
+                               {this.state.user.views} <span className={'new-stat'}>Views</span>
+
+                           </Col>
+                       </Row>
+
+                   </Card>
+               </Col>
                 <Col lg={24}>
                     <Typography.Title level={4}>My apps</Typography.Title>
                 </Col>
