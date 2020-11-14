@@ -76,7 +76,9 @@ class HeaderComp extends Component {
                     </Col>
                     <Col xs={18} sm={18} md={16} lg={12} xl={14}>
                         <Menu theme="dark" mode="horizontal">
-                            {this.props.state.auth.token && <Select
+                            {this.props.state.auth.token &&
+                            <Menu.Item className='selectItem'>
+                                <Select
                                 className="headerSearch"
                                 style={{ width: 200 }}
                                 showSearch={true}
@@ -97,8 +99,9 @@ class HeaderComp extends Component {
                                     <Select.Option  key={user.id}
                                                    name={user.username}
                                                     value={user.id}><Avatar style={{borderRadius:'100%',margin:'0 10px'}} size={25} src={user.imageURL?process.env.REACT_APP_API_ENDPOINT+user.imageURL:AvatarImg}/><span className='searchNameSpan'>{user.username}</span></Select.Option>
-                                ):<Empty/>}
-                            </Select>}
+                                ):null}
+                            </Select>
+                            </Menu.Item>}
                             {this.props.state.auth.token &&<Menu.Item style={{marginLeft:'2%'}} onClick={this.navigate} key="/profile">My profile</Menu.Item> }
                             {this.props.state.auth.token &&<Menu.Item ><NavLink to="/quizes">Quizes</NavLink></Menu.Item>}
                             {this.props.state.auth.token ?

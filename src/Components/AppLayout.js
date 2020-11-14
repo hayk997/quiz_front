@@ -10,6 +10,7 @@ import Quizes from "./Quizes/Quizes";
 import Quiz from "./Quizes/Quiz";
 import Answer from "./Answer/Answer";
 import AnswerStats from "./Answer/AnswerStats";
+import Page404 from "./Page404/Page404";
 const { Content} = Layout;
 /**
  *
@@ -68,6 +69,7 @@ class AppLayout extends Component {
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/stats/:id" component={AnswerStats}/>
                                             <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
                                             <Route exact path="/login" > {this.props.state.auth.token ?<Redirect to="/profile" />:<Login/>}</Route>
+                                            <Route exact path="**" > <Page404 /></Route>
                                         </Switch>
                         </Content>
                     </Layout>

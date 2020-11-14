@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Alert, Col, Progress, Row, Typography, Button} from "antd"
+import {Alert, Col, Progress, Row, Typography, Button, Input} from "antd"
 import {connect} from 'react-redux'
 import {withRouter} from "react-router-dom"
 import axios from "axios";
@@ -7,7 +7,7 @@ import './styles.sass'
 import api from "../../api";
 import img from "../../dist/images/a.jpg";
 import Preloader from "../Preloader";
-
+const {Paragraph}= Typography
 
 class Quiz extends Component {
     constructor(props) {
@@ -72,7 +72,8 @@ class Quiz extends Component {
                     {this.state.loading?<Preloader/>:this.state.currentPage>=this.state.questions.count?<Alert
                         style={{marginTop:'50px'}}
                         message="Test Successfully created"
-                        description={<>You can view your test <Button onClick={()=>this.props.history.push('/stats/'+this.state.quizId)} type={'link'}>HERE</Button> </>}
+                        description={<>You can view your test <Button onClick={()=>this.props.history.push('/stats/'+this.state.quizId)} type={'link'}>HERE</Button>
+                                        <Paragraph copyable>{`/stats/${this.state.quizId}`}</Paragraph> </>}
                         type="success"
                         showIcon
                     />:<Row>

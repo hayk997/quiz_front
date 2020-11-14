@@ -9,6 +9,7 @@ import QuizCard from "../Fragments/QuizCard";
 import Preloader from "../Preloader";
 import AvatarImg from "../../dist/images/avatar-placeholder.png"
 import './Profile.sass'
+import Page404 from "../Page404/Page404";
 
 
 function beforeUpload(file) {
@@ -61,6 +62,8 @@ class Profile extends Component {
                 user: response.data,
                 loading: false
             })
+        }).catch(e=>{
+            this.props.history.push('/404')
         })
     }
 

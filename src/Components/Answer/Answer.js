@@ -8,6 +8,7 @@ import '../Quizes/styles.sass'
 import api from "../../api";
 import img from "../../dist/images/a.jpg";
 import Preloader from "../Preloader";
+import SuccessComponent from "../SuccessComponent/SuccessComponent";
 
 
 class Answer extends Component {
@@ -45,6 +46,8 @@ class Answer extends Component {
                 answer:response.data,
                 loading:false
             })
+        }).catch(e=>{
+            this.props.history.push('/404')
         })
     }
     handleSelect = (e,key) =>{
@@ -94,7 +97,7 @@ class Answer extends Component {
         return (
             <Row>
                 <Col lg={{span: 14, offset: 5}}>
-                    {this.state.loading?<Preloader/>:this.state.currentPage>=this.state.questions.count?<h1>Test Succesfully created</h1>:<Row>
+                    {this.state.loading?<Preloader/>:this.state.currentPage>=this.state.questions.count?<Col className={'centered'} ><SuccessComponent points={this.state.points}/></Col> :<Row>
                         <Col className={'centered'} lg={24}> <Typography.Title
                             level={2}>{this.state.questions.title}</Typography.Title></Col>
                         <Col lg={{span: 12, offset: 6}} md={{span: 16, offset: 4}} sm={24} xs={24}>
