@@ -10,7 +10,6 @@ const api = {
                 url: `${endpoint}auth/signup/facebook`,
                 method: "POST"
             }
-
         },
         login:{
             url: `${endpoint}auth/signin`,
@@ -80,8 +79,12 @@ const api = {
         check:{
             url: `${endpoint}usernamecheck`,
             method: "POST"
-
+        },
+        post:{
+            url: `${endpoint}users/`,
+            method: "POST"
         }
+
     }
 }
 export default api;

@@ -10,6 +10,7 @@ import Preloader from "../Preloader";
 import AvatarImg from "../../dist/images/avatar-placeholder.png"
 import './Profile.sass'
 import Page404 from "../Page404/Page404";
+import Comments from "../Fragments/Comments/Comments";
 
 
 function beforeUpload(file) {
@@ -118,18 +119,59 @@ class Profile extends Component {
                     <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
                 </Col>
                 <Col lg={24}>
-                    <Card className={'stats-card'}>
-                        <Row>
-                            <Col lg={24} className={'stats-icon'}>
-                                <EyeOutlined/>
-                            </Col>
-                            <Col lg={24} className={'stats-text'}>
-                                {this.state.user.views} <span className={'new-stat'}>Views</span>
-                                <div>Views</div>
-                            </Col>
-                        </Row>
+                    {/*<Card className={'stats-card'}>*/}
+                    {/*    <Row>*/}
+                    {/*        <Col lg={24} className={'stats-icon'}>*/}
+                    {/*            <EyeOutlined/>*/}
+                    {/*        </Col>*/}
+                    {/*        <Col lg={24} className={'stats-text'}>*/}
+                    {/*            {this.state.user.views} <span className={'new-stat'}>Views</span>*/}
+                    {/*            <div>Views</div>*/}
+                    {/*        </Col>*/}
+                    {/*    </Row>*/}
+                    {/*<h1>Statistics</h1>*/}
+                    {/*<section>*/}
+                    {/*    <div className="box">*/}
+                    {/*        <div className="container">*/}
+                    {/*            <span className="number">25</span>*/}
+                    {/*            <br/>*/}
+                    {/*            Calls*/}
+                    {/*        </div>*/}
+                    {/*        <div className="fillSpeed1" style={{backgroundColor : "#81c784"}}></div>*/}
+                    {/*    </div>*/}
 
-                    </Card>
+                    {/*    <div className="box">*/}
+                    {/*        <div className="container">*/}
+                    {/*            <span className="number">53</span>*/}
+                    {/*            <br/>*/}
+                    {/*            Emails*/}
+                    {/*        </div>*/}
+                    {/*        <div className="fillSpeed2" style={{backgroundColor  : "#f69679"}}> </div>*/}
+                    {/*    </div>*/}
+
+                    {/*    <div className="box">*/}
+                    {/*        <div className="container">*/}
+                    {/*            <span className="number">12</span>*/}
+                    {/*            <br/>*/}
+                    {/*            SMS*/}
+                    {/*        </div>*/}
+                    {/*        <div className="fillSpeed3" style={{backgroundColor : "#92bafb"}}> </div>*/}
+                    {/*    </div>*/}
+
+                    {/*    <div className="box">*/}
+                    {/*        <div className="container">*/}
+                    {/*            <span className="number">69</span>*/}
+                    {/*            <br/>*/}
+                    {/*            Letters*/}
+                    {/*        </div>*/}
+                    {/*        <div className="filSpeed4" style={{backgroundColor: "#9b92fb"}}> </div>*/}
+                    {/*    </div>*/}
+                    {/*</section>*/}
+
+                    {/*</Card>*/}
+                </Col>
+                <Col lg={24}>
+                    <Comments uId={this.state.user.id}/>
                 </Col>
                 <Col lg={24}>
                     <Typography.Title level={4}>My apps</Typography.Title>

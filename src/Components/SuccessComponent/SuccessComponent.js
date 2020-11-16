@@ -14,7 +14,7 @@ class SuccessComponent extends React.Component{
     }
     render() {
         return <>
-        <div id="container">
+        <div className='successContainer' id="container">
             <div id="success-box">
                 <div className="face">
                     <div className="eye"> </div>
