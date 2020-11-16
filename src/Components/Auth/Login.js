@@ -1,12 +1,12 @@
 import React,{Component} from "react";
-import {Col, Row, Button, Input, Form, notification, Divider} from "antd";
-import {UserOutlined, FacebookOutlined} from "@ant-design/icons";
+import {Col, Row, Button, Input, Form, notification} from "antd";
+import { FacebookOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api"
 import './styles.sass'
 import logo from '../../dist/images/mainLogo.png'
-import {Link, Redirect} from "react-router-dom";
+import { Redirect} from "react-router-dom";
 import FacebookLogin from "react-facebook-login";
 
 
@@ -148,12 +148,6 @@ class Login extends Component {
                             </Form>:   <Button className={'login-button'} icon={<FacebookOutlined/>} style={{margin:'0px 15px'}} onClick={() => document.getElementsByClassName('hidden')[0].click()} type="primary" >
                                     Login with Facebook
                                 </Button>}
-                                <Divider orientation='center'/>
-                                <div className='regBlock'><h3>Нет аккаунта? Зарегистрируйтесь</h3>
-                                    <Button className='regButton' style={{backgroundColor:'#42b72a'}} icon={<UserOutlined />}>
-                                        <Link to='/reg'>Регистация</Link>
-                                    </Button>
-                                </div>
                         </div>
                     </Col>
                 </Row>
