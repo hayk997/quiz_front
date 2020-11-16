@@ -11,19 +11,15 @@ $secondary: #99DBB4
 
 $font: 'Lato', sans-serif
 
-html 
-  display: grid
 
-
-body 
+body
   display: grid
-  overflow: hidden
   font-family: $font
   text-transform: uppercase
   text-align: center
 
 
-#container 
+#container
   position: relative
   margin: auto
   overflow: hidden
@@ -31,7 +27,7 @@ body
   height: 380px
 
 
-h1 
+h1
   font-size: 0.9em
   font-weight: 100
   letter-spacing: 3px
@@ -40,33 +36,34 @@ h1
   padding-bottom: 5px
   text-transform: uppercase
 
-
-.green 
-  color: darken($secondary, 20%)
-
-
-.red 
-  color: darken($error, 10%)
-
-
-.alert 
-  font-weight: 700
-  letter-spacing: 5px
-
-
-p 
+p
   margin-top: -5px
   font-size: 0.5em
   font-weight: 100
   color: darken($dark, 10%)
   letter-spacing: 1px
 
+.green
+  color: darken($secondary, 20%)
 
-button, .dot 
+
+.red
+  color: darken($error, 10%)
+
+
+.alert
+  font-weight: 700
+  letter-spacing: 5px
+
+
+
+
+
+button
   cursor: pointer
 
 
-#success-box 
+#success-box
   position: relative
   width: 75%
   height: 100%
@@ -85,27 +82,7 @@ button, .dot
   background: linear-gradient(to bottom left, $error 40%, $orange 100%)
   border-radius: 20px
   box-shadow: 5px 5px 20px rgba($gray, 10%)
-
-
-.dot 
-  width: 8px
-  height: 8px
-  background: $white
-  border-radius: 50%
-  position: absolute
-  top: 4%
-  right: 6%
-  &:hover 
-    background: darken($white, 20%)
-
-
-
-.two 
-  right: 12%
-  opacity: .5
-
-
-.face 
+.face
   position: absolute
   width: 22%
   height: 22%
@@ -118,7 +95,7 @@ button, .dot
   animation: bounce 1s ease-in infinite
 
 
-.face2 
+.face2
   position: absolute
   width: 22%
   height: 22%
@@ -129,9 +106,7 @@ button, .dot
   left: 37.5%
   z-index: 2
   animation: roll 3s ease-in-out infinite
-
-
-.eye 
+.eye
   position: absolute
   width: 5px
   height: 5px
@@ -139,13 +114,9 @@ button, .dot
   border-radius: 50%
   top: 40%
   left: 20%
-
-
-.right 
+.right
   left: 68%
-
-
-.mouth 
+.mouth
   position: absolute
   top: 43%
   left: 41%
@@ -153,21 +124,20 @@ button, .dot
   height: 7px
   border-radius: 50%
 
-
-.happy 
+.happy
   border: 2px solid
   border-color: transparent $dark $dark transparent
   transform: rotate(45deg)
 
 
-.sad 
+.sad
   top: 49%
   border: 2px solid
   border-color: $dark transparent transparent $dark
   transform: rotate(45deg)
 
 
-.shadow 
+.shadow
   position: relative
   width: 21%
   height: 3%
@@ -178,14 +148,11 @@ button, .dot
   border-radius: 50%
   z-index: 1
 
-
-.scale 
+.scale
   animation: scale 1s ease-in infinite
-
-.move 
+.move
   animation: move 3s ease-in-out infinite
-
-.message 
+.message
   position: relative
   width: 100%
   text-align: center
@@ -193,7 +160,7 @@ button, .dot
   top: 47%
 
 
-.button-box 
+.button-box
   position: relative
   background: $white
   width: 35%
@@ -204,13 +171,10 @@ button, .dot
   margin-top: 160px
   box-shadow: 2px 2px 10px rgba($dark, .5)
   transition: all .5s ease-in-out
-  &:hover 
+  &:hover
     background: darken($white, 5%)
     transform: scale(1.05)
     transition: all .3s ease-in-out
-
-
-
 @keyframes bounce
   50%
     transform: translateY(-10px)
@@ -230,23 +194,6 @@ button, .dot
     left: 60%
   100%
     left: 25%
-footer 
-  position: relative
-  bottom: 0
-  right: 0
-  text-align: center
-  font-size: 1em
-  text-transform: uppercase
-  padding: 10px
-  font-family: $font
-  p 
-    color: $error
-    letter-spacing: 2px
 
-  a 
-    color: $success
-    text-decoration: none
-    &:hover 
-      color: $orange
-  
+
 

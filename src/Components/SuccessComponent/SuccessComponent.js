@@ -16,8 +16,6 @@ class SuccessComponent extends React.Component{
         return <>
         <div id="container">
             <div id="success-box">
-                <div className="dot"> </div>
-                <div className="dot two"> </div>
                 <div className="face">
                     <div className="eye"> </div>
                     <div className="eye right"> </div>
