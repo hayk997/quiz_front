@@ -1,6 +1,7 @@
 import React from "react";
 import './styles.sass'
 import { Typography } from 'antd';
+import {withRouter} from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -9,7 +10,7 @@ class SuccessComponent extends React.Component{
         super(props)
     }
     handleToProfile(){
-        this.props.history.push('/profile')
+        this.props.history.push('/stats/'+this.props.match.params.id)
     }
     render() {
         return <>
@@ -32,4 +33,4 @@ class SuccessComponent extends React.Component{
 }
 
 
-export default SuccessComponent;
+export default withRouter(SuccessComponent);
