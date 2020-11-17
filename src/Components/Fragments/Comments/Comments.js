@@ -39,49 +39,32 @@ class Comments extends React.Component {
     }
     render() {
         return <>
+            {this.props.data.length&&this.props.data.map(item=><Comment
+                    actions={[
+                        <Tooltip key="comment-basic-like" title="Like">
+                      <span>
+                        {this.state.action === 'liked' ? <LikeFilled/> : <LikeOutlined/>}
+                        <span className="comment-action">{this.state.likes}</span>
+                      </span>
+                        </Tooltip>,
+                        <Tooltip key="comment-basic-dislike" title="Dislike">
+                      <span>
+                        {this.state.action === 'disliked' ? <DislikeFilled/> : <DislikeOutlined/>}
+                          <span className="comment-action">{this.state.dislikes}</span>
+                      </span>
+                        </Tooltip>,
+                        <span key="comment-basic-reply-to">Reply to</span>,
+                    ]}
+                    author={<a>{item.fromUser.username}</a>}
+                    avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+item.fromUser.imageURL}/>}
+                    content={<p>{item.text}</p>}
+                    datetime={
+                        <Tooltip title={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+                            <span>{moment(item.createdAt).fromNow()}</span>
+                        </Tooltip>}/>
+            )}
             <Comment
-                actions={[
-                    <Tooltip key="comment-basic-like" title="Like">
-      <span>
-        {createElement(this.state.action === 'liked' ? LikeFilled : LikeOutlined)}
-          <span className="comment-action">{this.state.likes}</span>
-      </span>
-                    </Tooltip>,
-                    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span>
-        {createElement(this.state.action === 'disliked' ? DislikeFilled : DislikeOutlined)}
-          <span className="comment-action">{this.state.dislikes}</span>
-      </span>
-                    </Tooltip>,
-                    <span key="comment-basic-reply-to">Reply to</span>,
-                ]}
-                author={<a>Han Solo</a>}
-                avatar={
-                    <Avatar
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        alt="Han Solo"
-                    />
-                }
-                content={
-                    <p>
-                        We supply a series of design principles, practical patterns and high quality design
-                        resources
-                    </p>
-                }
-                datetime={
-                    <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                        <span>{moment().fromNow()}</span>
-                    </Tooltip>
-                }
-            />
-            <Switch defaultChecked/>
-            <Comment
-                avatar={
-                    <Avatar
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        alt="Han Solo"
-                    />
-                }
+                avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>}
                 content={
                     <Form ref={this.form} onFinish={this.handleFinish}>
                         <Form.Item name='text' rules={[{
