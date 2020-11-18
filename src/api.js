@@ -67,6 +67,16 @@ const api = {
             method: "GET"
         }
     },
+    Post:{
+        delete: {
+            url: `${endpoint}posts/`,
+            method: "DELETE"
+        },
+        react:{
+            url: `${endpoint}posts/`,
+            method: "POST"
+        }
+    },
     user:{
         list: {
             url: `${endpoint}users/`,

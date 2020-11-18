@@ -82,9 +82,7 @@ class Profile extends Component {
             })
         }
     };
-    handleUpdateComments = (comments)=>{
-        //todo ste galuen commentner Commentner componenti Add comment calli responsi ekac patasxan@ stexi stateUm tarmacnelues
-    }
+
     render() {
         const uploadButton = (
             <div>
@@ -121,7 +119,7 @@ class Profile extends Component {
                     <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
                 </Col>
                 <Col lg={24}>
-                    <Comments handleUpdateComments={this.handleUpdateComments} data={this.state.user.posts} uId={this.state.user.id}/>
+                    <Comments data={this.state.user.posts} uId={this.state.user.id}/>
                 </Col>
                 <Col lg={24}>
                     <Typography.Title level={4}>My apps</Typography.Title>
