@@ -56,7 +56,6 @@ class Answer extends Component {
                 disabled:true
             })
 
-            console.log(key,this.state.answer.answers)
             if(key===this.state.answer.answers[this.state.currentPage]){
                 e.currentTarget.classList.add("trueAnswer")
             }else{

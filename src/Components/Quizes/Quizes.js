@@ -23,7 +23,6 @@ class Quizes extends Component {
             url:api.question.list.url,//for pagination add ?page=2
             method:api.question.list.method
         }).then(response=>{
-            console.log(response.data)
             this.setState({
                 questions:response.data,
                 loading:false
@@ -38,7 +37,6 @@ class Quizes extends Component {
             url:api.question.list.url+'?page='+e,//for pagination add ?page=2
             method:api.question.list.method
         }).then(response=>{
-            console.log(response.data)
             this.setState({
                 questions:response.data,
                 loading:false

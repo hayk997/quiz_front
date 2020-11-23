@@ -1,5 +1,5 @@
 import React, {createElement} from "react";
-import {DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled} from '@ant-design/icons';
+import {DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled, CloseCircleOutlined} from '@ant-design/icons';
 import {Comment, Switch, Tooltip, Avatar, Form, Button, List, Input} from 'antd';
 import moment from 'moment';
 import axios from "axios";
@@ -14,13 +14,12 @@ class Comments extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dislikes: 0,
-            likes: 0,
             action: null,
             data: [],
             submitting: false,
             value: '',
-            loading:false
+            loading:false,
+            opened:false
         }
         this.form=React.createRef()
     }
@@ -69,10 +68,44 @@ class Comments extends React.Component {
             },
         }).then(response=>{
            let {data} = this.state;
+           data=this.handleRemoveComments(data,id)
            this.setState({
-               data:data.filter(item=>item.id!==id)
+               data:data
            })
+        })
+    }
+    handleRemoveComments=(comments,id)=>{
+        return comments.map(comment=>{
+            if(comment.id===id){
+                return false
+            }else{
+                if(comment.Comments &&comment.Comments.length){
+                    comment.Comments =this.handleRemoveComments(comment.Comments,id)
+                }
+                return comment
+            }
+        })
+        // return comments.filter(comment=>{
+        //      if(comment.id!==id){
+        //          return true
+        //      }else{
+        //          if(comment.Comments &&comment.Comments.length){
+        //              this.handleRemoveComments(comment.Comments,id)
+        //          }
+        //          return false
+        //      }
+         }
 
+    handleUpdateComment=(Comments,response)=>{
+       return Comments.map(comment=>{
+            if(comment.id===response.data.id){
+                return response.data
+            }else{
+                if(comment.Comments &&comment.Comments.length){
+                    comment.Comments =this.handleUpdateComment(comment.Comments,response)
+                }
+                return comment
+            }
         })
     }
     handleReact=(id,type)=>{
@@ -85,22 +118,88 @@ class Comments extends React.Component {
             },
         }).then(response=>{
             let {data} = this.state;
-            data= data.map(comment=>{
-                if(comment.id===response.data.id){
-                    console.log(response.data)
-                    return response.data
-                }else{
-                    console.log(comment)
-                   return comment
-                }
-            })
+            data =this.handleUpdateComment(data,response)
+            console.log(data,response.data)
             this.setState({
                 data
             })
         })
     }
+    replyTo=(id)=>{
+        this.setState({opened:id})
+
+    }
+    handleReply=(id,data)=>{
+        axios.request({
+            url: `${api.Post.react.url}${id}`,
+            method: api.Post.react.method,
+            headers: {
+                'x-access-token': this.props.state.auth.token,
+                'cache-control': 'no-cache'
+            },
+            data:data
+        }).then(response => {
+            console.log(response)
+        }).catch(e=>{
+            console.log(e)
+        })
+    }
     render() {
+        let commentData =(comments,child_deep)=> comments.map((comment, key) =>{
+            return comment&&<div key={key}>
+                <Comment
+                    style={{margin: '20px'}}
+                    actions={[
+                        this.state.replyId!==comment.id && child_deep<2&&<span onClick={()=>this.replyTo(comment.id)} key="text">Reply to</span>,
+                        <Tooltip key="comment-basic-like" title="Like">
+                      <span onClick={()=>this.handleReact(comment.id,1)}>
+                        {JSON.parse(comment.likes).includes(this.props.state.auth.user.id) ? <LikeFilled/> : <LikeOutlined/>}
+                          <span className="comment-action">{JSON.parse(comment.likes).length}</span>
+                      </span>
+                        </Tooltip>,
+                        <Tooltip key="comment-basic-dislike" title="Dislike">
+                      <span onClick={()=>this.handleReact(comment.id,0)}>
+                        {JSON.parse(comment.dislikes).includes(this.props.state.auth.user.id) ? <DislikeFilled/> : <DislikeOutlined/>}
+                          <span className="comment-action">{JSON.parse(comment.dislikes).length}</span>
+                      </span>
+                        </Tooltip>,
+                        <span onClick={()=>this.handleRemove(comment.id)}>Remove</span>,
+
+                    ]}
+                    author={<a>{comment.fromUser.username}</a>}
+                    avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+comment.fromUser.imageURL}/>}
+                    content={<p>{comment.text}</p>}
+                    datetime={
+                        <Tooltip title={moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+                            <span>{moment(comment.createdAt).fromNow()}</span>
+                        </Tooltip>}>
+                    {this.state.opened===comment.id &&<Form ref={this.commentForm}
+                                                            onFinish={(fromData)=>{
+                                                                this.commentHandler(fromData)
+                                                            }}>
+                        <div onClick={()=>this.setState({opened:null})} className={'comment-close-button'}><CloseCircleOutlined /></div>
+
+                        <Form.Item name={'comment'} rules={[
+                            {
+                                required: true,
+                                message: 'Մեկնաբանությունը պետք է լինի առնվազն 1 նիշ'
+                            }
+                        ]}>
+                            <TextArea rows={4}/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button htmlType="submit" loading={this.loading}
+                                    type="primary">
+                                Ավելացնել մեկնաբանություն
+                            </Button>
+                        </Form.Item>
+                    </Form>}
+                    {comment.Comments && comment.Comments.length?commentData(comment.Comments,child_deep+1):null}
+
+                </Comment>
+            </div>})
         return <>
+
             <Comment
                 avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>}
                 content={
@@ -118,32 +217,7 @@ class Comments extends React.Component {
                     </Form>
                 }
             />
-            {!this.state.loading?this.state.data.length&&this.state.data.map(item=><Comment
-                    actions={[
-                        <Tooltip key="comment-basic-like" title="Like">
-                      <span onClick={()=>this.handleReact(item.id,1)}>
-                        {this.state.action === 'liked' ? <LikeFilled/> : <LikeOutlined/>}
-                        <span className="comment-action">{JSON.parse(item.likes).length}</span>
-                      </span>
-                        </Tooltip>,
-                        <Tooltip key="comment-basic-dislike" title="Dislike">
-                      <span onClick={()=>this.handleReact(item.id,0)}>
-                        {this.state.action === 'disliked' ? <DislikeFilled/> : <DislikeOutlined/>}
-                          <span className="comment-action">{JSON.parse(item.dislikes).length}</span>
-                      </span>
-                        </Tooltip>,
-                        <span key="comment-basic-reply-to">Reply to</span>,
-                        <span onClick={()=>this.handleRemove(item.id)}>Remove</span>,
-
-                    ]}
-                    author={<a>{item.fromUser.username}</a>}
-                    avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+item.fromUser.imageURL}/>}
-                    content={<p>{item.text}</p>}
-                    datetime={
-                        <Tooltip title={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
-                            <span>{moment(item.createdAt).fromNow()}</span>
-                        </Tooltip>}/>
-            ):<Preloader/>}
+            {!this.state.loading?this.state.data.length&&commentData(this.state.data,0):<Preloader/>}
 
         </>
 

@@ -107,7 +107,6 @@ class UploadAnswerImage extends Component {
     }
 
     render() {
-        console.log(this.state)
         const uploadButton = (
             <div>
                 {this.state.loading ? <LoadingOutlined/> : <PlusOutlined/>}
