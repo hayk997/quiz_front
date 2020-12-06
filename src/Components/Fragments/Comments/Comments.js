@@ -206,7 +206,7 @@ class Comments extends React.Component {
                             <TextArea rows={4}/>
                         </Form.Item>
 
-                            <Form.Item initialValue={false} name={'anonymous'}  >
+                            <Form.Item name={'anonymous'}  >
                                 <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
                             </Form.Item>
 
