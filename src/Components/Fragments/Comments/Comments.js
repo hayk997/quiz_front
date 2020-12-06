@@ -6,7 +6,8 @@ import {
     LikeFilled,
     CloseCircleOutlined,
     UserOutlined, LockOutlined,
-    CheckOutlined,CloseOutlined
+    CheckOutlined,CloseOutlined,
+    DeleteOutlined
 } from '@ant-design/icons';
 import {Row, Col,Comment, Switch, Tooltip, Avatar, Form, Button, List, Input, Card} from 'antd';
 import moment from 'moment';
@@ -14,7 +15,8 @@ import axios from "axios";
 import api from "../../../api";
 import {connect} from "react-redux";
 import Preloader from "../../Preloader";
-
+import {Link} from "react-router-dom";
+import './Comments.sass'
 const {TextArea} = Input;
 
 class Comments extends React.Component {
@@ -143,8 +145,27 @@ class Comments extends React.Component {
             console.log(e)
         })
     }
+    handleShowHide = (comment,value)=>{
+        axios.request({
+            url: `${api.Post.visibility.url}${comment.id}`,
+            method: api.Post.visibility.method,
+            headers: {
+                'x-access-token': this.props.state.auth.token,
+                'cache-control': 'no-cache'
+            },
+            data: {show:value}
+        }).then(comment => {
+            console.log(comment)
+        })
+    }
     render() {
         let commentData =(comments,child_deep)=> comments.map((comment, key) =>{
+            if(comment){
+                comment.fromUser=comment.fromUser?comment.fromUser:{
+                    username:'Anonymous',
+                    imageURL:null
+                }
+            }
             return comment&&<div key={key}>
                 <Comment
                     style={{margin: '20px'}}
@@ -162,20 +183,20 @@ class Comments extends React.Component {
                           <span className="comment-action">{JSON.parse(comment.dislikes).length}</span>
                       </span>
                         </Tooltip>,
-                        <span onClick={()=>this.handleRemove(comment.id)}>Remove</span>,
-                        <Switch
-                            checkedChildren={<CheckOutlined />}
-                            unCheckedChildren={<CloseOutlined />}
-                            defaultChecked
-                        />
                     ]}
-                    author={<a>{comment.fromUser.username}</a>}
-                    avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+comment.fromUser.imageURL}/>}
-                    content={<p>{comment.text}</p>}
+                    author={<Link to={`/profile/${comment.fromUser.id}`}>{comment.fromUser.username}{comment.anonymous&&<LockOutlined />}</Link>}
+                    avatar={<><Avatar src={process.env.REACT_APP_API_ENDPOINT+comment.fromUser.imageURL}/></>}
+                    content={<><div className={'comment-controls'}>{child_deep===0? <Switch
+                        onChange={(e)=>this.handleShowHide(comment,e)}
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked={comment.show}
+                    />:null}<Button onClick={()=>this.handleRemove(comment.id)} icon={<DeleteOutlined />} danger type={'dashed'}/> </div><p>{comment.text}</p></>}
                     datetime={
                         <Tooltip title={moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
                             <span>{moment(comment.createdAt).fromNow()}</span>
                         </Tooltip>}>
+
                     {this.state.opened===comment.id &&<Form onFinish={(fromData)=>{
                                                                 this.handleReply(comment.id,fromData)
                                                             }}>
@@ -184,6 +205,11 @@ class Comments extends React.Component {
                         <Form.Item name={'text'} >
                             <TextArea rows={4}/>
                         </Form.Item>
+
+                            <Form.Item initialValue={false} name={'anonymous'}  >
+                                <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
+                            </Form.Item>
+
                         <Form.Item>
                             <Button htmlType="submit" loading={this.loading}
                                     type="primary">
@@ -192,11 +218,9 @@ class Comments extends React.Component {
                         </Form.Item>
                     </Form>}
                     {comment.Comments && comment.Comments.length?commentData(comment.Comments,child_deep+1):null}
-
                 </Comment>
             </div>})
-        return <>
-
+        return <div className={'comments-container'}>
             <Card>
             <Comment
                 avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>}
@@ -208,28 +232,26 @@ class Comments extends React.Component {
                             <TextArea rows={4}/>
                         </Form.Item>
                         <Row>
-                            <Col>
+                            <div>
                                 <Form.Item initialValue={false} name={'anonymous'}  >
-                                    <Switch  checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
+                                    <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
                                 </Form.Item>
-                            </Col>
-                            <Col>
+                            </div>
+                            <div>
                                 <Form.Item >
                                     <Button loading={this.state.loading} htmlType="submit" type="primary">
                                         Add Comment
                                     </Button>
                                 </Form.Item>
-                            </Col>
+                            </div>
                         </Row>
-
-
                     </Form>
                 }
             />
             </Card>
             {!this.state.loading?this.state.data.length&&commentData(this.state.data,0):<Preloader/>}
 
-        </>
+        </div>
 
     }
 }
