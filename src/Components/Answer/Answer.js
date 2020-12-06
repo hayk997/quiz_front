@@ -47,7 +47,6 @@ class Answer extends Component {
                 loading:false
             })
         }).catch(e=>{
-            this.props.history.push('/404')
         })
     }
     handleSelect = (e,key) =>{

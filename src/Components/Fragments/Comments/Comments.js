@@ -1,12 +1,19 @@
-import React, {createElement} from "react";
-import {DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled, CloseCircleOutlined} from '@ant-design/icons';
-import {Comment, Switch, Tooltip, Avatar, Form, Button, List, Input} from 'antd';
+import React from "react";
+import {
+    DislikeOutlined,
+    LikeOutlined,
+    DislikeFilled,
+    LikeFilled,
+    CloseCircleOutlined,
+    UserOutlined, LockOutlined,
+    CheckOutlined,CloseOutlined
+} from '@ant-design/icons';
+import {Row, Col,Comment, Switch, Tooltip, Avatar, Form, Button, List, Input, Card} from 'antd';
 import moment from 'moment';
 import axios from "axios";
 import api from "../../../api";
 import {connect} from "react-redux";
 import Preloader from "../../Preloader";
-
 
 const {TextArea} = Input;
 
@@ -37,9 +44,10 @@ class Comments extends React.Component {
     }
 
     handleFinish=(data)=>{
-        this.setState({
+       this.setState({
             loading:true
         })
+        console.log(data)
         axios.request( {
             url:`${api.user.post.url}${this.props.uId}/post`,
             method: api.auth.facebook.login.method,
@@ -85,16 +93,7 @@ class Comments extends React.Component {
                 return comment
             }
         })
-        // return comments.filter(comment=>{
-        //      if(comment.id!==id){
-        //          return true
-        //      }else{
-        //          if(comment.Comments &&comment.Comments.length){
-        //              this.handleRemoveComments(comment.Comments,id)
-        //          }
-        //          return false
-        //      }
-         }
+    }
 
     handleUpdateComment=(Comments,response)=>{
        return Comments.map(comment=>{
@@ -164,7 +163,11 @@ class Comments extends React.Component {
                       </span>
                         </Tooltip>,
                         <span onClick={()=>this.handleRemove(comment.id)}>Remove</span>,
-
+                        <Switch
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            defaultChecked
+                        />
                     ]}
                     author={<a>{comment.fromUser.username}</a>}
                     avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+comment.fromUser.imageURL}/>}
@@ -173,18 +176,12 @@ class Comments extends React.Component {
                         <Tooltip title={moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
                             <span>{moment(comment.createdAt).fromNow()}</span>
                         </Tooltip>}>
-                    {this.state.opened===comment.id &&<Form ref={this.commentForm}
-                                                            onFinish={(fromData)=>{
-                                                                this.commentHandler(fromData)
+                    {this.state.opened===comment.id &&<Form onFinish={(fromData)=>{
+                                                                this.handleReply(comment.id,fromData)
                                                             }}>
                         <div onClick={()=>this.setState({opened:null})} className={'comment-close-button'}><CloseCircleOutlined /></div>
 
-                        <Form.Item name={'comment'} rules={[
-                            {
-                                required: true,
-                                message: 'Մեկնաբանությունը պետք է լինի առնվազն 1 նիշ'
-                            }
-                        ]}>
+                        <Form.Item name={'text'} >
                             <TextArea rows={4}/>
                         </Form.Item>
                         <Form.Item>
@@ -200,6 +197,7 @@ class Comments extends React.Component {
             </div>})
         return <>
 
+            <Card>
             <Comment
                 avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>}
                 content={
@@ -209,14 +207,26 @@ class Comments extends React.Component {
                         }]}>
                             <TextArea rows={4}/>
                         </Form.Item>
-                        <Form.Item >
-                            <Button loading={this.state.loading} htmlType="submit" type="primary">
-                                Add Comment
-                            </Button>
-                        </Form.Item>
+                        <Row>
+                            <Col>
+                                <Form.Item initialValue={false} name={'anonymous'}  >
+                                    <Switch  checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
+                                </Form.Item>
+                            </Col>
+                            <Col>
+                                <Form.Item >
+                                    <Button loading={this.state.loading} htmlType="submit" type="primary">
+                                        Add Comment
+                                    </Button>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+
                     </Form>
                 }
             />
+            </Card>
             {!this.state.loading?this.state.data.length&&commentData(this.state.data,0):<Preloader/>}
 
         </>

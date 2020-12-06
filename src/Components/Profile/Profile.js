@@ -1,15 +1,14 @@
 import React, {Component} from "react";
-import {Badge, Col, Row, Avatar, Typography, Card} from "antd";
+import  {Tabs,Badge, Col, Row, Avatar, Typography, Card} from "antd";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api";
 import {Upload, message} from 'antd';
-import {EyeOutlined, LoadingOutlined, PlusOutlined} from '@ant-design/icons';
+import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
 import QuizCard from "../Fragments/QuizCard";
 import Preloader from "../Preloader";
 import AvatarImg from "../../dist/images/avatar-placeholder.png"
 import './Profile.sass'
-import Page404 from "../Page404/Page404";
 import Comments from "../Fragments/Comments/Comments";
 
 
@@ -64,7 +63,7 @@ class Profile extends Component {
                 loading: false
             })
         }).catch(e=>{
-            this.props.history.push('/404')
+           console.log(e)
         })
     }
 
@@ -119,16 +118,22 @@ class Profile extends Component {
                     <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
                 </Col>
                 <Col lg={24}>
-                    <Comments data={this.state.user.posts} uId={this.state.user.id}/>
+                <Tabs defaultActiveKey="1" centered>
+                    <Tabs.TabPane tab="Comments" key="1">
+
+                            <Comments data={this.state.user.posts} uId={this.state.user.id}/>
+
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="Quizes" key="2">
+                        <Typography.Title level={4}>My apps</Typography.Title>
+                        {this.state.user.answers.length ?
+                            this.state.user.answers.map((answer) => <Badge count={answer.newPassed}><QuizCard
+                                views={answer.views} link={`/stats/`} passed={answer.Passed} aId={answer.id}
+                                question={answer.question}/></Badge>) : null
+                        }
+                    </Tabs.TabPane>
+                </Tabs>
                 </Col>
-                <Col lg={24}>
-                    <Typography.Title level={4}>My apps</Typography.Title>
-                </Col>
-                {this.state.user.answers.length ?
-                    this.state.user.answers.map((answer) => <Badge count={answer.newPassed}><QuizCard
-                        views={answer.views} link={`/stats/`} passed={answer.Passed} aId={answer.id}
-                        question={answer.question}/></Badge>) : null
-                }
             </Row>
         )
     }
