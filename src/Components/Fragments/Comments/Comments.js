@@ -17,6 +17,7 @@ import {connect} from "react-redux";
 import Preloader from "../../Preloader";
 import {Link} from "react-router-dom";
 import './Comments.sass'
+import {anonymAva} from '../../../dist/images/anonym.jpg'
 const {TextArea} = Input;
 
 class Comments extends React.Component {
@@ -140,7 +141,9 @@ class Comments extends React.Component {
             },
             data:data
         }).then(response => {
-            console.log(response)
+            console.log("response.data=== ",response.data)
+            console.log("handle reply data=== ",data)
+            console.log('props.data== ',this.props.data)
         }).catch(e=>{
             console.log(e)
         })
@@ -163,14 +166,14 @@ class Comments extends React.Component {
             if(comment){
                 comment.fromUser=comment.fromUser?comment.fromUser:{
                     username:'Anonymous',
-                    imageURL:null
+                    imageURL:anonymAva
                 }
             }
             return comment&&<div key={key}>
                 <Comment
                     style={{margin: '20px'}}
                     actions={[
-                        this.state.replyId!==comment.id && child_deep<2&&<span onClick={()=>this.replyTo(comment.id)} key="text">Reply to</span>,
+                        this.state.replyId!==comment.id && child_deep<1&&<span onClick={()=>this.replyTo(comment.id)} key="text">Reply to</span>,
                         <Tooltip key="comment-basic-like" title="Like">
                       <span onClick={()=>this.handleReact(comment.id,1)}>
                         {JSON.parse(comment.likes).includes(this.props.state.auth.user.id) ? <LikeFilled/> : <LikeOutlined/>}
@@ -186,12 +189,14 @@ class Comments extends React.Component {
                     ]}
                     author={<Link to={`/profile/${comment.fromUser.id}`}>{comment.fromUser.username}{comment.anonymous&&<LockOutlined />}</Link>}
                     avatar={<><Avatar src={process.env.REACT_APP_API_ENDPOINT+comment.fromUser.imageURL}/></>}
-                    content={<><div className={'comment-controls'}>{child_deep===0? <Switch
-                        onChange={(e)=>this.handleShowHide(comment,e)}
-                        checkedChildren={<CheckOutlined />}
-                        unCheckedChildren={<CloseOutlined />}
-                        defaultChecked={comment.show}
-                    />:null}<Button onClick={()=>this.handleRemove(comment.id)} icon={<DeleteOutlined />} danger type={'dashed'}/> </div><p>{comment.text}</p></>}
+                    content={<>
+                        {this.props.state.auth.user.id ===this.props.uId &&
+                        <div className={'comment-controls'}>{child_deep===0? <Switch
+                            onChange={(e)=>this.handleShowHide(comment,e)}
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            defaultChecked={comment.show}
+                        />:null}<Button onClick={()=>this.handleRemove(comment.id)} icon={<DeleteOutlined />} danger type={'dashed'}/> </div>}<p>{comment.text}</p></>}
                     datetime={
                         <Tooltip title={moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
                             <span>{moment(comment.createdAt).fromNow()}</span>
@@ -200,12 +205,12 @@ class Comments extends React.Component {
                     {this.state.opened===comment.id &&<Form onFinish={(fromData)=>{
                                                                 this.handleReply(comment.id,fromData)
                                                             }}>
-                        <div onClick={()=>this.setState({opened:null})} className={'comment-close-button'}><CloseCircleOutlined /></div>
+                        <div onClick={()=>this.setState({opened:null})} className={'comment-close-button'}><CloseCircleOutlined className='closeCommentCircle'/></div>
 
                         <Form.Item name={'text'} >
                             <TextArea rows={4}/>
                         </Form.Item>
-
+                        <div className='addCommentDiv'>
                             <Form.Item name={'anonymous'}  >
                                 <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
                             </Form.Item>
@@ -213,9 +218,10 @@ class Comments extends React.Component {
                         <Form.Item>
                             <Button htmlType="submit" loading={this.loading}
                                     type="primary">
-                                Ավելացնել մեկնաբանություն
+                                Добавить комментарий
                             </Button>
                         </Form.Item>
+                        </div>
                     </Form>}
                     {comment.Comments && comment.Comments.length?commentData(comment.Comments,child_deep+1):null}
                 </Comment>
@@ -231,7 +237,7 @@ class Comments extends React.Component {
                         }]}>
                             <TextArea rows={4}/>
                         </Form.Item>
-                        <Row>
+                        <Row className='addCommentDiv'>
                             <div>
                                 <Form.Item initialValue={false} name={'anonymous'}  >
                                     <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
@@ -240,7 +246,7 @@ class Comments extends React.Component {
                             <div>
                                 <Form.Item >
                                     <Button loading={this.state.loading} htmlType="submit" type="primary">
-                                        Add Comment
+                                        Добавить комментарий
                                     </Button>
                                 </Form.Item>
                             </div>
