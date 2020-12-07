@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import {Col, Row, Button, Input, Form, notification} from "antd";
+import {Col, Row, Button, Input, Form, notification, Spin} from "antd";
 import { FacebookOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import axios from "axios";
@@ -83,6 +83,9 @@ class Login extends Component {
       })
     }
     handleRegUser = formData=>{
+        this.setState({
+            loading: true
+        })
         if(this.state.userData.accessToken) {
             axios.request( {
                 url:api.auth.facebook.reg.url,
@@ -94,6 +97,7 @@ class Login extends Component {
             }).then(response=>{
                 if(response.data.userData){
                     this.setState({
+                        loading:false,
                         userData:response.data.userData
                     })
                 }else{
@@ -110,6 +114,7 @@ class Login extends Component {
         return (
                 <Row className={'content-aligned login'}>
                     <Col className='loginBlock' style={{textAlign:'center'}} lg={{offset:8,span:8}}>
+                        {this.state.loading ? <Spin size={"large"} tip="Загрузка..."/> :
                         <div className='loginDiv'>
                             <div style={{marginBottom:'10%'}}>
                                 <img style={{height:'60px'}} alt='logo' src={logo} className='logoLogin'/>
@@ -150,6 +155,7 @@ class Login extends Component {
                                     Login with Facebook
                                 </Button>}
                         </div>
+                        }
                     </Col>
                 </Row>
 
