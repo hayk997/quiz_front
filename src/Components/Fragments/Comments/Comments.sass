@@ -4,16 +4,28 @@
     right: 0
     button
       margin: 0 5px
+  .closeCommentCircle
+    cursor: pointer
+    font-size: 20px !important
+    color: gray !important
+  .closeCommentCircle:hover
+    transform: scale(1.3)
 
-.closeCommentCircle
-  cursor: pointer
-  font-size: 20px !important
-  color: gray !important
-.closeCommentCircle:hover
-  transform: scale(1.3)
-
-.comment-close-button
-  margin-left: 98%
-.addCommentDiv
-  display: flex
-  justify-content: flex-end
+  .comment-close-button
+    margin-left: 98%
+  .addCommentDiv
+    display: flex
+    justify-content: flex-end
+  .comment-reactions
+    font-size: 14px
+    cursor: default
+    span:nth-child(1)
+      cursor: pointer
+      color: #2eae3b
+    span:nth-child(2)
+      margin-left: 5px
+      cursor: pointer
+      color: #1890ff
+  .comment-reactions.dislike
+    span:nth-child(1)
+      color: red

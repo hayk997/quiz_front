@@ -17,7 +17,6 @@ import {connect} from "react-redux";
 import Preloader from "../../Preloader";
 import {Link} from "react-router-dom";
 import './Comments.sass'
-import {anonymAva} from '../../../dist/images/anonym.jpg'
 const {TextArea} = Input;
 
 class Comments extends React.Component {
@@ -140,19 +139,17 @@ class Comments extends React.Component {
             },
             data:data
         }).then(response => {
-            let comment= this.state.data.map(i=>{
+            let data = this.state.data.splice(0)
+            let comment= data.map(i=>{
                 if(i.id ===id){
                     i.Comments=response.data.Comments
-                } return i
+                }
+                return i
             })
             this.setState({
                 data:comment,
                 opened:false
             })
-            console.log("response.data=== ",response.data)
-            console.log("handle reply data=== ",data)
-            console.log('props.data== ',this.props.data)
-            console.log('state.data== ',this.state.data)
         }).catch(e=>{
             console.log(e)
         })
@@ -170,6 +167,21 @@ class Comments extends React.Component {
             console.log(comment)
         })
     }
+    handleGetUsers = (users)=>{
+        if(users.length){
+            axios.request({
+                url: api.Post.reacted.url,
+                method: api.Post.reacted.method,
+                headers: {
+                    'x-access-token': this.props.state.auth.token,
+                    'cache-control': 'no-cache'
+                },
+                data: {users}
+            }).then(users=>{
+                console.log(users)
+            })
+        }
+    }
     render() {
         let commentData =(comments,child_deep)=> comments.map((comment, key) =>{
             if(comment){
@@ -184,14 +196,14 @@ class Comments extends React.Component {
                     actions={[
                         this.state.replyId!==comment.id && child_deep<1&&<span onClick={()=>this.replyTo(comment.id)} key="text">Reply to</span>,
                         <Tooltip key="comment-basic-like" title="Like">
-                      <span onClick={()=>this.handleReact(comment.id,1)}>
-                        {JSON.parse(comment.likes).includes(this.props.state.auth.user.id) ? <LikeFilled/> : <LikeOutlined/>}
-                          <span className="comment-action">{JSON.parse(comment.likes).length}</span>
+                      <span className={'comment-reactions'}>
+                          <span onClick={()=>this.handleReact(comment.id,1)}> {JSON.parse(comment.likes).includes(this.props.state.auth.user.id) ? <LikeFilled/> : <LikeOutlined/>}</span>
+                          <span onClick={()=>this.handleGetUsers(JSON.parse(comment.likes))} className="comment-action">{JSON.parse(comment.likes).length}</span>
                       </span>
                         </Tooltip>,
                         <Tooltip key="comment-basic-dislike" title="Dislike">
-                      <span onClick={()=>this.handleReact(comment.id,0)}>
-                        {JSON.parse(comment.dislikes).includes(this.props.state.auth.user.id) ? <DislikeFilled/> : <DislikeOutlined/>}
+                      <span className={'comment-reactions dislike'} >
+                          <span onClick={()=>this.handleReact(comment.id,0)}>{JSON.parse(comment.dislikes).includes(this.props.state.auth.user.id) ? <DislikeFilled/> : <DislikeOutlined/>}</span>
                           <span className="comment-action">{JSON.parse(comment.dislikes).length}</span>
                       </span>
                         </Tooltip>,

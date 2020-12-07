@@ -79,6 +79,10 @@ const api = {
         visibility:{
             url: `${endpoint}posts/visibility/`,
             method: "POST"
+        },
+        reacted:{
+            url: `${endpoint}posts/users`,
+            method: "POST"
         }
     },
     user:{
