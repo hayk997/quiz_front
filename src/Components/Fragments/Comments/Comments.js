@@ -129,7 +129,6 @@ class Comments extends React.Component {
     }
     replyTo=(id)=>{
         this.setState({opened:id})
-
     }
     handleReply=(id,data)=>{
         axios.request({
@@ -141,9 +140,19 @@ class Comments extends React.Component {
             },
             data:data
         }).then(response => {
+            let comment= this.state.data.map(i=>{
+                if(i.id ===id){
+                    i.Comments=response.data.Comments
+                } return i
+            })
+            this.setState({
+                data:comment,
+                opened:false
+            })
             console.log("response.data=== ",response.data)
             console.log("handle reply data=== ",data)
             console.log('props.data== ',this.props.data)
+            console.log('state.data== ',this.state.data)
         }).catch(e=>{
             console.log(e)
         })
@@ -166,7 +175,7 @@ class Comments extends React.Component {
             if(comment){
                 comment.fromUser=comment.fromUser?comment.fromUser:{
                     username:'Anonymous',
-                    imageURL:anonymAva
+                    imageURL:"images/dist/anonym.png"
                 }
             }
             return comment&&<div key={key}>
@@ -187,7 +196,7 @@ class Comments extends React.Component {
                       </span>
                         </Tooltip>,
                     ]}
-                    author={<Link to={`/profile/${comment.fromUser.id}`}>{comment.fromUser.username}{comment.anonymous&&<LockOutlined />}</Link>}
+                    author={comment.anonymous?<><p>{comment.fromUser.username} <LockOutlined /></p></>:<Link to={`/profile/${comment.fromUser.id}`}>{comment.fromUser.username}</Link>}
                     avatar={<><Avatar src={process.env.REACT_APP_API_ENDPOINT+comment.fromUser.imageURL}/></>}
                     content={<>
                         {this.props.state.auth.user.id ===this.props.uId &&
