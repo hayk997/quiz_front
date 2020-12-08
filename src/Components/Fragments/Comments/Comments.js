@@ -9,7 +9,7 @@ import {
     CheckOutlined,CloseOutlined,
     DeleteOutlined
 } from '@ant-design/icons';
-import {Row, Col,Comment, Switch, Tooltip, Avatar, Form, Button, List, Input, Card} from 'antd';
+import {Row, Col, Comment, Switch, Tooltip, Avatar, Form, Button, List, Input, Card, Popover} from 'antd';
 import moment from 'moment';
 import axios from "axios";
 import api from "../../../api";
@@ -17,6 +17,7 @@ import {connect} from "react-redux";
 import Preloader from "../../Preloader";
 import {Link} from "react-router-dom";
 import './Comments.sass'
+import PopoverUser from "../PopoverUser/PopoverUser";
 const {TextArea} = Input;
 
 class Comments extends React.Component {
@@ -28,7 +29,9 @@ class Comments extends React.Component {
             submitting: false,
             value: '',
             loading:false,
-            opened:false
+            opened:false,
+            likedUsersList:[],
+            likeLoading:false
         }
         this.form=React.createRef()
     }
@@ -176,6 +179,7 @@ class Comments extends React.Component {
         })
     }
     handleGetUsers = (users)=>{
+        this.setState({likeLoading:true})
         if(users.length){
             axios.request({
                 url: api.Post.reacted.url,
@@ -187,6 +191,16 @@ class Comments extends React.Component {
                 data: {users}
             }).then(users=>{
                 console.log(users)
+                this.setState({
+                    likedUsersList:users.data.users,
+                    likeLoading:false
+                })
+            })
+        }
+        else {
+            this.setState({
+                likedUsersList:[],
+                likeLoading:false
             })
         }
     }
@@ -206,13 +220,17 @@ class Comments extends React.Component {
                         <Tooltip key="comment-basic-like" title="Like">
                       <span className={'comment-reactions'}>
                           <span onClick={()=>this.handleReact(comment.id,1)}> {JSON.parse(comment.likes).includes(this.props.state.auth.user.id) ? <LikeFilled/> : <LikeOutlined/>}</span>
+                            <Popover trigger='click' placement="bottomRight" content={<PopoverUser loading={this.state.likeLoading} usersList={this.state.likedUsersList}/>}>
                           <span onClick={()=>this.handleGetUsers(JSON.parse(comment.likes))} className="comment-action">{JSON.parse(comment.likes).length}</span>
+                           </Popover>
                       </span>
                         </Tooltip>,
                         <Tooltip key="comment-basic-dislike" title="Dislike">
                       <span className={'comment-reactions dislike'} >
                           <span onClick={()=>this.handleReact(comment.id,0)}>{JSON.parse(comment.dislikes).includes(this.props.state.auth.user.id) ? <DislikeFilled/> : <DislikeOutlined/>}</span>
-                          <span className="comment-action">{JSON.parse(comment.dislikes).length}</span>
+                          <Popover trigger='click' placement="bottomRight" content={<PopoverUser loading={this.state.likeLoading} usersList={this.state.likedUsersList}/>}>
+                          <span onClick={()=>this.handleGetUsers(JSON.parse(comment.dislikes))} className="comment-action">{JSON.parse(comment.dislikes).length}</span>
+                          </Popover>
                       </span>
                         </Tooltip>,
                     ]}
