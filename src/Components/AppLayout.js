@@ -66,7 +66,7 @@ class AppLayout extends Component {
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes" component={Quizes}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes/:id" component={Quiz}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/answers/:id" component={Answer}/>
-                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/stats/:id" component={AnswerStats}/>
+                                            <PrivateRoute isLoggedIn={true} exact path="/stats/:id" component={AnswerStats}/>
                                             <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
                                             <Route exact path="/login" > {this.props.state.auth.token ?<Redirect to="/profile" />:<Login/>}</Route>
                                             <Route exact path="**" > <Page404 /></Route>

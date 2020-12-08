@@ -74,11 +74,8 @@ class Profile extends Component {
         }
         if (info.file.status === 'done') {
             this.props.onUpdate(info.file.response.user)
-            // Get this url from response in real world.
-            this.setState({
-                loading: false,
-                showUpload: false,
-            })
+
+            this.componentDidMount();
         }
     };
 

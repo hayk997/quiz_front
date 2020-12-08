@@ -19,34 +19,6 @@ class Login extends Component {
             availability:false
         }
     }
-    handleLogin = (formData)=>{
-        this.setState({
-            loading:true
-        })
-        axios.request( {
-            url:api.auth.login.url,
-            headers:{
-            },
-            method: api.auth.login.method,
-            data: formData
-        }).then(response=> {
-            if(response.data.message){
-                notification.warning({
-                    message: 'Warning',
-                    description: response.data.message,
-                });
-            }else{
-                this.props.onLogin(response.data)
-                this.props.history.push('/profile')
-            }
-        }).catch(err=>{
-            console.log(err.message)
-        }).finally(()=>{
-            this.setState({
-                loading:false
-            })
-        })
-    }
     handleRegFacebook = (response) => {
         if(response.accessToken) {
             axios.request( {
@@ -71,7 +43,6 @@ class Login extends Component {
         }
     }
     handleCheckAvailability = (e)=>{
-
       axios.request({
           url:api.user.check.url,
           method:api.user.check.method,
@@ -144,7 +115,6 @@ class Login extends Component {
 
                                         }
                                     }
-
                                 ]}>
                                     <Input onChange={this.handleCheckAvailability}/>
                                 </Form.Item>
