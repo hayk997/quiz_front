@@ -97,13 +97,21 @@ class Comments extends React.Component {
         })
     }
 
-    handleUpdateComment=(Comments,response)=>{
+    handleUpdateComment=(Comments,response,type)=>{
        return Comments.map(comment=>{
             if(comment.id===response.data.id){
-                return response.data
+                let key = type?'likes':'dislikes';
+                comment[key] = JSON.parse(comment[key])
+                if(comment[key].includes(this.props.state.auth.user.id)){
+                    comment[key] = comment[key].filter(id=>id!==this.props.state.auth.user.id)
+                }else{
+                    comment[key].push(this.props.state.auth.user.id)
+                }
+                comment[key] = JSON.stringify(comment[key])
+                return comment
             }else{
                 if(comment.Comments &&comment.Comments.length){
-                    comment.Comments =this.handleUpdateComment(comment.Comments,response)
+                    comment.Comments =this.handleUpdateComment(comment.Comments,response,type)
                 }
                 return comment
             }
@@ -119,7 +127,7 @@ class Comments extends React.Component {
             },
         }).then(response=>{
             let {data} = this.state;
-            data =this.handleUpdateComment(data,response)
+            data =this.handleUpdateComment(data,response,type)
             console.log(data,response.data)
             this.setState({
                 data
