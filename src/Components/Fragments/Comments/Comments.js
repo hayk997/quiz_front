@@ -307,7 +307,7 @@ class Comments extends React.Component {
             />
             </Card>:<FastAuth refId={this.props.uId} title={'Войдите чтобы задавать вопросы'}/>}
             {!this.state.loading?this.state.data.length?commentData(this.state.data,0):
-                <Typography.Title level={4}></Typography.Title>:<Preloader/>}
+                <Typography.Title level={4}>Нет Вопросов)</Typography.Title>:<Preloader/>}
 
         </div>
 
