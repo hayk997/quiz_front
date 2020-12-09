@@ -44,27 +44,32 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        axios.request({
-            url: api.user.list.url + (this.props.match.params.id ? this.props.match.params.id : this.props.state.auth.user.id) + (this.props.state.views['user']?.includes(this.props.match.params.id) ? '?c=1' : ''),//for pagination add ?page=2,//for pagination add ?page=2
-            method: api.user.list.method,
-            headers: {
-                'x-access-token': this.props.state.auth.token,
-                'cache-control': 'no-cache'
-            }
-        }).then(response => {
-            if (this.props.match.params.id) {
-                this.props.view({
-                    page: 'user',
-                    id: this.props.match.params.id
+        if(this.props.state.auth.user ||this.props.match.params.id  ){
+            axios.request({
+                url: api.user.list.url + (this.props.match.params.id ? this.props.match.params.id : this.props.state.auth.user.id) + (this.props.state.views['user']?.includes(this.props.match.params.id) ? '?c=1' : ''),//for pagination add ?page=2,//for pagination add ?page=2
+                method: api.user.list.method,
+                headers: {
+                    'x-access-token': this.props.state.auth.token,
+                    'cache-control': 'no-cache'
+                }
+            }).then(response => {
+                if (this.props.match.params.id) {
+                    this.props.view({
+                        page: 'user',
+                        id: this.props.match.params.id
+                    })
+                }
+                this.setState({
+                    user: response.data,
+                    loading: false
                 })
-            }
-            this.setState({
-                user: response.data,
-                loading: false
+            }).catch(e=>{
+                console.log(e)
             })
-        }).catch(e=>{
-           console.log(e)
-        })
+        }else{
+            this.props.history.push('/404')
+        }
+
     }
 
     handleChange = info => {

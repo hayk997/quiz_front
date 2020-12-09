@@ -78,7 +78,7 @@ class AnswerStats extends Component {
                                 <Button type={'primary'} icon={<CaretRightOutlined />} className={'start-button'}>
                                     Перейти в вопросам
                                 </Button>
-                            </Link>:<FastAuth title={'Войдите чтобы пройти тест'}/>}
+                            </Link>:<FastAuth refId={this.state.data.user.id} title={'Войдите чтобы пройти тест'}/>}
                             <Divider/>
                             <Table size={'small'} columns={columns} rowKey={'id'} dataSource={this.state.data.setups}/>
                         </Col>

@@ -239,12 +239,12 @@ class Comments extends React.Component {
                     avatar={<><Avatar src={process.env.REACT_APP_API_ENDPOINT+comment.fromUser.imageURL}/></>}
                     content={<>
                         {this.props.state.auth.user.id ===this.props.uId &&
-                        <div className={'comment-controls'}>{child_deep===0?  <Tooltip title={'Видимость'}><Switch
+                       child_deep===0?  <div className={'comment-controls'}> <Tooltip title={'Видимость'}><Switch
                             onChange={(e)=>this.handleShowHide(comment,e)}
                             checkedChildren={<CheckOutlined />}
                             unCheckedChildren={<CloseOutlined />}
                             defaultChecked={comment.show}
-                        /></Tooltip>:null}<Tooltip title={'Удалить'}><Button onClick={()=>this.handleRemove(comment.id)} icon={<DeleteOutlined />} danger type={'dashed'}/> </Tooltip></div>}<p>{comment.text}</p></>}
+                        /></Tooltip><Tooltip title={'Удалить'}><Button onClick={()=>this.handleRemove(comment.id)} icon={<DeleteOutlined />} danger type={'dashed'}/> </Tooltip></div>:null}<p>{comment.text}</p></>}
                     datetime={
                         <Tooltip title={moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
                             <span>{moment(comment.createdAt).fromNow()}</span>
@@ -259,10 +259,11 @@ class Comments extends React.Component {
                             <TextArea rows={4}/>
                         </Form.Item>
                         <div className='addCommentDiv'>
+                            <Tooltip title={'Анонимность'}>
                             <Form.Item name={'anonymous'}  >
-                                <Tooltip title={'Анонимность'}><Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  /></Tooltip>
+                                <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
                             </Form.Item>
-
+                            </Tooltip>
                         <Form.Item>
                             <Button icon={<SendOutlined />} htmlType="submit" loading={this.loading}
                                     type="primary">
@@ -287,9 +288,11 @@ class Comments extends React.Component {
                         </Form.Item>
                         <Row className='addCommentDiv'>
                             <div>
+                                <Tooltip title={'Анонимность'}>
                                 <Form.Item initialValue={false} name={'anonymous'}  >
-                                    <Tooltip title={'Анонимность'}><Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  /></Tooltip>
+                                   <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
                                 </Form.Item>
+                                </Tooltip>
                             </div>
                             <div>
                                 <Form.Item >
@@ -302,7 +305,7 @@ class Comments extends React.Component {
                     </Form>
                 }
             />
-            </Card>:<FastAuth title={'Войдите чтобы задавать вопросы'}/>}
+            </Card>:<FastAuth refId={this.props.uId} title={'Войдите чтобы задавать вопросы'}/>}
             {!this.state.loading?this.state.data.length?commentData(this.state.data,0):
                 <Typography.Title level={4}></Typography.Title>:<Preloader/>}
 

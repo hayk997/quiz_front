@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../../api"
 import logo from '../../../dist/images/mainLogo.png'
-import { Redirect} from "react-router-dom";
 import FacebookLogin from "react-facebook-login";
 
 
@@ -61,7 +60,8 @@ class FastAuth extends Component {
                 method: api.auth.facebook.reg.method,
                 data: {
                     access_token:this.state.userData.accessToken,
-                    userName:formData.username
+                    userName:formData.username,
+                    refId:this.props.refId
                 }
             }).then(response=>{
                 if(response.data.userData){
