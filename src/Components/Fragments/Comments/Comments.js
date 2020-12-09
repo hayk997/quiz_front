@@ -7,9 +7,9 @@ import {
     CloseCircleOutlined,
     UserOutlined, LockOutlined,
     CheckOutlined,CloseOutlined,
-    DeleteOutlined
+    DeleteOutlined,SendOutlined
 } from '@ant-design/icons';
-import {Row, Col, Comment, Switch, Tooltip, Avatar, Form, Button, List, Input, Card, Popover} from 'antd';
+import {Row, Col, Comment, Switch, Tooltip, Avatar, Form, Button, List, Input, Card, Popover,Typography} from 'antd';
 import moment from 'moment';
 import axios from "axios";
 import api from "../../../api";
@@ -18,6 +18,7 @@ import Preloader from "../../Preloader";
 import {Link} from "react-router-dom";
 import './Comments.sass'
 import PopoverUser from "../PopoverUser/PopoverUser";
+import FastAuth from "../FastAuth/FastAuth";
 const {TextArea} = Input;
 
 class Comments extends React.Component {
@@ -216,8 +217,8 @@ class Comments extends React.Component {
                 <Comment
                     style={{margin: '20px'}}
                     actions={[
-                        this.state.replyId!==comment.id && child_deep<1&&<span onClick={()=>this.replyTo(comment.id)} key="text">Reply to</span>,
-                        <Tooltip key="comment-basic-like" title="Like">
+                        this.state.replyId!==comment.id && child_deep<1&&<span onClick={()=>this.replyTo(comment.id)} key="text">Ответить</span>,
+                        <Tooltip key="comment-basic-like" title="Нравится">
                       <span className={'comment-reactions'}>
                           <span onClick={()=>this.handleReact(comment.id,1)}> {JSON.parse(comment.likes).includes(this.props.state.auth.user.id) ? <LikeFilled/> : <LikeOutlined/>}</span>
                             <Popover trigger='click' placement="bottomRight" content={<PopoverUser loading={this.state.likeLoading} usersList={this.state.likedUsersList}/>}>
@@ -225,7 +226,7 @@ class Comments extends React.Component {
                            </Popover>
                       </span>
                         </Tooltip>,
-                        <Tooltip key="comment-basic-dislike" title="Dislike">
+                        <Tooltip key="comment-basic-dislike" title="Не нравится">
                       <span className={'comment-reactions dislike'} >
                           <span onClick={()=>this.handleReact(comment.id,0)}>{JSON.parse(comment.dislikes).includes(this.props.state.auth.user.id) ? <DislikeFilled/> : <DislikeOutlined/>}</span>
                           <Popover trigger='click' placement="bottomRight" content={<PopoverUser loading={this.state.likeLoading} usersList={this.state.likedUsersList}/>}>
@@ -238,12 +239,12 @@ class Comments extends React.Component {
                     avatar={<><Avatar src={process.env.REACT_APP_API_ENDPOINT+comment.fromUser.imageURL}/></>}
                     content={<>
                         {this.props.state.auth.user.id ===this.props.uId &&
-                        <div className={'comment-controls'}>{child_deep===0? <Switch
+                        <div className={'comment-controls'}>{child_deep===0?  <Tooltip title={'Видимость'}><Switch
                             onChange={(e)=>this.handleShowHide(comment,e)}
                             checkedChildren={<CheckOutlined />}
                             unCheckedChildren={<CloseOutlined />}
                             defaultChecked={comment.show}
-                        />:null}<Button onClick={()=>this.handleRemove(comment.id)} icon={<DeleteOutlined />} danger type={'dashed'}/> </div>}<p>{comment.text}</p></>}
+                        /></Tooltip>:null}<Tooltip title={'Удалить'}><Button onClick={()=>this.handleRemove(comment.id)} icon={<DeleteOutlined />} danger type={'dashed'}/> </Tooltip></div>}<p>{comment.text}</p></>}
                     datetime={
                         <Tooltip title={moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
                             <span>{moment(comment.createdAt).fromNow()}</span>
@@ -259,13 +260,13 @@ class Comments extends React.Component {
                         </Form.Item>
                         <div className='addCommentDiv'>
                             <Form.Item name={'anonymous'}  >
-                                <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
+                                <Tooltip title={'Анонимность'}><Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  /></Tooltip>
                             </Form.Item>
 
                         <Form.Item>
-                            <Button htmlType="submit" loading={this.loading}
+                            <Button icon={<SendOutlined />} htmlType="submit" loading={this.loading}
                                     type="primary">
-                                Добавить комментарий
+                                Ответить
                             </Button>
                         </Form.Item>
                         </div>
@@ -274,7 +275,7 @@ class Comments extends React.Component {
                 </Comment>
             </div>})
         return <div className={'comments-container'}>
-            <Card>
+            {this.props.state.auth.token?<Card>
             <Comment
                 avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT+this.props.state.auth.user.imageURL}/>}
                 content={
@@ -287,13 +288,13 @@ class Comments extends React.Component {
                         <Row className='addCommentDiv'>
                             <div>
                                 <Form.Item initialValue={false} name={'anonymous'}  >
-                                    <Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  />
+                                    <Tooltip title={'Анонимность'}><Switch  style={{margin:'0 20px',transform:'scale(1.5)'}} checkedChildren={<LockOutlined />} unCheckedChildren={<UserOutlined />}  /></Tooltip>
                                 </Form.Item>
                             </div>
                             <div>
                                 <Form.Item >
-                                    <Button loading={this.state.loading} htmlType="submit" type="primary">
-                                        Добавить комментарий
+                                    <Button icon={<SendOutlined />}  loading={this.state.loading} htmlType="submit" type="primary">
+                                        Задать вопрос
                                     </Button>
                                 </Form.Item>
                             </div>
@@ -301,8 +302,9 @@ class Comments extends React.Component {
                     </Form>
                 }
             />
-            </Card>
-            {!this.state.loading?this.state.data.length&&commentData(this.state.data,0):<Preloader/>}
+            </Card>:<FastAuth title={'Войдите чтобы задавать вопросы'}/>}
+            {!this.state.loading?this.state.data.length?commentData(this.state.data,0):
+                <Typography.Title level={4}></Typography.Title>:<Preloader/>}
 
         </div>
 

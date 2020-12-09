@@ -72,7 +72,7 @@ class Quiz extends Component {
                     {this.state.loading?<Preloader/>:this.state.currentPage>=this.state.questions.count?<Alert
                         style={{marginTop:'50px'}}
                         message="Test Successfully created"
-                        description={<>You can view your test <Button onClick={()=>this.props.history.push(`/${process.env.REACT_APP_DOMAIN}stats/`+this.state.quizId)} type={'link'}>HERE</Button>
+                        description={<>You can view your test <Button onClick={()=>this.props.history.push(`/stats/`+this.state.quizId)} type={'link'}>HERE</Button>
                                         <Paragraph copyable>{`${process.env.REACT_APP_DOMAIN}stats/${this.state.quizId}`}</Paragraph> </>}
                         type="success"
                         showIcon

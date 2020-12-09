@@ -11,6 +11,7 @@ import avatar from '../../dist/images/avatar.png'
 import {Typography} from 'antd';
 import img from "../../dist/images/a.jpg";
 import {CaretRightOutlined} from '@ant-design/icons';
+import FastAuth from "../Fragments/FastAuth/FastAuth";
 
 const {Title} = Typography;
 
@@ -44,7 +45,7 @@ class AnswerStats extends Component {
     render() {
         const columns = [
             {
-                title: 'Name',
+                title: 'Имя',
                 dataIndex: ['user', 'username'],
                 sorter: (a, b) => a.name.length - b.name.length,
                 sortDirections: ['descend'],
@@ -52,7 +53,7 @@ class AnswerStats extends Component {
                     src={record.user.imageURL ? process.env.REACT_APP_API_ENDPOINT + record.user.imageURL : avatar}/> {item} </>
             },
             {
-                title: 'points',
+                title: 'Очки',
                 dataIndex: 'points',
                 defaultSortOrder: 'descend',
                 sorter: (a, b) => a.points - b.points,
@@ -65,7 +66,7 @@ class AnswerStats extends Component {
                     <Row className='stats'>
                         <Col style={{textAlign: 'center',marginBottom:'25px'}} lg={{span: 4, offset: 10}}>
                             <Title level={1}>{this.state.data.question.title}</Title>
-                           <img alt="questionImage"
+                           <Image alt="questionImage"
                                             src={process.env.REACT_APP_API_ENDPOINT + this.state.data.question.imageURL}/>
 
                         </Col>
@@ -73,13 +74,13 @@ class AnswerStats extends Component {
                             <Title level={2}>Насколько хорошо знаете
                                 пользователя {this.state.data.user.username}?</Title>
                             <Divider/>
-                            <Link to={`/answers/${this.props.match.params.id}`}>
+                            {this.props.state.auth.token?<Link to={`/answers/${this.props.match.params.id}`}>
                                 <Button type={'primary'} icon={<CaretRightOutlined />} className={'start-button'}>
                                     Перейти в вопросам
                                 </Button>
-                            </Link>
+                            </Link>:<FastAuth title={'Войдите чтобы пройти тест'}/>}
                             <Divider/>
-                            <Table columns={columns} rowKey={'id'} dataSource={this.state.data.setups}/>
+                            <Table size={'small'} columns={columns} rowKey={'id'} dataSource={this.state.data.setups}/>
                         </Col>
                         {Object.keys(this.state.data.userId).length ?<Col lg={24}>
                             <Title level={3}>
@@ -101,7 +102,7 @@ class AnswerStats extends Component {
                                 return <Row key={key} className={'most-answered-list'}>
                                     <Col lg={8}>
                                         <Title level={3}>{question}</Title>
-                                        <Title level={4}>This answer has been selected {sortedStats[0][1]} times</Title>
+                                        <Title level={4}>Ответ был выбран {sortedStats[0][1]} раз</Title>
                                     </Col>
                                     <Col lg={16}>
                                         <Row className={'centered'}>

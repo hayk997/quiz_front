@@ -88,13 +88,13 @@ class Profile extends Component {
         );
         return (
             this.state.loading ? <Preloader/> : <Row className={'content-aligned'}>
-                <Col className={'centered'} lg={24}>
+                <Col className={'centered'} lg={24} md={24} sm={24} xs={24}>
                     {this.state.user.imageURL && !this.state.showUpload ?
                         <>
                             <Avatar onClick={() => this.setState({showUpload: true})}
                                     style={{borderRadius: '100%', cursor: 'pointer'}} size={100}
-                                    src={process.env.REACT_APP_API_ENDPOINT + this.state.user.imageURL}/>
-                        </> : this.state.user && this.props.state.auth.user.id === this.state.user.id ?
+                                    src={this.state.user.imageURL?process.env.REACT_APP_API_ENDPOINT + this.state.user.imageURL:AvatarImg}/>
+                        </> : this.state.user && this.props.state.auth.user?.id === this.state.user.id ?
                             <Upload
                                 headers={{
                                     "x-access-token": this.props.state.auth.token
@@ -114,14 +114,13 @@ class Profile extends Component {
                     }
                     <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
                 </Col>
-                <Col lg={24}>
+                <Col lg={24} md={24} sm={24} xs={24}>
                 <Tabs defaultActiveKey="1" centered>
-                    <Tabs.TabPane tab="Comments" key="1">
-
+                    <Tabs.TabPane tab="Вопросы/Ответы" key="1">
                             <Comments data={this.state.user.posts} uId={this.state.user.id}/>
 
                     </Tabs.TabPane>
-                    <Tabs.TabPane tab="Quizes" key="2">
+                    <Tabs.TabPane tab="Личные тесты" key="2">
                         <Typography.Title level={4}>My apps</Typography.Title>
                         {this.state.user.answers.length ?
                             this.state.user.answers.map((answer) => <Badge count={answer.newPassed}><QuizCard

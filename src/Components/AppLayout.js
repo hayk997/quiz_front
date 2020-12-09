@@ -11,6 +11,7 @@ import Quiz from "./Quizes/Quiz";
 import Answer from "./Answer/Answer";
 import AnswerStats from "./Answer/AnswerStats";
 import Page404 from "./Page404/Page404";
+import FastAuth from "./Fragments/FastAuth/FastAuth";
 const { Content} = Layout;
 /**
  *
@@ -61,13 +62,13 @@ class AppLayout extends Component {
                                 minHeight: 280,
                             }}>
                                         <Switch>
-                                            <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/profile/:id?" component={Profile}/>
+                                            <PrivateRoute isLoggedIn={true} exact path="/profile/:id?" component={Profile}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/upload" component={UploadAnswerImage}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes" component={Quizes}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes/:id" component={Quiz}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/answers/:id" component={Answer}/>
                                             <PrivateRoute isLoggedIn={true} exact path="/stats/:id" component={AnswerStats}/>
-                                            <Route exact path="/" > {!this.props.state.auth.token ?<Login/>:<Redirect to="/profile" />}</Route>
+                                            <Route exact path="/" > {!this.props.state.auth.token ?<FastAuth title={'Быстрая регистрация или вход'}/>:<Redirect to="/profile" />}</Route>
                                             <Route exact path="/login" > {this.props.state.auth.token ?<Redirect to="/profile" />:<Login/>}</Route>
                                             <Route exact path="**" > <Page404 /></Route>
                                         </Switch>

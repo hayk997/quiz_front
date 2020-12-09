@@ -15,21 +15,13 @@ class PopoverUser extends Component {
         }
     }
     render() {
-        console.log('popoverList: ', this.props.usersList)
         return (
             <div className='usersListPopover'>
                 {!this.props.likeLoading?
-                this.props.usersList.map(u=>{
-                    return <Comment
+                this.props.usersList.map(u=> <Comment
                         key={u.id}
-                        content={u.username}
-                        avatar={
-                            <Avatar
-                                src={process.env.REACT_APP_API_ENDPOINT + u.imageURL}
-                                alt="Han Solo"
-                            />
-                        }/>
-                })
+                        content={<Link to={'/profile/'+u.id}>{u.username}</Link>}
+                        avatar={<Avatar src={process.env.REACT_APP_API_ENDPOINT + u.imageURL}/>}/>)
                     :<Preloader/>
                 }
             </div>

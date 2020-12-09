@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card} from "antd";
+import {Card, Image} from "antd";
 import {
     CheckCircleOutlined,
     EyeOutlined
@@ -28,7 +28,7 @@ class Profile extends Component {
                         </>
                     ]}
                 cover={
-                    <img
+                    <Image
                         alt="example"
                         src={process.env.REACT_APP_API_ENDPOINT + this.props.question.imageURL}
                     />

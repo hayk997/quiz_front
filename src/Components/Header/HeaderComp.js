@@ -102,11 +102,9 @@ class HeaderComp extends Component {
                                 ):null}
                             </Select>
                             </Menu.Item>}
-                            {this.props.state.auth.token &&<Menu.Item style={{marginLeft:'2%'}} onClick={this.navigate} key="/profile">My profile</Menu.Item> }
-                            {this.props.state.auth.token &&<Menu.Item ><NavLink to="/quizes">Quizes</NavLink></Menu.Item>}
-                            {this.props.state.auth.token ?
-                                <Menu.Item onClick={this.props.onLogout} key="/logout">LOGOUT</Menu.Item> :
-                                <Menu.Item onClick={this.navigate} key="/">Login</Menu.Item>}
+                            {this.props.state.auth.token &&<Menu.Item style={{marginLeft:'2%'}} onClick={this.navigate} key="/profile">Главная</Menu.Item> }
+                            {this.props.state.auth.token &&<Menu.Item ><NavLink to="/quizes">Тесты</NavLink></Menu.Item>}
+                            {this.props.state.auth.token && <Menu.Item onClick={this.props.onLogout} key="/logout">Выход</Menu.Item> }
                         </Menu>
                     </Col>
                 </Row>
