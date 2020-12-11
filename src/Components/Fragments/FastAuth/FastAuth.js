@@ -1,12 +1,15 @@
 import React,{Component} from "react";
-import {Col, Row, Button, Input, Form, Spin, Typography} from "antd";
+import {Col, Row, Button, Input, Form, Spin, Typography,DatePicker,Select } from "antd";
 import { FacebookOutlined} from "@ant-design/icons";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../../api"
 import logo from '../../../dist/images/mainLogo.png'
 import FacebookLogin from "react-facebook-login";
-
+import ManOutlined from "@ant-design/icons/lib/icons/ManOutlined";
+import WomanOutlined from "@ant-design/icons/lib/icons/WomanOutlined";
+import './FastAuth.sass'
+const { Option } = Select;
 
 class FastAuth extends Component {
     constructor(props) {
@@ -33,7 +36,6 @@ class FastAuth extends Component {
                 }else{
                     this.props.onLogin(response.data)
                 }
-
             }).catch(err=>{
                 console.log(err)
             })
@@ -61,7 +63,9 @@ class FastAuth extends Component {
                 data: {
                     access_token:this.state.userData.accessToken,
                     userName:formData.username,
-                    refId:this.props.refId
+                    refId:this.props.refId,
+                    birthDate:formData.birthDate,
+                    genderId:formData.genderId
                 }
             }).then(response=>{
                 if(response.data.userData){
@@ -94,7 +98,7 @@ class FastAuth extends Component {
                                 cssClass="hidden"
                                 callback={this.handleRegFacebook}/>
                             {this.state.userData.id?<Form onFinish={this.handleRegUser}>
-                                <Form.Item name={'username'} label={'Выберите имя пользователя'} rules={[
+                                <Form.Item wrapperCol={{span:13,offset:1}} labelCol={{span: 9}} name={'username'} label={'Имя пользователя'} rules={[
                                     {
                                         validator:(rule, value, callback)=>{
                                             if(!value){
@@ -115,6 +119,19 @@ class FastAuth extends Component {
                                     }
                                 ]}>
                                     <Input onChange={this.handleCheckAvailability}/>
+                                </Form.Item>
+
+                                <Form.Item style={{width:'100%'}} wrapperCol={{span:13,offset:1}} labelCol={{span: 9}} required label={'Дата рождения'} name='birthDate'>
+                                    <DatePicker/>
+                                </Form.Item>
+                                <Form.Item wrapperCol={{span:13,offset:1}} labelCol={{span: 9}} required name='genderId' label={'Выберите пол'}>
+                                    <Select
+                                        style={{ width: 200 }}
+                                        placeholder="Выберите пол"
+                                    >
+                                        <Option value="1"><ManOutlined />Мужской</Option>
+                                        <Option value="2"><WomanOutlined />Женский</Option>
+                                    </Select>
                                 </Form.Item>
                                 <Form.Item>
                                     <Button htmlType={'Submit'}>Зарегестрироватся</Button>
