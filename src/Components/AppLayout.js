@@ -12,6 +12,7 @@ import Answer from "./Answer/Answer";
 import AnswerStats from "./Answer/AnswerStats";
 import Page404 from "./Page404/Page404";
 import FastAuth from "./Fragments/FastAuth/FastAuth";
+import Horoscope from "./Horoscope/Horoscope";
 const { Content} = Layout;
 /**
  *
@@ -68,6 +69,7 @@ class AppLayout extends Component {
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/quizes/:id" component={Quiz}/>
                                             <PrivateRoute isLoggedIn={this.isLoggedIn()} exact path="/answers/:id" component={Answer}/>
                                             <PrivateRoute isLoggedIn={true} exact path="/stats/:id" component={AnswerStats}/>
+                                            <PrivateRoute isLoggedIn={true} exact path="/horoscope" component={Horoscope}/>
                                             <Route exact path="/" > {!this.props.state.auth.token ?<FastAuth title={'Быстрая регистрация или вход'}/>:<Redirect to="/profile" />}</Route>
                                             <Route exact path="/login" > {this.props.state.auth.token ?<Redirect to="/profile" />:<Login/>}</Route>
                                             <Route exact path="**" > <Page404 /></Route>

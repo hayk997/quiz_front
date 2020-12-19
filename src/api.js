@@ -53,6 +53,12 @@ const api = {
             method: "GET"
         }
     },
+    horoscope: {
+        get: {
+            url: `${endpoint}horoscope/`,
+            method: "GET"
+        },
+    },
     setup:{
         create:{
             url: `${endpoint}setups/`,
