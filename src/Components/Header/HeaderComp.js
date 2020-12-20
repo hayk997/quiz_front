@@ -104,7 +104,11 @@ class HeaderComp extends Component {
                             </Menu.Item>}
                             {this.props.state.auth.token &&<Menu.Item style={{marginLeft:'2%'}} onClick={this.navigate} key="/profile">Главная</Menu.Item> }
                             {this.props.state.auth.token &&<Menu.Item ><NavLink to="/quizes">Тесты</NavLink></Menu.Item>}
-                            {this.props.state.auth.token && <Menu.Item onClick={this.props.onLogout} key="/logout">Выход</Menu.Item> }
+                            {this.props.state.auth.token &&<Menu.Item ><NavLink to="/horoscope">Гороскоп</NavLink></Menu.Item>}
+                            {this.props.state.auth.token && <Menu.Item onClick={()=>{
+                                this.props.onLogout();
+                                this.props.history.push('/')
+                            }} key="/logout">Выход</Menu.Item> }
                         </Menu>
                     </Col>
                 </Row>

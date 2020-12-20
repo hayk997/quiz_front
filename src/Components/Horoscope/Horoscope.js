@@ -4,6 +4,8 @@ import {withRouter} from "react-router-dom";
 import axios from "axios";
 import api from "../../api";
 import {connect} from "react-redux";
+import {Col, Image, Row, Typography} from "antd";
+import Preloader from "../Preloader";
 
 
 
@@ -11,7 +13,8 @@ class Horoscope extends React.Component{
     constructor(props) {
         super(props)
         this.state={
-            imageSrc:''
+            imageSrc:'',
+            loading:true
         }
     }
     componentDidMount() {
@@ -25,16 +28,21 @@ class Horoscope extends React.Component{
         }).then(response=>{
             console.log(response.data.src)
             this.setState({
-                imageSrc:response.data.src
+                imageSrc:response.data.src,
+                loading:false
             })
 
         })
     }
 
     render() {
-        return<div className='successContainer' id="container">
-               <img src={this.state.imageSrc}/>
-            </div>
+        return<Row style={{textAlign:'center'}}  >
+            <Typography.Title style={{textAlign:'center'}}  level={3}>Гороскоп на Завтра</Typography.Title>
+            {this.state.loading?<Preloader/>:  <Col lg={24}>
+                <Image style={{textAlign:'center'}} src={this.state.imageSrc}/>
+            </Col>}
+
+            </Row>
     }
 }
 
