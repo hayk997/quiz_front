@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 import {connect} from 'react-redux'
 import {ConfigProvider} from "antd";
-import AppLayout from "./Components/AppLayout";
+import {AppLayout} from "./Components/AppLayout";
 
 
 class Routes extends Component {

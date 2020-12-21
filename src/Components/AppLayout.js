@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Layout} from "antd";
+import {Layout, notification} from "antd";
 import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch,withRouter} from "react-router-dom";
 import Login from "./Auth/Login";
 import Profile from "./Profile/Profile";
 import UploadAnswerImage from "./Upload/Upload";
@@ -13,6 +13,8 @@ import AnswerStats from "./Answer/AnswerStats";
 import Page404 from "./Page404/Page404";
 import FastAuth from "./Fragments/FastAuth/FastAuth";
 import Horoscope from "./Horoscope/Horoscope";
+import { io } from 'socket.io-client';
+
 const { Content} = Layout;
 /**
  *
@@ -34,6 +36,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         }
     />
 );
+var Socket;
 class AppLayout extends Component {
     constructor(props) {
         super(props);
@@ -41,6 +44,51 @@ class AppLayout extends Component {
 
         }
     }
+    componentDidMount() {
+        if(this.props.state.auth.token){
+            Socket = io('http://localhost:4001/',{
+                auth:{
+                    token:this.props.state.auth.token
+                }
+            })
+            Socket.on("connect",()=>{
+                console.log(Socket)
+
+            })
+            Socket.on('connectedUserCount',(count)=>{
+                console.log(count)
+            })
+            Socket.on('adminMessage',(message)=>{
+                console.log(message)
+                notification.info({
+                    message:'Admin@ asma',
+                    description:message
+                })
+            })
+
+            Socket.on("connect_error", (err) => {
+                console.log(err.message); // prints the message associated with the error
+            });
+        }else{
+            console.log('not logged')
+        }
+
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.location.pathname!==this.props.location.pathname){
+            if(this.props.state.auth.token){
+              let path = this.props.location.pathname;
+                path =  path.split('/')
+                Socket.emit('userMove',{
+                    path:path[1],
+                    key:path[2]
+                })
+            }
+        }
+
+    }
+
     /**
      * @returns {string | auth | {token} | {basic} | {} | * | boolean}
      * check user logged in and user permissions
@@ -81,12 +129,12 @@ class AppLayout extends Component {
         )
     }
 }
-
-export default connect(
+AppLayout = connect(
     state => ({
         state
     }),
     () => ({
 
     })
-)(AppLayout);
+)(withRouter(AppLayout))
+export {AppLayout,Socket};

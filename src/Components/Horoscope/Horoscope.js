@@ -8,7 +8,6 @@ import {Col, Image, Row, Typography} from "antd";
 import Preloader from "../Preloader";
 
 
-
 class Horoscope extends React.Component{
     constructor(props) {
         super(props)
@@ -34,6 +33,8 @@ class Horoscope extends React.Component{
 
         })
     }
+
+
 
     render() {
         return<Row style={{textAlign:'center'}}  >
