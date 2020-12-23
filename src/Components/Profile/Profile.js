@@ -10,6 +10,7 @@ import Preloader from "../Preloader";
 import AvatarImg from "../../dist/images/avatar-placeholder.png"
 import './Profile.sass'
 import Comments from "../Fragments/Comments/Comments";
+import Statistics from "./Statistics";
 
 
 function beforeUpload(file) {
@@ -118,6 +119,16 @@ class Profile extends Component {
                             </Upload> : <Avatar style={{borderRadius: '100%'}} size={100} src={AvatarImg}/>
                     }
                     <Typography.Title level={2}>{this.state.user.username}</Typography.Title>
+                </Col>
+                <Col
+                    className={'centered'}
+                    likes={this.props.state.auth.user.likes}
+                    disLikes={this.props.state.auth.user.disLikes}
+                    views={this.props.state.auth.user.views}
+                    posts={this.props.state.auth.user.posts || 11}
+                    lg={{span:8,offset:8}} md={{span:6,offset:9}}
+                    sm={{span:12,offset:6}} xs={{span:12,offset:6}}>
+                    <Statistics/>
                 </Col>
                 <Col lg={24} md={24} sm={24} xs={24}>
                 <Tabs defaultActiveKey="1" centered>

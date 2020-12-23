@@ -76,16 +76,16 @@ class AppLayout extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(prevProps.location.pathname!==this.props.location.pathname){
-            if(this.props.state.auth.token){
-              let path = this.props.location.pathname;
-                path =  path.split('/')
-                Socket.emit('userMove',{
-                    path:path[1],
-                    key:path[2]
-                })
-            }
-        }
+        // if(prevProps.location.pathname!==this.props.location.pathname){
+        //     if(this.props.state.auth.token){
+        //       let path = this.props.location.pathname;
+        //         path =  path.split('/')
+        //         Socket.emit('userMove',{
+        //             path:path[1],
+        //             key:path[2]
+        //         })
+        //     }
+        // }
 
     }
 
