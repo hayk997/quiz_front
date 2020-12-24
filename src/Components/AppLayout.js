@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Layout, notification} from "antd";
 import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
-import {Redirect, Route, Switch,withRouter} from "react-router-dom";
+import {Link, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import Login from "./Auth/Login";
 import Profile from "./Profile/Profile";
 import UploadAnswerImage from "./Upload/Upload";
@@ -55,14 +55,17 @@ class AppLayout extends Component {
                 console.log(Socket)
 
             })
-            Socket.on('connectedUserCount',(count)=>{
-                console.log(count)
-            })
-            Socket.on('adminMessage',(message)=>{
-                console.log(message)
+            Socket.on('new_passed',(data)=>{
                 notification.info({
-                    message:'Admin@ asma',
-                    description:message
+                    message:<a href={'/answerStats/'+data.id}>Ваш тест пройден</a>,
+                    description:<><a href={'/profile/'+data.from.id}>{data.from.username}</a> Прошел ваш тест</>
+                })
+            })
+
+            Socket.on('new_guest',(data)=>{
+                notification.info({
+                    message:data.guest?'Новый гость':'Покинул ваш профиль',
+                    description:data.user.username
                 })
             })
 
@@ -76,16 +79,30 @@ class AppLayout extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // if(prevProps.location.pathname!==this.props.location.pathname){
-        //     if(this.props.state.auth.token){
-        //       let path = this.props.location.pathname;
-        //         path =  path.split('/')
-        //         Socket.emit('userMove',{
-        //             path:path[1],
-        //             key:path[2]
-        //         })
-        //     }
-        // }
+         if(prevProps.location.pathname!==this.props.location.pathname){
+             if(this.props.state.auth.token){
+                 if(this.props.location.pathname.includes('/profile')){
+                     let pathData = this.props.location.pathname.split('/')
+                     if(pathData[2]){
+                         console.log(pathData[2])
+                         Socket.emit('userGuest',{
+                             id:parseInt(pathData[2]),
+                             guest:true
+                         })
+                     }
+                 }
+                 if(prevProps.location.pathname.includes('/profile')){
+                     let previousData = prevProps.location.pathname.split('/')
+                     if(previousData[2]){
+                         console.log(previousData[2])
+                         Socket.emit('userGuest',{
+                             id:parseInt(previousData[2]),
+                             guest:false
+                         })
+                     }
+                 }
+             }
+         }
 
     }
 
