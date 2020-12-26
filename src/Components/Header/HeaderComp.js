@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import  {Col, Empty, Spin, Select, Layout, Menu, Row, Avatar} from "antd"
+import  {Col, Spin, Select, Layout, Menu, Row, Avatar} from "antd"
 import {connect} from 'react-redux'
 import {Link, NavLink, withRouter} from "react-router-dom"
 import logo from '../../dist/images/mainLogo.png'

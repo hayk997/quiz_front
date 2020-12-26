@@ -1,10 +1,12 @@
 import React, {Component} from "react";
 import {connect} from 'react-redux'
 import './Statistics.sass'
-import DislikeFilled from "@ant-design/icons/lib/icons/DislikeFilled";
-import LikeFilled from "@ant-design/icons/lib/icons/LikeFilled";
-import CalendarFilled from "@ant-design/icons/lib/icons/CalendarFilled";
-import EyeFilled from "@ant-design/icons/lib/icons/EyeFilled";
+import {
+    EyeFilled,DislikeFilled,
+    FormOutlined,LikeFilled,
+} from "@ant-design/icons";
+import {Badge, Card, Typography} from "antd";
+import {MailOutlined} from "@ant-design/icons";
 
 
 class Statistics extends Component {
@@ -18,22 +20,26 @@ class Statistics extends Component {
     render() {
         return (
             <div className={'statisticsMain'}>
-                <div className={'statisticCol'}>
-                    <LikeFilled/>
-                    <p>{this.props.likes} Лайков</p>
-                </div>
-                <div className={'statisticCol'}>
-                    <DislikeFilled/>
-                    <p>{this.props.disLikes} Дислайков</p>
-                </div>
-                <div className={'statisticCol'}>
+                <Card className={'statisticCol likes'}>
+                    <Badge count={this.props.newData?.likes}><LikeFilled/></Badge>
+                    <Typography.Title level={2}>{this.props.likes??0}</Typography.Title>
+                </Card>
+                <Card className={'statisticCol dislikes'}>
+                    <Badge count={this.props.newData?.disLikes}><DislikeFilled/></Badge>
+                    <Typography.Title level={2}>{this.props.disLikes??0}</Typography.Title>
+                </Card>
+                <Card className={'statisticCol views'}>
                     <EyeFilled/>
-                    <p>{this.props.views} Просмотров</p>
-                </div>
-                <div className={'statisticCol'}>
-                    <CalendarFilled/>
-                    <p>{this.props.posts || 10} Постов</p>
-                </div>
+                    <Typography.Title level={2}>{this.props.views??0}</Typography.Title>
+                </Card>
+                <Card className={'statisticCol posts-got'}>
+                    <Badge count={this.props.newData?.gotPosts}><MailOutlined /></Badge>
+                    <Typography.Title level={2}>{this.props.gotPosts??0}</Typography.Title>
+                </Card>
+                <Card className={'statisticCol posts'}>
+                    <FormOutlined />
+                    <Typography.Title level={2}>{this.props.sentPosts??0}</Typography.Title>
+                </Card>
             </div>
         )
     }

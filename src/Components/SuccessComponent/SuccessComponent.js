@@ -6,9 +6,6 @@ import {withRouter} from "react-router-dom";
 const { Title } = Typography;
 
 class SuccessComponent extends React.Component{
-    constructor(props) {
-        super(props)
-    }
     handleToProfile(){
         this.props.history.push('/stats/'+this.props.match.params.id)
     }

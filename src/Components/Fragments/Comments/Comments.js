@@ -9,7 +9,7 @@ import {
     CheckOutlined,CloseOutlined,
     DeleteOutlined,SendOutlined
 } from '@ant-design/icons';
-import {Row, Col, Comment, Switch, Tooltip, Avatar, Form, Button, List, Input, Card, Popover,Typography} from 'antd';
+import {Row, Comment, Switch, Tooltip, Avatar, Form, Button, Input, Card, Popover,Typography} from 'antd';
 import moment from 'moment';
 import axios from "axios";
 import api from "../../../api";
@@ -105,13 +105,11 @@ class Comments extends React.Component {
        return Comments.map(comment=>{
             if(comment.id===response.data.id){
                 let key = type?'likes':'dislikes';
-                comment[key] = JSON.parse(comment[key])
                 if(comment[key].includes(this.props.state.auth.user.id)){
                     comment[key] = comment[key].filter(id=>id!==this.props.state.auth.user.id)
                 }else{
                     comment[key].push(this.props.state.auth.user.id)
                 }
-                comment[key] = JSON.stringify(comment[key])
                 return comment
             }else{
                 if(comment.Comments &&comment.Comments.length){
@@ -220,17 +218,17 @@ class Comments extends React.Component {
                         this.state.replyId!==comment.id && child_deep<1&&<span onClick={()=>this.replyTo(comment.id)} key="text">Ответить</span>,
                         <Tooltip key="comment-basic-like" title="Нравится">
                       <span className={'comment-reactions'}>
-                          <span onClick={()=>this.handleReact(comment.id,1)}> {JSON.parse(comment.likes).includes(this.props.state.auth.user.id) ? <LikeFilled/> : <LikeOutlined/>}</span>
+                          <span onClick={()=>this.handleReact(comment.id,1)}> {comment.likes.includes(this.props.state.auth.user.id) ? <LikeFilled/> : <LikeOutlined/>}</span>
                             <Popover trigger='click' placement="bottomRight" content={<PopoverUser loading={this.state.likeLoading} usersList={this.state.likedUsersList}/>}>
-                          <span onClick={()=>this.handleGetUsers(JSON.parse(comment.likes))} className="comment-action">{JSON.parse(comment.likes).length}</span>
+                          <span onClick={()=>this.handleGetUsers(comment.likes)} className="comment-action">{comment.likes.length}</span>
                            </Popover>
                       </span>
                         </Tooltip>,
                         <Tooltip key="comment-basic-dislike" title="Не нравится">
                       <span className={'comment-reactions dislike'} >
-                          <span onClick={()=>this.handleReact(comment.id,0)}>{JSON.parse(comment.dislikes).includes(this.props.state.auth.user.id) ? <DislikeFilled/> : <DislikeOutlined/>}</span>
+                          <span onClick={()=>this.handleReact(comment.id,0)}>{comment.dislikes.includes(this.props.state.auth.user.id) ? <DislikeFilled/> : <DislikeOutlined/>}</span>
                           <Popover trigger='click' placement="bottomRight" content={<PopoverUser loading={this.state.likeLoading} usersList={this.state.likedUsersList}/>}>
-                          <span onClick={()=>this.handleGetUsers(JSON.parse(comment.dislikes))} className="comment-action">{JSON.parse(comment.dislikes).length}</span>
+                          <span onClick={()=>this.handleGetUsers(comment.dislikes)} className="comment-action">{comment.dislikes.length}</span>
                           </Popover>
                       </span>
                         </Tooltip>,

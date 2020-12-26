@@ -1,6 +1,5 @@
 import React,{Component} from "react";
 import {Avatar, Comment} from "antd";
-import { UserOutlined } from '@ant-design/icons';
 import {connect} from 'react-redux'
 import './PopoverUser.sass'
 import {Link} from "react-router-dom";

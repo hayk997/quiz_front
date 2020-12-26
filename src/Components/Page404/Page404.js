@@ -3,9 +3,6 @@ import { Result, Button } from 'antd';
 import {withRouter} from "react-router-dom";
 
 class Page404 extends React.Component{
-    constructor(props) {
-        super(props);
-    }
     handleHome(){
         this.props.history.push('/')
     }

@@ -9,7 +9,6 @@ import Preloader from "../Preloader"
 import './styles.sass'
 import avatar from '../../dist/images/avatar.png'
 import {Typography} from 'antd';
-import img from "../../dist/images/a.jpg";
 import {CaretRightOutlined} from '@ant-design/icons';
 import FastAuth from "../Fragments/FastAuth/FastAuth";
 

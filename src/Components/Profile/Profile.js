@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import  {Tabs,Badge, Col, Row, Avatar, Typography, Card} from "antd";
+import  {Tabs,Badge, Col, Row, Avatar, Typography} from "antd";
 import {connect} from 'react-redux'
 import axios from "axios";
 import api from "../../api";
@@ -55,7 +55,6 @@ class Profile extends Component {
                     'cache-control': 'no-cache'
                 }
             }).then(response => {
-
                if(!response.data.error){
                    if (this.props.match.params.id) {
                        this.props.view({
@@ -93,6 +92,7 @@ class Profile extends Component {
     };
 
     render() {
+        console.log(this.state.user)
         const uploadButton = (
             <div>
                 {this.state.loading ? <LoadingOutlined/> : <PlusOutlined/>}
@@ -129,24 +129,26 @@ class Profile extends Component {
                 </Col>
                 <Col
                     className={'centered'}
-                    likes={this.state.user.likes}
-                    disLikes={this.state.user.disLikes}
-                    views={this.state.user.views}
-                    posts={this.state.user.posts || 11}
                     lg={{span:8,offset:8}} md={{span:6,offset:9}}
-                    sm={{span:12,offset:6}} xs={{span:12,offset:6}}>
-                    <Statistics/>
+                    sm={{span:12,offset:6}} xs={24}>
+                    <Statistics
+                        likes={this.state.user.likes}
+                        disLikes={this.state.user.disLikes}
+                        views={this.state.user.views}
+                        gotPosts={this.state.user.gotPosts }
+                        sentPosts={this.state.user.sentPosts}
+                        newData={this.state.user.newData}
+                    />
                 </Col>
                 <Col lg={24} md={24} sm={24} xs={24}>
                 <Tabs defaultActiveKey="1" centered>
                     <Tabs.TabPane tab="Вопросы/Ответы" key="1">
                             <Comments data={this.state.user.posts} uId={this.state.user.id}/>
-
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="Личные тесты" key="2">
                         <Typography.Title level={4}>My apps</Typography.Title>
                         {this.state.user.answers.length ?
-                            this.state.user.answers.map((answer) => <Badge count={answer.newPassed}><QuizCard
+                            this.state.user.answers.map((answer,key) => <Badge key={key} count={answer.newPassed}><QuizCard
                                 views={answer.views} link={`/stats/`} passed={answer.Passed} aId={answer.id}
                                 question={answer.question}/></Badge>) : null
                         }
