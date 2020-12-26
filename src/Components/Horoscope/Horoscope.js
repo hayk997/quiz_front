@@ -4,7 +4,7 @@ import {withRouter} from "react-router-dom";
 import axios from "axios";
 import api from "../../api";
 import {connect} from "react-redux";
-import {Col, Image, Row, Typography} from "antd";
+import {Card, Col, Image, Row, Typography} from "antd";
 import Preloader from "../Preloader";
 
 
@@ -38,9 +38,13 @@ class Horoscope extends React.Component{
 
     render() {
         return<Row style={{textAlign:'center'}}  >
-            <Typography.Title style={{textAlign:'center'}}  level={3}>Гороскоп на Завтра</Typography.Title>
+
             {this.state.loading?<Preloader/>:  <Col lg={24}>
-                <Image style={{textAlign:'center'}} src={this.state.imageSrc}/>
+                <Typography.Title style={{textAlign:'center'}}  level={3}>Гороскоп на Завтра</Typography.Title>
+                <Card>
+                    <Image style={{textAlign:'center'}} src={this.state.imageSrc}/>
+                </Card>
+
             </Col>}
 
             </Row>
