@@ -42,6 +42,7 @@ class Profile extends Component {
         if (this.props.match.params.id !== prevProps.match.params.id) {
             this.componentDidMount()
         }
+
     }
 
     componentDidMount() {
@@ -54,21 +55,27 @@ class Profile extends Component {
                     'cache-control': 'no-cache'
                 }
             }).then(response => {
-                if (this.props.match.params.id) {
-                    this.props.view({
-                        page: 'user',
-                        id: this.props.match.params.id
-                    })
-                }
-                this.setState({
-                    user: response.data,
-                    loading: false
-                })
+
+               if(!response.data.error){
+                   if (this.props.match.params.id) {
+                       this.props.view({
+                           page: 'user',
+                           id: this.props.match.params.id
+                       })
+                   }
+                   this.setState({
+                       user: response.data,
+                       loading: false
+                   })
+               }
+
             }).catch(e=>{
-                console.log(e)
+                this.props.onLogout()
+                this.props.history.push('/')
             })
         }else{
-            this.props.history.push('/404')
+            this.props.onLogout()
+            this.props.history.push('/')
         }
 
     }
@@ -122,10 +129,10 @@ class Profile extends Component {
                 </Col>
                 <Col
                     className={'centered'}
-                    likes={this.props.state.auth.user.likes}
-                    disLikes={this.props.state.auth.user.disLikes}
-                    views={this.props.state.auth.user.views}
-                    posts={this.props.state.auth.user.posts || 11}
+                    likes={this.state.user.likes}
+                    disLikes={this.state.user.disLikes}
+                    views={this.state.user.views}
+                    posts={this.state.user.posts || 11}
                     lg={{span:8,offset:8}} md={{span:6,offset:9}}
                     sm={{span:12,offset:6}} xs={{span:12,offset:6}}>
                     <Statistics/>
@@ -166,6 +173,11 @@ export default connect(
             dispatch({
                 type: "VIEW_PAGE",
                 payload
+            })
+        },
+        onLogout: () => {
+            dispatch({
+                type: "LOGOUT",
             })
         },
     })

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Layout, notification} from "antd";
 import {connect} from 'react-redux'
 import HeaderComp from "./Header/HeaderComp";
-import {Link, Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import Login from "./Auth/Login";
 import Profile from "./Profile/Profile";
 import UploadAnswerImage from "./Upload/Upload";
@@ -44,64 +44,61 @@ class AppLayout extends Component {
 
         }
     }
-    componentDidMount() {
-        if(this.props.state.auth.token){
-            Socket = io('http://localhost:4001/',{
-                auth:{
-                    token:this.props.state.auth.token
-                }
-            })
-            Socket.on("connect",()=>{
-                console.log(Socket)
-
-            })
-            Socket.on('new_passed',(data)=>{
-                notification.info({
-                    message:<a href={'/answerStats/'+data.id}>Ваш тест пройден</a>,
-                    description:<><a href={'/profile/'+data.from.id}>{data.from.username}</a> Прошел ваш тест</>
-                })
-            })
-
-            Socket.on('new_guest',(data)=>{
-                notification.info({
-                    message:data.guest?'Новый гость':'Покинул ваш профиль',
-                    description:data.user.username
-                })
-            })
-
-            Socket.on("connect_error", (err) => {
-                console.log(err.message); // prints the message associated with the error
-            });
-        }else{
-            console.log('not logged')
-        }
-
-    }
-
     componentDidUpdate(prevProps, prevState, snapshot) {
          if(prevProps.location.pathname!==this.props.location.pathname){
              if(this.props.state.auth.token){
-                 if(this.props.location.pathname.includes('/profile')){
-                     let pathData = this.props.location.pathname.split('/')
-                     if(pathData[2]){
-                         console.log(pathData[2])
-                         Socket.emit('userGuest',{
-                             id:parseInt(pathData[2]),
-                             guest:true
-                         })
+                 if(Socket){
+                     if(this.props.location.pathname.includes('/profile')){
+                         let pathData = this.props.location.pathname.split('/')
+                         if(pathData[2]){
+                             console.log(pathData[2])
+                             Socket.emit('userGuest',{
+                                 id:parseInt(pathData[2]),
+                                 guest:true
+                             })
+                         }
+                     }
+                     if(prevProps.location.pathname.includes('/profile')){
+                         let previousData = prevProps.location.pathname.split('/')
+                         if(previousData[2]){
+                             console.log(previousData[2])
+                             Socket.emit('userGuest',{
+                                 id:parseInt(previousData[2]),
+                                 guest:false
+                             })
+                         }
                      }
                  }
-                 if(prevProps.location.pathname.includes('/profile')){
-                     let previousData = prevProps.location.pathname.split('/')
-                     if(previousData[2]){
-                         console.log(previousData[2])
-                         Socket.emit('userGuest',{
-                             id:parseInt(previousData[2]),
-                             guest:false
-                         })
-                     }
-                 }
+
              }
+         }
+         if((this.props.state.auth && this.props.state.auth.token!== prevProps.state.auth.token)){
+             Socket = io('http://localhost:4001/',{
+                 auth:{
+                     token:this.props.state.auth.token
+                 }
+             })
+             Socket.on("connect",()=>{
+                 console.log(Socket)
+
+             })
+             Socket.on('new_passed',(data)=>{
+                 notification.info({
+                     message:<a href={'/answerStats/'+data.id}>Ваш тест пройден</a>,
+                     description:<><a href={'/profile/'+data.from.id}>{data.from.username}</a> Прошел ваш тест</>
+                 })
+             })
+
+             Socket.on('new_guest',(data)=>{
+                 notification.info({
+                     message:data.guest?'Новый гость':'Покинул ваш профиль',
+                     description:data.user.username
+                 })
+             })
+
+             Socket.on("connect_error", (err) => {
+                 console.log(err.message); // prints the message associated with the error
+             });
          }
 
     }

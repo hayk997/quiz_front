@@ -20,19 +20,19 @@ class Statistics extends Component {
             <div className={'statisticsMain'}>
                 <div className={'statisticCol'}>
                     <LikeFilled/>
-                    <p>{this.props.state.auth.user.likes} Лайков</p>
+                    <p>{this.props.likes} Лайков</p>
                 </div>
                 <div className={'statisticCol'}>
                     <DislikeFilled/>
-                    <p>{this.props.state.auth.user.disLikes} Дислайков</p>
+                    <p>{this.props.disLikes} Дислайков</p>
                 </div>
                 <div className={'statisticCol'}>
                     <EyeFilled/>
-                    <p>{this.props.state.auth.user.views} Просмотров</p>
+                    <p>{this.props.views} Просмотров</p>
                 </div>
                 <div className={'statisticCol'}>
                     <CalendarFilled/>
-                    <p>{this.props.state.auth.user.posts || 10} Постов</p>
+                    <p>{this.props.posts || 10} Постов</p>
                 </div>
             </div>
         )
